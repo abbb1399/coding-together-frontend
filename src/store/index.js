@@ -1,12 +1,14 @@
 import { createStore } from 'vuex'
 
-export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+import authModule from './modules/auth/index.js'
+import coachesModule from './modules/coaches/index.js'
+
+
+const store =  createStore({
   modules: {
+    coaches: coachesModule,
+    auth: authModule
   }
 })
+
+export default store;
