@@ -1,6 +1,6 @@
 <template>
   <span class="badge" :class="type">
-    {text}
+    {{text}}
   </span>
 </template>
 
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style scoped>
-  .badge{
+  .badge {
     background-color: #ccc;
     color: #252525;
     border-radius: 30px;
