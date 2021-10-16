@@ -14,7 +14,7 @@
         </div>
         <div class="form-control">
           <label for="password">비밀번호</label>
-          <input type="password" id="password" v-model.trim="password">
+          <input type="password" id="password" v-model.trim="password" autocomplete="off">
         </div>
         <p v-if="!formIsValid">유효한 이메일 과 비밀번호를 입력해주세요.(6글자) </p>
         <base-button>{{submitButtonCaption}}</base-button>

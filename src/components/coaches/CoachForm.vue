@@ -1,10 +1,5 @@
 <template>
   <form @submit.prevent="submitForm">
-    <div class="form-control" :class="{invalid: !firstName.isValid}"> 
-      <label for="firstname">성</label>
-      <input type="text" id="firstname" v-model.trim="firstName.val" @blur="clearValidity('firstName')">
-      <p v-if="!firstName.isValid">성은 반드시 입력되야 합니다.</p>
-    </div>
     <div class="form-control" :class="{invalid: !lastName.isValid}">
       <label for="lastname">이름</label>
       <input type="text" id="lastname" v-model.trim="lastName.val" @blur="clearValidity('lastName')"> 
@@ -46,10 +41,6 @@ export default {
   emits:['save-data'],
   data(){ 
     return{
-      firstName:{
-        val:'',
-        isValid:true
-      },
       lastName:{
         val:'',
         isValid:true
@@ -72,16 +63,12 @@ export default {
   methods:{
     // input이 blur될때마다 에러표시 지워주기
     clearValidity(input){
-      // this.firstName, this.lastName ....
+      // this.lastName, this.lastName ....
       this[input].isValid = true
     },
     validateForm(){
       this.formIsValid = true
-      
-      if(this.firstName.val === ''){
-        this.firstName.isValid = false
-        this.formIsValid = false
-      }
+  
       if(this.lastName.val === ''){
         this.lastName.isValid = false
         this.formIsValid = false
@@ -107,7 +94,6 @@ export default {
       }
 
       const formData={
-        first: this.firstName.val,
         last: this.lastName.val,
         desc: this.description.val,
         rate: this.rate.val,
