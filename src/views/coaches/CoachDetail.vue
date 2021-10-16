@@ -2,7 +2,7 @@
   <div>
     <section>
       <base-card>
-        <h2>{{fullName}}</h2>
+        <h2>{{name}}</h2>
         <h3>{{rate}}원/시간</h3>
       </base-card>
     </section>
@@ -18,13 +18,17 @@
     <section>
       <base-card>
         <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
-        <p>{{description}}</p>
+        <!-- <p>{{description}}</p> -->
+        <div id="viewer"/>
       </base-card>
     </section>
   </div>
 </template>
 
 <script>
+import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+
 export default {
   props:['id'],
   data(){
@@ -32,9 +36,16 @@ export default {
       selectedCoach:null
     }
   },
+  mounted(){
+    new Viewer({
+      el: document.querySelector('#viewer'),
+      // 표시하고자 하는 내용은 여기에 들어간다.
+      initialValue: this.description
+    });
+  },
   computed:{
-    fullName(){
-      return this.selectedCoach.lastName
+    name(){
+      return this.selectedCoach.name
     },
     areas(){
       return this.selectedCoach.areas

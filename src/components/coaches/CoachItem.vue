@@ -1,6 +1,6 @@
 <template>
   <li>
-    <h3>{{ fullName }}</h3>
+    <h3>{{ name }}</h3>
     <h4>{{rate}}원/시간</h4>
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
@@ -14,11 +14,8 @@
 
 <script>
 export default {
-  props:['id','lastName','rate','areas'],
+  props:['id','name','rate','areas'],
   computed:{
-    fullName(){
-      return this.lastName
-    },
     coachContactLink(){ 
       return this.$route.path + '/' + this.id + '/contact' //coaches/c1/contact
     },

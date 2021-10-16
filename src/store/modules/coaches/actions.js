@@ -2,7 +2,7 @@ export default {
   async registerCoach(context, data){
     const userId = context.rootGetters.userId
     const coachData = {
-      lastName : data.last,
+      name : data.last,
       description : data.desc,
       hourlyRate  : data.rate,
       areas : data.areas
@@ -48,7 +48,7 @@ export default {
     for(const key in responseData){
       const coach = {
         id:key,
-        lastName: responseData[key].lastName,
+        name: responseData[key].name,
         description: responseData[key].description,
         hourlyRate: responseData[key].hourlyRate,
         areas: responseData[key].areas

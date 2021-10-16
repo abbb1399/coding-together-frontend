@@ -1,14 +1,15 @@
 <template>
   <form @submit.prevent="submitForm">
-    <div class="form-control" :class="{invalid: !lastName.isValid}">
-      <label for="lastname">이름</label>
-      <input type="text" id="lastname" v-model.trim="lastName.val" @blur="clearValidity('lastName')"> 
-      <p v-if="!lastName.isValid">이름은 반드시 입력되야 합니다.</p>
+    <div class="form-control" :class="{invalid: !name.isValid}">
+      <label for="name">이름</label>
+      <input type="text" id="name" v-model.trim="name.val" required @blur="clearValidity('name')" @keydown.tab="useTab"> 
+      <p v-if="!name.isValid">이름은 반드시 입력되야 합니다.</p>
     </div>
     <div class="form-control" :class="{invalid: !description.isValid}">
       <label for="description">설명</label>
-      <textarea id="description" rows="5" v-model.trim="description.val" @blur="clearValidity('description')"></textarea> 
-      <p v-if="!description.isValid">설명은 반드시 입력되야 합니다..</p>
+      <div id="editor"></div>
+      <!-- <textarea id="description" rows="5" v-model.trim="description.val" @blur="clearValidity('description')"></textarea>  -->
+      <!-- <p v-if="!description.isValid">설명은 반드시 입력되야 합니다..</p> -->
     </div>
      <div class="form-control" :class="{invalid: !rate.isValid}">
       <label for="rate">시급</label>
@@ -37,16 +38,20 @@
 </template>
 
 <script>
+import Editor from '@toast-ui/editor'
+import '@toast-ui/editor/dist/toastui-editor.css'
+import '@toast-ui/editor/dist/i18n/ko-kr'
+
 export default {
   emits:['save-data'],
   data(){ 
     return{
-      lastName:{
+      name:{
         val:'',
         isValid:true
       },
       description: {
-        val:'',
+        // val:'',
         isValid:true
       },
       rate:{
@@ -57,23 +62,34 @@ export default {
         val:[],
         isValid:true
       },
-      formIsValid:true 
+      formIsValid:true,
+      tuiEditor:null 
     }
+  },
+  mounted() {
+    const editor = new Editor({
+      el: document.querySelector("#editor"),
+      initialEditType: "wysiwyg",
+      previewStyle: "vertical",
+      language: 'ko-KR',
+    })
+
+    this.tuiEditor = editor
   },
   methods:{
     // input이 blur될때마다 에러표시 지워주기
     clearValidity(input){
-      // this.lastName, this.lastName ....
+      // this.name ....
       this[input].isValid = true
     },
-    validateForm(){
+    validateForm(tuiContent){
       this.formIsValid = true
   
-      if(this.lastName.val === ''){
-        this.lastName.isValid = false
+      if(this.name.val === ''){
+        this.name.isValid = false
         this.formIsValid = false
       }
-      if(this.description.val === ''){
+      if(tuiContent === ''){
         this.description.isValid = false
         this.formIsValid = false
       }
@@ -87,19 +103,26 @@ export default {
       }
     },
     submitForm(){
-      this.validateForm()
+      // tui 에디터 글내용 받아오기
+      const tuiContent = this.tuiEditor.getMarkdown()
+      
+      this.validateForm(tuiContent)
 
       if(!this.formIsValid){
         return
       }
 
       const formData={
-        last: this.lastName.val,
-        desc: this.description.val,
+        last: this.name.val,
+        desc: tuiContent,
         rate: this.rate.val,
         areas:this.areas.val
       }
       this.$emit('save-data',formData)
+    },
+    // 이름(input)에서 설명(tui-editor)으로 tab키를 통해 넘어가도록 편의성 제공. 
+    useTab () {
+      this.tuiEditor.focus()
     }
   }
 }
