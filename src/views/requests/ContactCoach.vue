@@ -6,7 +6,7 @@
     </div>
     <div class="form-control">
       <label for="message">메세지</label>
-      <textarea id="message" rows="5"></textarea>
+      <textarea id="message" rows="5" v-model.trim="message"></textarea>
     </div>
     <p class="errors" v-if="!formIsValid">유효한 이메일과 메세지란을 입력해주세요.</p>
     <div class="actions">
