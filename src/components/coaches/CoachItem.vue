@@ -20,6 +20,7 @@ export default {
       return this.$route.path + '/' + this.id + '/contact' //coaches/c1/contact
     },
     coachDetailsLink(){
+      console.log(this.id)
       return this.$route.path + '/' + this.id             // /coahes/c1
     }
   }

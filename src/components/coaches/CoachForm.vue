@@ -113,7 +113,7 @@ export default {
       }
 
       const formData={
-        last: this.name.val,
+        name: this.name.val,
         desc: tuiContent,
         rate: this.rate.val,
         areas:this.areas.val
@@ -127,6 +127,13 @@ export default {
   }
 }
 </script>
+
+<style>
+  .toastui-editor-contents {
+    font: inherit;
+  }
+</style>
+
 
 <style scoped>
   .form-control {

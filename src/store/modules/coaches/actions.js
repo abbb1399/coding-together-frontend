@@ -2,7 +2,7 @@ export default {
   async registerCoach(context, data){
     const userId = context.rootGetters.userId
     const coachData = {
-      name : data.last,
+      name : data.name,
       description : data.desc,
       hourlyRate  : data.rate,
       areas : data.areas

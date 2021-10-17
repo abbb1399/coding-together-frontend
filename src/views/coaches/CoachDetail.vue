@@ -28,12 +28,13 @@
 <script>
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+// import '@toast-ui/editor/dist/toastui-editor.css'
 
 export default {
   props:['id'],
   data(){
     return{
-      selectedCoach:null
+      selectedCoach:null,
     }
   },
   mounted(){
@@ -64,9 +65,7 @@ export default {
     }
   },
   created(){
-    this.selectedCoach = this.$store.getters['coaches/coaches'].find(
-      coach => coach.id = this.id
-    )
+    this.selectedCoach = this.$store.getters['coaches/coaches'].find(coach => coach.id === this.id)
   }
 }
 </script>
