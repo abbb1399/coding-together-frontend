@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 let timer
 
 export default {
@@ -15,45 +17,43 @@ export default {
   },
   async auth(context, payload){
     const mode = payload.mode
-    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB1DXyeDeNvvlv9Pz1je0cDUa4AFcdKXSs' 
+    let url = 'http://localhost:3000/users/login' 
 
     if(mode === 'signup'){
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB1DXyeDeNvvlv9Pz1je0cDUa4AFcdKXSs'
+      url = 'http://localhost:3000/users'
     }
 
-    const response = await fetch(url,{
-      method:'POST',
-      body: JSON.stringify({
+    return new Promise((resolve, reject) => {  
+      axios.post(url, {
+        name:'test',
         email: payload.email,
-        password: payload.password,
-        returnSecureToken: true
-      })
-    })
+        password: payload.password
+      }).then((response) => {
 
-    const responseData = await response.json()
 
-    if(!response.ok){
-      console.log(responseData)
-      const error = new Error(responseData.message || '인증실패. 로그인정보를 다시 확인하세요.')
-      throw error
-    }
+        const expiresIn = 500000
+        // const expiresIn = +response.expiresIn * 1000
+        const expirationDate = new Date().getTime() + expiresIn
+        localStorage.setItem('tokenExpiration', expirationDate)
 
-    // const expiresIn = 5000
-    const expiresIn = +responseData.expiresIn * 1000
-    const expirationDate = new Date().getTime() + expiresIn
-    localStorage.setItem('tokenExpiration', expirationDate)
 
-    timer = setTimeout(() => {
-      context.dispatch('autoLogout')
-    }, expiresIn)
+        timer = setTimeout(() => {
+          context.dispatch('autoLogout')
+        }, expiresIn)
 
-    localStorage.setItem('token', responseData.idToken)
-    localStorage.setItem('userId',responseData.localId)
-    
-    context.commit('setUser',{
-      token: responseData.idToken,
-      userId: responseData.localId
-    })
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('userId',response.data.user._id)
+        
+        context.commit('setUser',{
+          token: response.data.token,
+          userId: response.data.user._id
+        })
+        resolve()
+      
+      }).catch((error) => {
+        reject(error.response.data)
+      });
+    })  
   },
   tryLogin(context){
     const token = localStorage.getItem('token')
@@ -77,17 +77,28 @@ export default {
       })
     }
   },
-  logout(context){
-    localStorage.removeItem('token')
-    localStorage.removeItem('userId')
-    localStorage.removeItem('tokenExpiration')
+  async logout(context){
+    const token = localStorage.getItem('token')
 
-    clearTimeout(timer)
-
-    context.commit('setUser',{
-      token:null,
-      userId:null
-    })
+    try{
+      await axios.post('http://localhost:3000/users/logoutAll',
+        {},
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+      
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('tokenExpiration')
+      
+      clearTimeout(timer)
+  
+      context.commit('setUser',{
+        token:null,
+        userId:null
+      })
+    }catch(error){
+      console.log(error)
+    }
   },
   autoLogout(context){
     context.dispatch('logout')

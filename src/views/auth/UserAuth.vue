@@ -1,11 +1,14 @@
 <template>
   <div>
+    <!-- 에러 Dialog -->
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{error}}</p>
     </base-dialog>
+
     <base-dialog :show="isLoading" title="인증 중 입니다...." fixed>
       <base-spinner></base-spinner>
     </base-dialog>
+    
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
@@ -17,7 +20,9 @@
           <input type="password" id="password" v-model.trim="password" autocomplete="off">
         </div>
         <p v-if="!formIsValid">유효한 이메일 과 비밀번호를 입력해주세요.(6글자) </p>
+        <!-- 회원가입/로그인 -->
         <base-button>{{submitButtonCaption}}</base-button>
+        <!-- 회원가입/로그인 하러가기-->
         <base-button type="button" mode="flat" @click="switchAuthMode">{{switchModeButtonCaption}}</base-button>
       </form>
     </base-card>
@@ -69,14 +74,16 @@ export default {
 
       try{
         if(this.mode === 'login'){
+        // 로그인
           await this.$store.dispatch('login', actionPayload)
-        }else{
+       }else{
+        // 회원가입
           await this.$store.dispatch('signup', actionPayload)
         }
         const redirectUrl = '/' + (this.$route.query.redirect || 'coaches')
         this.$router.replace(redirectUrl)
       }catch(err){
-        this.error = err.message || '인증실패, 다시 시도하세요.'
+        this.error = err || '인증실패, 다시 시도하세요.'
       }
       this.isLoading = false
     },

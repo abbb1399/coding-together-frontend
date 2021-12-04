@@ -55,6 +55,10 @@ export default {
       }
     }
   },
+  created(){
+    // console.log(this.isCoach)
+    this.loadCoaches()
+  },
   computed:{
     isLoggedIn(){
       return this.$store.getters.isAuthenticated
@@ -64,7 +68,7 @@ export default {
     },
     filteredCoaches(){
       const coaches =  this.$store.getters['coaches/coaches']
-      console.log(coaches)
+      // console.log(coaches)
       return coaches.filter(coach => {
         // 내가 fronteend를 체크했고, 선생도 frontend를 가지고 있는 경우
         if(this.activeFilters.frontend && coach.areas.includes('frontend')){
@@ -82,9 +86,6 @@ export default {
     hasCoaches(){
       return !this.isLoading && this.$store.getters['coaches/hasCoaches']
     }
-  },
-  created(){
-    this.loadCoaches()
   },
   methods:{
     setFilters(updatedFilters){
