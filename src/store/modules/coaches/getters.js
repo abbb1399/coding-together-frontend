@@ -8,11 +8,10 @@ export default {
   isCoach(_,getters,_2,rootGetters){
     const coaches = getters.coaches
     const userId = rootGetters.userId
-    console.log(coaches)
-    console.log(userId)
 
-
-    return coaches.some(coach => coach.id === userId)
+    // console.log(coaches)
+    // console.log(userId)
+    return coaches.some(coach => coach.owner === userId)
   },
   shouldUpdate(state){
     const lastFetch = state.lastFetch

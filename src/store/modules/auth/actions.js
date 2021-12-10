@@ -26,12 +26,11 @@ export default {
     return new Promise((resolve, reject) => {  
       axios.post(url, {
         name:'test',
-        email: payload.email,
+        email: payload.email,   
         password: payload.password
       }).then((response) => {
 
-
-        const expiresIn = 500000
+        const expiresIn = 1000000
         // const expiresIn = +response.expiresIn * 1000
         const expirationDate = new Date().getTime() + expiresIn
         localStorage.setItem('tokenExpiration', expirationDate)
@@ -48,6 +47,7 @@ export default {
           token: response.data.token,
           userId: response.data.user._id
         })
+
         resolve()
       
       }).catch((error) => {
@@ -61,7 +61,7 @@ export default {
     const tokenExpiration = localStorage.getItem('tokenExpiration')
 
     const expiresIn = +tokenExpiration - new Date().getTime()
-    
+  
     if(expiresIn < 0){
       return 
     }

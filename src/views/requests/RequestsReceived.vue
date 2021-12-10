@@ -3,6 +3,7 @@
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{error}}</p>
     </base-dialog>
+    
     <section>
       <base-card>
         <header>
@@ -22,7 +23,6 @@
       </base-card>
     </section>
 
-
   </div>
 </template>
 
@@ -40,6 +40,11 @@ export default {
       error:null
     }
   },
+  created(){
+    // console.log(this.hasRequests)
+    this.loadRequests()
+    // console.log(this.receivedRequests)
+  },
   computed:{
     receivedRequests(){
       return this.$store.getters['requests/requests']
@@ -48,9 +53,7 @@ export default {
       return this.$store.getters['requests/hasRequests']
     }
   },
-  created(){
-    this.loadRequests()
-  },
+ 
   methods:{
     async loadRequests(){
       this.isLoading = true

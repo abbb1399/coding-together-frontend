@@ -14,10 +14,11 @@
 
 <script>
 export default {
-  props:['id','name','rate','areas'],
+  props:['id','name','rate','areas','owner'],
   computed:{
     coachContactLink(){ 
-      return this.$route.path + '/' + this.id + '/contact' //coaches/c1/contact
+      // console.log(this.owner)
+      return this.$route.path + '/' + this.owner + '/contact' //coaches/c1/contact
     },
     coachDetailsLink(){
       // console.log(this.id)

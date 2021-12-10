@@ -25,6 +25,7 @@
             :name="coach.name"
             :rate="coach.hourlyRate"
             :areas="coach.areas"
+            :owner="coach.owner"
           >
           </coach-item>
         </ul>
@@ -56,7 +57,10 @@ export default {
     }
   },
   created(){
-    // console.log(this.isCoach)
+    setTimeout(() => {   
+      // console.log(this.$store.getters['coaches/coaches'])
+    }, 1000);
+
     this.loadCoaches()
   },
   computed:{

@@ -3,6 +3,7 @@ const axios = require('axios');
 export default {
   async registerCoach(context, data){
     const userId = context.rootGetters.userId
+
     const coachData = {
       name : data.name,
       description : data.desc,
@@ -60,7 +61,8 @@ export default {
           name: element.name,
           description: element.description,
           hourlyRate: 10,
-          areas: element.areas
+          areas: element.areas,
+          owner: element.owner
         }
         coaches.push(obj)
       });  

@@ -4,20 +4,22 @@ export default {
   async contactCoach(context, payload){
     const newRequest = {
       email: payload.email,
-      message: payload.message
+      message: payload.message,
+      coachId: payload.coachId
     }
     
-    axios.post(
-      'http://localhost:3000/requests', 
-      newRequest,
-    ).then(response =>{
+    try{
+      const response = await axios.post(
+        'http://localhost:3000/requests', 
+        newRequest,
+      )
       newRequest.id = response._id
-      newRequest.coachId = payload.coachId
+      // newRequest.coachId = payload.coachId
 
       context.commit('addRequest', newRequest)
-    }).catch(e=>{
+    }catch(e){
       console.log(e)
-    })
+    }
     // const response = await fetch(`https://coach-finder-a904f-default-rtdb.asia-southeast1.firebasedatabase.app/requests/${payload.coachId}.json`,{
     //   method: 'POST',   // id를 새로 생성하기때문에 put이아닌 post
     //   body:JSON.stringify(newRequest)
@@ -38,22 +40,20 @@ export default {
 
   async fetchRequests(context){
     // 로그인한사람의 유저 아이디
-    const coachId = context.rootGetters.userId
-    
-    const token = context.rootGetters.token
+    const userId = context.rootGetters.userId
+    // const token = context.rootGetters.token
 
 
-    console.log(coachId)
-    console.log(token)
+    console.log(userId)
+    // console.log(token)
 
-
-    const reponse = await axios.get(
-      `http://localhost:3000/requests/${coachId}`
-      // { headers: { Authorization: `Bearer ${token}` }}
-    )
-
-    console.log(reponse)
-
+    try{
+      const response = await axios.get(`http://localhost:3000/requests/${userId}`)
+      console.log(response)
+      context.commit('setRequests', response)
+    }catch(e){
+      console.log(e)
+    }
 
     // const response = await fetch(`https://coach-finder-a904f-default-rtdb.asia-southeast1.firebasedatabase.app/requests/${coachId}.json?auth=${token}`)
     // const responseData = await response.json()

@@ -31,10 +31,16 @@ export default {
         this.formIsValid = false
         return
       }
+
+      console.log(this.email)
+      console.log(this.message)
+      console.log(this.$route.params.owner)
+
+
       this.$store.dispatch('requests/contactCoach',{
         email: this.email,
         message: this.message,
-        coachId: this.$route.params.id
+        coachId: this.$route.params.owner
       })
       this.$router.replace('/coaches')
     }

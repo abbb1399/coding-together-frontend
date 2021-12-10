@@ -13,7 +13,7 @@ const routes = [
   { path:'/', redirect: '/coaches' },
   { path: '/coaches', component: CoachesList },
   {
-    path:'/coaches/:id',
+    path:'/coaches/:owner',
     component: () => import('../views/coaches/CoachDetail.vue'),
     props:true,
     children:[
