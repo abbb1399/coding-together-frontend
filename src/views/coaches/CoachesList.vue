@@ -21,7 +21,6 @@
           <coach-item
             v-for="coach in filteredCoaches"
             :key="coach.id"
-            :id="coach.id"
             :name="coach.name"
             :areas="coach.areas"
             :owner="coach.owner"

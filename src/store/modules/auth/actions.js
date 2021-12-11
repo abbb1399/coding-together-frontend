@@ -99,6 +99,7 @@ export default {
         token:null,
         userId:null
       })
+      
     }catch(error){
       console.log(error)
     }

@@ -9,7 +9,16 @@
 
 <script>
 export default {
-  props:['email','message'],
+  props:{
+    email:{
+      type:String,
+      required:true
+    },
+    message:{
+      type:String,
+      required:true
+    }
+  },
   computed:{
     emailLink(){
       return 'mailto:' + this.email

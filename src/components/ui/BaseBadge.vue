@@ -6,7 +6,16 @@
 
 <script>
 export default {
-  props:['type','title'],
+  props:{
+    type:{
+      type:String,
+      required:true
+    },
+    title:{
+      type:String,
+      required:true
+    }
+  },
   computed:{
     text(){
       return this.title.toUpperCase()

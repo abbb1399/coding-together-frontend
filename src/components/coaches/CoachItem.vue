@@ -14,16 +14,25 @@
 
 <script>
 export default {
-  props:['id','name','areas','owner'],
-  
-  
+  props:{
+    name:{
+      type:String,
+      required:true
+    },
+    areas:{
+      type:Array,
+      required:true
+    },
+    owner:{
+      type:String,
+      required:true
+    }
+  },
   computed:{
     coachContactLink(){ 
-      // console.log(this.owner)
       return this.$route.path + '/' + this.owner + '/contact' //coaches/c1/contact
     },
     coachDetailsLink(){
-      // console.log(this.id)
       return this.$route.path + '/' + this.owner             // /coahes/c1
     }
   }
