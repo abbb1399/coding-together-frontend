@@ -7,8 +7,5 @@ export default {
   },
   setFetchTimestamp(state){
     state.lastFetch = new Date().getTime()
-  },
-  setIsCoach(){
-
   }
 }

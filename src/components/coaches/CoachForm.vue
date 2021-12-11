@@ -2,7 +2,7 @@
   <form @submit.prevent="submitForm">
     <div class="form-control" :class="{invalid: !name.isValid}">
       <label for="name">이름</label>
-      <input type="text" id="name" v-model.trim="name.val" required @blur="clearValidity('name')" @keydown.tab="useTab"> 
+      <input type="text" id="name" v-model.trim="name.val" required @blur="clearValidity('name')" > 
       <p v-if="!name.isValid">이름은 반드시 입력되야 합니다.</p>
     </div>
     <div class="form-control" :class="{invalid: !description.isValid}">
@@ -11,11 +11,11 @@
       <!-- <textarea id="description" rows="5" v-model.trim="description.val" @blur="clearValidity('description')"></textarea>  -->
       <!-- <p v-if="!description.isValid">설명은 반드시 입력되야 합니다..</p> -->
     </div>
-     <div class="form-control" :class="{invalid: !rate.isValid}">
+     <!-- <div class="form-control" :class="{invalid: !rate.isValid}">
       <label for="rate">시급</label>
       <input type="number" id="rate" v-model.number="rate.val" @blur="clearValidity('rate')"> 
       <p v-if="!rate.isValid">시급은 0원보다 커야 합니다.</p>
-    </div>
+    </div> -->
     <div class="form-control" :class="{invalid: !areas.isValid}"> 
       <h3>Areas of Expertise</h3>
       <div>
@@ -54,10 +54,10 @@ export default {
         // val:'',
         isValid:true
       },
-      rate:{
-        val:null,
-        isValid:true
-      },
+      // rate:{
+      //   val:null,
+      //   isValid:true
+      // },
       areas:{
         val:[],
         isValid:true
@@ -93,10 +93,10 @@ export default {
         this.description.isValid = false
         this.formIsValid = false
       }
-      if(!this.rate.val || this.rate.val < 0){
-        this.rate.isValid = false
-        this.formIsValid = false
-      }
+      // if(!this.rate.val || this.rate.val < 0){
+      //   this.rate.isValid = false
+      //   this.formIsValid = false
+      // }
       if(this.areas.val.length === 0){
         this.areas.isValid = false
         this.formIsValid = false
@@ -115,7 +115,7 @@ export default {
       const formData={
         name: this.name.val,
         desc: tuiContent,
-        rate: this.rate.val,
+        // rate: this.rate.val,
         areas:this.areas.val
       }
       this.$emit('save-data',formData)

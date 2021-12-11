@@ -9,12 +9,14 @@ export default {
       mode:'login'
     })
   },
+  
   async signup(context, payload){
     return context.dispatch('auth',{
       ...payload,
       mode:'signup'
     })
   },
+
   async auth(context, payload){
     const mode = payload.mode
     let url = 'http://localhost:3000/users/login' 
@@ -31,7 +33,6 @@ export default {
       }).then((response) => {
 
         const expiresIn = 1000000
-        // const expiresIn = +response.expiresIn * 1000
         const expirationDate = new Date().getTime() + expiresIn
         localStorage.setItem('tokenExpiration', expirationDate)
 
@@ -49,12 +50,12 @@ export default {
         })
 
         resolve()
-      
       }).catch((error) => {
         reject(error.response.data)
       });
     })  
   },
+  
   tryLogin(context){
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
@@ -77,6 +78,7 @@ export default {
       })
     }
   },
+  
   async logout(context){
     const token = localStorage.getItem('token')
 
@@ -100,6 +102,7 @@ export default {
       console.log(error)
     }
   },
+  
   autoLogout(context){
     context.dispatch('logout')
     context.commit('setAutoLogout')

@@ -41,9 +41,7 @@ export default {
     }
   },
   created(){
-    // console.log(this.hasRequests)
     this.loadRequests()
-    // console.log(this.receivedRequests)
   },
   computed:{
     receivedRequests(){

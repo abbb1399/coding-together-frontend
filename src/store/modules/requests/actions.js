@@ -44,12 +44,8 @@ export default {
     // const token = context.rootGetters.token
 
 
-    console.log(userId)
-    // console.log(token)
-
     try{
       const response = await axios.get(`http://localhost:3000/requests/${userId}`)
-      console.log(response)
       context.commit('setRequests', response)
     }catch(e){
       console.log(e)

@@ -32,11 +32,6 @@ export default {
         return
       }
 
-      console.log(this.email)
-      console.log(this.message)
-      console.log(this.$route.params.owner)
-
-
       this.$store.dispatch('requests/contactCoach',{
         email: this.email,
         message: this.message,

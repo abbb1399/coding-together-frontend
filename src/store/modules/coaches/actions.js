@@ -7,7 +7,7 @@ export default {
     const coachData = {
       name : data.name,
       description : data.desc,
-      hourlyRate  : data.rate,
+      // hourlyRate  : data.rate,
       areas : data.areas
     }
 
@@ -26,19 +26,7 @@ export default {
       })
     }catch(e){
       console.log(e)
-    }
-    
-    // const response = await fetch(
-    //   `https://coach-finder-a904f-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.json?auth=${token}`,{
-    //   method: 'PUT',
-    //   body: JSON.stringify(coachData)
-    // })
-
-     //const responseData = await response.json()  //json메소드도 promise함유기때문에 await 쓸수 있다.
-
-    //  if(!response.ok){
-      // error
-    //  }    
+    } 
   },
 
   async loadCoaches(context, payload){
@@ -46,21 +34,17 @@ export default {
       return
     }
 
-    // const token = localStorage.getItem('token')
-    // console.log(token)
-    
     try{
-      const responseData = await axios.get('http://localhost:3000/coach-list')
+      const { data } = await axios.get('http://localhost:3000/coach-list')
 
-      // console.log(responseData);
       const coaches = []
 
-      responseData.data.forEach(element => {
+      data.forEach(element => {
         const obj = {
           id: element._id,
           name: element.name,
           description: element.description,
-          hourlyRate: 10,
+          // hourlyRate: 10,
           areas: element.areas,
           owner: element.owner
         }

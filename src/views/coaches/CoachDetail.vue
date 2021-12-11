@@ -3,7 +3,7 @@
     <section>
       <base-card>
         <h2>{{name}}</h2>
-        <h3>{{rate}}원/시간</h3>
+        <!-- <h3>{{rate}}원/시간</h3> -->
       </base-card>
     </section>
 
@@ -58,9 +58,9 @@ export default {
     areas(){
       return this.selectedCoach.areas
     },
-    rate(){
-      return this.selectedCoach.hourlyRate
-    },
+    // rate(){
+    //   return this.selectedCoach.hourlyRate
+    // },
     description(){
       return this.selectedCoach.description
     },

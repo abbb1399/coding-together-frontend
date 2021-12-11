@@ -1,7 +1,7 @@
 <template>
   <li>
     <h3>{{ name }}</h3>
-    <h4>{{rate}}원/시간</h4>
+    <!-- <h4>{{rate}}원/시간</h4> -->
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
@@ -14,7 +14,9 @@
 
 <script>
 export default {
-  props:['id','name','rate','areas','owner'],
+  props:['id','name','areas','owner'],
+  
+  
   computed:{
     coachContactLink(){ 
       // console.log(this.owner)
@@ -22,7 +24,7 @@ export default {
     },
     coachDetailsLink(){
       // console.log(this.id)
-      return this.$route.path + '/' + this.id             // /coahes/c1
+      return this.$route.path + '/' + this.owner             // /coahes/c1
     }
   }
 }
@@ -53,5 +55,4 @@ export default {
     display: flex;
     justify-content: flex-end;
   }
-
 </style>
