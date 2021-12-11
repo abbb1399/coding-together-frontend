@@ -5,25 +5,36 @@
       <p>{{error}}</p>
     </base-dialog>
 
+    <!-- 로딩 Dialog -->
     <base-dialog :show="isLoading" title="인증 중 입니다...." fixed>
       <base-spinner></base-spinner>
     </base-dialog>
     
+    <!-- 입력 Form -->
     <base-card>
       <form @submit.prevent="submitForm">
+        <div class="form-control" v-if="mode==='signup'">
+          <label for="name">이름</label>
+          <input type="text" id="name" v-model.trim="name" required>
+        </div>
+        
         <div class="form-control">
           <label for="email">이메일</label>
-          <input type="email" id="email" v-model.trim="email">
+          <input type="email" id="email" v-model.trim="email" required>
         </div>
+        
         <div class="form-control">
           <label for="password">비밀번호</label>
-          <input type="password" id="password" v-model.trim="password" autocomplete="off">
+          <input type="password" id="password" v-model.trim="password" autocomplete="off" required>
         </div>
         <p v-if="!formIsValid">유효한 이메일 과 비밀번호를 입력해주세요.(6글자) </p>
-        <!-- 회원가입/로그인 -->
-        <base-button>{{submitButtonCaption}}</base-button>
-        <!-- 회원가입/로그인 하러가기-->
-        <base-button type="button" mode="flat" @click="switchAuthMode">{{switchModeButtonCaption}}</base-button>
+        
+        <div class="button-container">
+          <!-- 회원가입/로그인 -->
+          <base-button>{{submitButtonCaption}}</base-button>
+          <!-- 회원가입/로그인 하러가기-->
+          <base-button type="button" mode="flat" @click="switchAuthMode">{{switchModeButtonCaption}}</base-button>
+        </div>
       </form>
     </base-card>
   </div>
@@ -33,6 +44,7 @@
 export default {
   data(){
     return{
+      name:'',
       email:'',
       password:'',
       formIsValid: true,
@@ -67,7 +79,8 @@ export default {
 
       this.isLoading = true
       
-      const actionPayload = {
+      const userInfo = {
+        name: this.name,
         email: this.email,
         password: this.password
       }
@@ -75,16 +88,18 @@ export default {
       try{
         if(this.mode === 'login'){
         // 로그인
-          await this.$store.dispatch('login', actionPayload)
+          await this.$store.dispatch('login', userInfo)
        }else{
         // 회원가입
-          await this.$store.dispatch('signup', actionPayload)
+          await this.$store.dispatch('signup', userInfo)
         }
         const redirectUrl = '/' + (this.$route.query.redirect || 'coaches')
         this.$router.replace(redirectUrl)
+      
       }catch(err){
         this.error = err || '인증실패, 다시 시도하세요.'
       }
+
       this.isLoading = false
     },
     switchAuthMode(){
@@ -109,7 +124,7 @@ export default {
   }
   
   .form-control{
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 1rem 0;
   }
   
   label{
@@ -118,19 +133,24 @@ export default {
     display: block;
   }
 
-  input,
-  textarea{
+  input{
     display: block;
     width: 100%;
+
     font: inherit;
     border: 1px solid #ccc;
-    padding: 0.15rem;
+    padding: 5px;
+    border-radius: 5px;
   }
 
-  input:focus,
-  textarea:focus{
+  input:focus{
     border-color: #3d008d;
     background-color: #faf6ff;
     outline: none;    
+  }
+
+  .button-container{
+    text-align: right;
+    margin-top: 40px;
   }
 </style>

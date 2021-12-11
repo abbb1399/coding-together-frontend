@@ -3,9 +3,10 @@ const axios = require('axios');
 let timer
 
 export default {
-  async login(context, payload){
+  async login(context, {email, password}){
     return context.dispatch('auth',{
-      ...payload,
+      email,
+      password,
       mode:'login'
     })
   },
@@ -19,23 +20,23 @@ export default {
 
   async auth(context, payload){
     const mode = payload.mode
+
+    // 로그인 router
     let url = 'http://localhost:3000/users/login' 
 
     if(mode === 'signup'){
+      // 회원가입 router
       url = 'http://localhost:3000/users'
     }
 
-    return new Promise((resolve, reject) => {  
-      axios.post(url, {
-        name:'test',
-        email: payload.email,   
-        password: payload.password
-      }).then((response) => {
 
+    return new Promise((resolve, reject) => {  
+      axios.post(url, payload).then((response) => {
+        
+        // 로그인 유지 기간
         const expiresIn = 1000000
         const expirationDate = new Date().getTime() + expiresIn
         localStorage.setItem('tokenExpiration', expirationDate)
-
 
         timer = setTimeout(() => {
           context.dispatch('autoLogout')
