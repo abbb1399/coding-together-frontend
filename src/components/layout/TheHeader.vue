@@ -136,13 +136,11 @@ export default {
       width: 100%;
       text-align: center;
     }
-
-    /* .navbar_menu li:hover{
-      background-color: #7e36d6;
+    
+    .navbar_menu li a{
+      width: 80%;
       border-radius: 4px;
-    } */
-
-
+    }
 
     .navbar_togleBtn{
       display: block;
