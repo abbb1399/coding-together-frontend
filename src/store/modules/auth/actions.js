@@ -111,10 +111,10 @@ export default {
     context.commit('setAutoLogout')
   },
 
-  async getUsersInfo(){
+  async getUsersInfo(context){
     try{
       const {data} = await axios.get(`http://localhost:3000/users/usersList`)
-      console.log(data)
+      context.commit('setUsersInfo', data)
     }catch(e){
       console.log(e)
     }

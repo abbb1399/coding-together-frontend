@@ -6,7 +6,7 @@ export default{
     // app.config.globalProperties.$moment = moment
     app.provide('$moment', moment)
 
-    // input focus
+    // input,textarea focus
     app.directive('focus',{
       mounted(el){
         el.focus()

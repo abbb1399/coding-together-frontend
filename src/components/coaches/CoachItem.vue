@@ -1,7 +1,7 @@
 <template>
   <li>
-    <h3>{{ name }} by {{owner}}</h3>
-    <!-- <h4>{{rate}}원/시간</h4> -->
+    <h3>{{ name }} by {{getOwner}}</h3>
+
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
@@ -30,17 +30,22 @@ export default {
   },
   computed:{
     coachContactLink(){ 
-      return this.$route.path + '/' + this.owner + '/contact' //coaches/c1/contact
+      return this.$route.path + '/' + this.owner + '/contact'
     },
     coachDetailsLink(){
-      return this.$route.path + '/' + this.owner             // /coahes/c1
+      return this.$route.path + '/' + this.owner
+    },
+    getUsersInfo(){
+      return this.$store.getters.getUsersInfo
+    },
+    getOwner(){
+      const usersInfo = this.$store.getters.getUsersInfo
+      const [matchedOwner]= usersInfo.filter((info) => info._id === this.owner)
+      return matchedOwner.name
     }
   },
   created(){
-    
-
-     
-
+   
   }
 }
 </script>

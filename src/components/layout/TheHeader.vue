@@ -2,7 +2,7 @@
   <header>
     <nav>
       <h1><router-link to="/">Coding Together</router-link></h1>
-      <ul class="navbar_menu">
+      <ul class="navbar-menu">
         <li>
           <router-link to="/coaches">공고 목록</router-link>
         </li>
@@ -17,7 +17,7 @@
         </li>
       </ul>
 
-      <a href="#" class="navbar_togleBtn" @click="openMenu">
+      <a href="#" class="navbar-togleBtn" @click="openMenu">
         <i class="fas fa-bars"></i>
       </a>
     </nav>
@@ -40,7 +40,7 @@ export default {
       this.$router.replace('/coaches')
     },
     openMenu(){
-      const menu = document.querySelector('.navbar_menu');
+      const menu = document.querySelector('.navbar-menu');
       menu.classList.toggle('active');
     }
   }
@@ -107,7 +107,7 @@ export default {
     margin: 0 0.5rem;
   }
 
-  .navbar_togleBtn{
+  .navbar-togleBtn{
     display: none;
     position: absolute;
     right: 32px;
@@ -125,28 +125,28 @@ export default {
       overflow: overlay;
     }
 
-    .navbar_menu{
+    .navbar-menu{
       display: none;
       flex-direction: column;
       align-items: center;
       width: 100%;
     }
     
-    .navbar_menu li{
+    .navbar-menu li{
       width: 100%;
       text-align: center;
     }
     
-    .navbar_menu li a{
-      width: 80%;
+    .navbar-menu li a{
+      width: 90%;
       border-radius: 4px;
     }
 
-    .navbar_togleBtn{
+    .navbar-togleBtn{
       display: block;
     }
 
-    .navbar_menu.active{
+    .navbar-menu.active{
       display:flex;
     }
   }
