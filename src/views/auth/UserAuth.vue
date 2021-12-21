@@ -15,12 +15,12 @@
       <form @submit.prevent="submitForm">
         <div class="form-control" v-if="mode==='signup'">
           <label for="name">이름</label>
-          <input type="text" id="name" v-model.trim="name" required>
+          <input type="text" id="name" v-model.trim="name" required v-focus>
         </div>
         
         <div class="form-control">
           <label for="email">이메일</label>
-          <input type="email" id="email" v-model.trim="email" required>
+          <input type="email" id="email" v-model.trim="email" required v-focus>
         </div>
         
         <div class="form-control">

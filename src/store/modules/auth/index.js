@@ -6,8 +6,10 @@ export default {
   state(){
     return{
       userId: null,
+      email:null,
       token: null,
-      didAutoLogout:false
+      didAutoLogout:false,
+      userInfo:[]
     }
   },
   mutations,

@@ -31,7 +31,7 @@ export default {
 
 
     return new Promise((resolve, reject) => {  
-      axios.post(url, payload).then((response) => {
+      axios.post(url, payload).then(({data}) => {
         
         // 로그인 유지 기간
         const expiresIn = 1000000
@@ -42,17 +42,18 @@ export default {
           context.dispatch('autoLogout')
         }, expiresIn)
 
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('userId',response.data.user._id)
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('userId',data.user._id)
         
         context.commit('setUser',{
-          token: response.data.token,
-          userId: response.data.user._id
+          token: data.token,
+          userId: data.user._id,
+          email: data.user.email
         })
 
         resolve()
       }).catch((error) => {
-        reject(error.response.data)
+        reject(error.data)
       });
     })  
   },
@@ -108,5 +109,15 @@ export default {
   autoLogout(context){
     context.dispatch('logout')
     context.commit('setAutoLogout')
+  },
+
+  async getUsersInfo(){
+    try{
+      const {data} = await axios.get(`http://localhost:3000/users/usersList`)
+      console.log(data)
+    }catch(e){
+      console.log(e)
+    }
   }
+
 }

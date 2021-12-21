@@ -6,7 +6,14 @@ export default{
     // app.config.globalProperties.$moment = moment
     app.provide('$moment', moment)
 
+    // input focus
+    app.directive('focus',{
+      mounted(el){
+        el.focus()
+      }
+    })
 
+    // highlight
     app.directive('highlight',{
       mounted(el){
         el.style.color = 'red'

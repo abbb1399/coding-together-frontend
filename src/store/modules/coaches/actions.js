@@ -56,29 +56,5 @@ export default {
     }catch(e) {
       console.log(e)
     }
-         
-    // const response = await fetch(`https://coach-finder-a904f-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.json`)
-    
-    // const responseData = await response.json()
-
-    // if(!response.ok){
-    //   const error = new Error(responseData.message || '불러오기 실패!')
-    //   throw error
-    // }
-
-    // const coaches = []
-
-    // for(const key in responseData){
-    //   const coach = {
-    //     id:key,
-    //     name: responseData[key].name,
-    //     description: responseData[key].description,
-    //     hourlyRate: responseData[key].hourlyRate,
-    //     areas: responseData[key].areas
-    //   }
-    //   coaches.push(coach)
-    // }
-    // context.commit('setCoaches', coaches)
-    // context.commit('setFetchTimestamp')
   }
 }

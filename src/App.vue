@@ -20,12 +20,13 @@ export default {
     }
   },
   // inject:['$moment'],
-  created(){
+  async created(){
     // const $moment = this.$moment
     // console.log($moment())
   
     // auto login
-    this.$store.dispatch('tryLogin')
+    await this.$store.dispatch('tryLogin')
+    await this.$store.dispatch('getUsersInfo')
   },
   watch:{
     didAutoLogout(curValue, oldValue){
@@ -40,6 +41,12 @@ export default {
 
 <style lang="scss">
   @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+  :root{
+    --text-color: #f0f4f5;
+    --background-color: #263343;
+    --accent-color: pink;
+  }
 
   * {
     box-sizing: border-box;

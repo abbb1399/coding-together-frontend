@@ -1,10 +1,10 @@
 <template>
   <header>
     <nav>
-      <h1><router-link to="/">코치 찾기</router-link></h1>
-      <ul>
+      <h1><router-link to="/">Coding Together</router-link></h1>
+      <ul class="navbar_menu">
         <li>
-          <router-link to="/coaches">코치 목록</router-link>
+          <router-link to="/coaches">공고 목록</router-link>
         </li>
         <li v-if="isLoggedIn">
           <router-link to="/requests">요청들</router-link>
@@ -16,6 +16,10 @@
           <base-button @click="logout">로그아웃</base-button>
         </li>
       </ul>
+
+      <a href="#" class="navbar_togleBtn" @click="openMenu">
+        <i class="fas fa-bars"></i>
+      </a>
     </nav>
   </header>
 </template>
@@ -27,10 +31,17 @@ export default {
       return this.$store.getters.isAuthenticated
     }
   },
-  methods:{
+  created(){
+
+  },
+  methods:{ 
     logout(){
       this.$store.dispatch('logout')
       this.$router.replace('/coaches')
+    },
+    openMenu(){
+      const menu = document.querySelector('.navbar_menu');
+      menu.classList.toggle('active');
     }
   }
 }
@@ -94,5 +105,51 @@ export default {
 
   li {
     margin: 0 0.5rem;
+  }
+
+  .navbar_togleBtn{
+    display: none;
+    position: absolute;
+    right: 32px;
+    font-size: 24px;
+    color: #d49466
+  }
+
+  @media screen and (max-width: 768px){
+    header nav{
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 8px 24px;
+      background-color: #3d008d;
+      width:100%;
+      overflow: overlay;
+    }
+
+    .navbar_menu{
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .navbar_menu li{
+      width: 100%;
+      text-align: center;
+    }
+
+    /* .navbar_menu li:hover{
+      background-color: #7e36d6;
+      border-radius: 4px;
+    } */
+
+
+
+    .navbar_togleBtn{
+      display: block;
+    }
+
+    .navbar_menu.active{
+      display:flex;
+    }
   }
 </style>

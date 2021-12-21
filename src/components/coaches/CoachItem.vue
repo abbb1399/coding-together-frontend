@@ -1,6 +1,6 @@
 <template>
   <li>
-    <h3>{{ name }}</h3>
+    <h3>{{ name }} by {{owner}}</h3>
     <!-- <h4>{{rate}}원/시간</h4> -->
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
@@ -35,6 +35,12 @@ export default {
     coachDetailsLink(){
       return this.$route.path + '/' + this.owner             // /coahes/c1
     }
+  },
+  created(){
+    
+
+     
+
   }
 }
 </script>

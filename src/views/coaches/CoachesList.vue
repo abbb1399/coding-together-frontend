@@ -4,15 +4,17 @@
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
+    
     <section>
       <coach-filter @change-filter="setFilters"></coach-filter>
     </section>
+    
     <section>
       <base-card>
         <div class="controls"> 
           <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
-          <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/코치 등록</base-button>
-          <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">코치 등록</base-button>
+          <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
+          <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">공고 등록</base-button>
         </div>
         <div v-if="isLoading">
           <base-spinner></base-spinner>
@@ -27,9 +29,10 @@
           >
           </coach-item>
         </ul>
-        <h3 v-else>코치가 없습니다.</h3>
+        <h3 v-else>목록이 없습니다.</h3>
       </base-card>
     </section>
+  
   </div>
 </template>
 
