@@ -2,11 +2,11 @@
   <form @submit.prevent="submitForm">
     <div class="form-control">
       <label for="email">당신의 이메일</label>
-      <input type="email" id="email" v-model.trim="email">
+      <input type="email" id="email" v-model.trim="email" v-focus>
     </div>
     <div class="form-control">
       <label for="message">메세지</label>
-      <textarea id="message" rows="5" v-model.trim="message" v-focus></textarea>
+      <textarea id="message" rows="5" v-model.trim="message"></textarea>
     </div>
     <p class="errors" v-if="!formIsValid">유효한 이메일과 메세지란을 입력해주세요.</p>
     <div class="actions">
@@ -26,7 +26,15 @@ export default {
   },
   computed:{
     getUserEmail(){
-      return this.$store.getters.getUserEmail
+      const userId = this.$store.getters.userId
+      if(userId){
+        const userInfoArray = this.$store.getters.getUsersInfo
+        const {email} = userInfoArray.find(info => info._id === userId)
+         return email
+      }else{
+        return ''
+      }
+     
     }
   },
   created(){

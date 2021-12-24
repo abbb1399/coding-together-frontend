@@ -3,7 +3,7 @@ const axios = require('axios');
 let timer
 
 export default {
-  async login(context, {email, password}){
+  login(context, {email, password}){
     return context.dispatch('auth',{
       email,
       password,
@@ -11,7 +11,7 @@ export default {
     })
   },
   
-  async signup(context, payload){
+  signup(context, payload){
     return context.dispatch('auth',{
       ...payload,
       mode:'signup'
@@ -29,33 +29,29 @@ export default {
       url = 'http://localhost:3000/users'
     }
 
+    try{
+      const {data} = await axios.post(url, payload)
+      
+      // 로그인 유지 기간
+      const expiresIn = 1000000
+      const expirationDate = new Date().getTime() + expiresIn
+      localStorage.setItem('tokenExpiration', expirationDate)
 
-    return new Promise((resolve, reject) => {  
-      axios.post(url, payload).then(({data}) => {
-        
-        // 로그인 유지 기간
-        const expiresIn = 1000000
-        const expirationDate = new Date().getTime() + expiresIn
-        localStorage.setItem('tokenExpiration', expirationDate)
+      timer = setTimeout(() => {
+        context.dispatch('autoLogout')
+      }, expiresIn)
 
-        timer = setTimeout(() => {
-          context.dispatch('autoLogout')
-        }, expiresIn)
-
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('userId',data.user._id)
-        
-        context.commit('setUser',{
-          token: data.token,
-          userId: data.user._id,
-          email: data.user.email
-        })
-
-        resolve()
-      }).catch((error) => {
-        reject(error.data)
-      });
-    })  
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('userId',data.user._id)
+      
+      context.commit('setUser',{
+        token: data.token,
+        userId: data.user._id,
+        email: data.user.email
+      })
+    }catch(error){
+      return Promise.reject(error.data)
+    }        
   },
   
   tryLogin(context){
