@@ -2,8 +2,9 @@
   <div>
     <section>
       <base-card>
-        <h2>{{name}}</h2>
-        <!-- <h3>{{rate}}원/시간</h3> -->
+        <h2>{{title}} by {{getOwnerName}}</h2>
+        <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
+        <div id="viewer"/>
       </base-card>
     </section>
 
@@ -17,13 +18,6 @@
       </base-card>
     </section>
    
-    <section>
-      <base-card>
-        <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
-        <!-- <p>{{description}}</p> -->
-        <div id="viewer"/>
-      </base-card>
-    </section>
   </div>
 </template>
 
@@ -39,30 +33,18 @@ export default {
       type:String
     }
   },
-  data(){
-    return{
-      selectedCoach:null,
-    }
-  },
-  mounted(){
-    new Viewer({
-      el: document.querySelector('#viewer'),
-      // 표시하고자 하는 내용은 여기에 들어간다.
-      initialValue: this.description
-    });
-  },
   computed:{
-    name(){
+    title(){
       return this.selectedCoach.name
     },
     areas(){
       return this.selectedCoach.areas
     },
-    // rate(){
-    //   return this.selectedCoach.hourlyRate
-    // },
     description(){
       return this.selectedCoach.description
+    },
+    getOwnerName(){
+      return this.$store.getters.getUsersInfo.name
     },
     contactLink(){
       // console.log(this.id)
@@ -71,8 +53,40 @@ export default {
       // return this.$route.path + '/contact'
     }
   },
+  data(){
+    return{
+      selectedCoach:null,
+    }
+  },
   created(){
     this.selectedCoach = this.$store.getters['coaches/coaches'].find(coach => coach.owner === this.owner)
+  },
+  mounted(){
+    new Viewer({
+      el: document.querySelector('#viewer'),
+      // 표시하고자 하는 내용은 여기에 들어간다.
+      initialValue: this.description
+    });
+  },
+  methods:{
+    
+
   }
+
+ 
 }
 </script>
+
+
+<style scoped>
+  #viewer{
+    margin-top: 25px;
+  }
+
+  ::v-deep .toastui-editor-contents{
+    font-family: inherit;
+    font-size: 18px;
+  }
+
+
+</style>

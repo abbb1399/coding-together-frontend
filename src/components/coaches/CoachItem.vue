@@ -1,6 +1,6 @@
 <template>
   <li>
-    <h3>{{ name }} by {{ownerName}}</h3>
+    <h3>{{ name }} by {{getOwnerName}}</h3>
 
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
@@ -31,7 +31,6 @@ export default {
   data(){
     return{
       ownerName:''
-
     }
   },
   computed:{
@@ -41,20 +40,15 @@ export default {
     coachDetailsLink(){
       return this.$route.path + '/' + this.owner
     },
-    getUsersInfo(){
-      return this.$store.getters.getUsersInfo
+    getOwnerName(){
+      return this.$store.getters.getUsersInfo.name
     }
   },
-  created(){
-    this.getOwnerName()
+  async created(){
+    await this.$store.dispatch('fetchAllUsersInfo', this.owner)
   },
   methods:{
-    async getOwnerName(){
-      await this.$store.dispatch('fetchAllUsersInfo')
-      const usersInfo = this.$store.getters.getUsersInfo
-      const [matchedOwner]= usersInfo.filter((info) => info._id === this.owner)
-      this.ownerName = matchedOwner.name
-    }
+   
   }
 }
 </script>

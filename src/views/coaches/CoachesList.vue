@@ -1,9 +1,11 @@
 <template>
   <div>
+    <!-- 에러 Dialog -->
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
     
+    <!-- 검색 필터 -->
     <section>
       <coach-filter @change-filter="setFilters"></coach-filter>
     </section>
@@ -85,7 +87,6 @@ export default {
   },
   async created(){
     await this.loadCoaches()
-    await this.$store.dispatch('fetchAllUsersInfo')
     // console.log(this.filteredCoaches)
   },
   methods:{
