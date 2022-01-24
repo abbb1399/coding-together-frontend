@@ -7,7 +7,7 @@
     </div>
 
     <div class="actions">
-      <base-button mode="outline" link :to="coachContactLink">연락</base-button>
+      <!-- <base-button mode="outline" link :to="coachContactLink">연락</base-button> -->
       <base-button link :to="coachDetailsLink">상세보기</base-button>
     </div>
   </li>

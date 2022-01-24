@@ -38,7 +38,7 @@ export default {
     }
   },
   created(){
-    this.email = this.getUserEmail
+    // this.email = this.getUserEmail
   },
   methods:{
     submitForm(){

@@ -12,9 +12,10 @@
       <base-card>
         <header>
           <h2>관심있나요? 지금 신청하세요!</h2>
-          <base-button link :to="contactLink">연락하기</base-button>
+          <!-- <base-button link :to="contactLink">연락하기</base-button> -->
         </header>
-        <router-view></router-view>
+        <contact-coach></contact-coach>
+        <!-- <router-view></router-view> -->
       </base-card>
     </section>
    
@@ -25,8 +26,12 @@
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 // import '@toast-ui/editor/dist/toastui-editor.css'
+import ContactCoach from '../requests/ContactCoach.vue'
 
 export default {
+  components:{
+    ContactCoach
+  },
   // router로 props 넘김
   props:{
     owner:{
@@ -72,8 +77,6 @@ export default {
     
 
   }
-
- 
 }
 </script>
 

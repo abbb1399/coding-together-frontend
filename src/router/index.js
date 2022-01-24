@@ -5,7 +5,7 @@ import store from '../store/index.js'
 // import CoachDetail from '../views/coaches/CoachDetail.vue'
 import CoachesList from '../views/coaches/CoachesList.vue'
 import CoachRegistration from '../views/coaches/CoachRegistration.vue'
-import ContactCoach from '../views/requests/ContactCoach.vue'
+// import ContactCoach from '../views/requests/ContactCoach.vue'
 import RequestsReceived from '../views/requests/RequestsReceived.vue'
 import UserAuth from '../views/auth/UserAuth.vue'
 
@@ -16,9 +16,9 @@ const routes = [
     path:'/coaches/:owner',
     component: () => import('../views/coaches/CoachDetail.vue'),
     props:true,
-    children:[
-      { path: 'contact', component: ContactCoach}, 
-    ]
+    // children:[
+    //   { path: 'contact', component: ContactCoach}, 
+    // ]
   },
   {path:'/register', component: CoachRegistration, meta:{ requiresAuth: true}},
   {path: '/requests', component: RequestsReceived, meta:{ requiresAuth: true}},
