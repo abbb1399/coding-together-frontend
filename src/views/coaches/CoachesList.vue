@@ -53,7 +53,7 @@ export default {
        activeFilters:{
         frontend:true,
         backend:true,
-        career:true
+        publisher:true
       }
     }
   },
@@ -75,7 +75,7 @@ export default {
         if(this.activeFilters.backend && coach.areas.includes('backend')){
           return true;
         }
-        if(this.activeFilters.career && coach.areas.includes('career')){
+        if(this.activeFilters.publisher && coach.areas.includes('publisher')){
           return true;
         }
         return false

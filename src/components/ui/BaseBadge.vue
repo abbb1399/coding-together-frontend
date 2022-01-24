@@ -44,7 +44,7 @@ export default {
     color: white;
   }
 
-  .career {
+  .publisher {
     background-color: #8d006e;
     color: white;
   }

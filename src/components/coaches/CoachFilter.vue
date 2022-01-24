@@ -10,8 +10,8 @@
       <label for="backend">백엔드</label>
     </span>
     <span class="filter-option">
-      <input type="checkbox" id="career" checked @change="setFilter"/>
-      <label for="career">커리어</label>
+      <input type="checkbox" id="publisher" checked @change="setFilter"/>
+      <label for="publisher">퍼블리셔</label>
     </span>
   </base-card>
 </template>
@@ -24,7 +24,7 @@ export default {
       filters:{
         frontend:true,
         backend:true,
-        career:true
+        publisher:true
       }
     }
   },

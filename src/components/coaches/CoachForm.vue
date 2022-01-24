@@ -7,7 +7,7 @@
     </div>
     <div class="form-control" :class="{invalid: !description.isValid}">
       <label for="description">설명</label>
-      <div id="editor" ref="tuiEditor"></div>
+      <div id="editor" ref="tuiEditor" ></div>
       <!-- <textarea id="description" rows="5" v-model.trim="description.val" @blur="clearValidity('description')"></textarea>  -->
       <!-- <p v-if="!description.isValid">설명은 반드시 입력되야 합니다..</p> -->
     </div>
@@ -22,8 +22,8 @@
         <label for="backend">백엔드 개발자</label>
       </div>
       <div>
-        <input type="checkbox" id="career" value="career" v-model="areas.val" @blur="clearValidity('areas')"> 
-        <label for="career">커리어 상담</label>
+        <input type="checkbox" id="publisher" value="publisher" v-model="areas.val" @blur="clearValidity('areas')"> 
+        <label for="publisher">퍼블리셔</label>
       </div>
       <p v-if="!areas.isValid">최소한 하나는 선택 되어야 합니다.</p>
     </div>
@@ -66,6 +66,7 @@ export default {
       initialEditType: "wysiwyg",
       previewStyle: "vertical",
       language: 'ko-KR',
+      autofocus:false
     })
   },
   methods:{
@@ -85,10 +86,6 @@ export default {
         this.description.isValid = false
         this.formIsValid = false
       }
-      // if(!this.rate.val || this.rate.val < 0){
-      //   this.rate.isValid = false
-      //   this.formIsValid = false
-      // }
       if(this.areas.val.length === 0){
         this.areas.isValid = false
         this.formIsValid = false
