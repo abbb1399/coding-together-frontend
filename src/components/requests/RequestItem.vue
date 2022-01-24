@@ -23,6 +23,9 @@ export default {
     emailLink(){
       return 'mailto:' + this.email
     }
+  },
+  created(){
+ 
   }
 }
 </script>

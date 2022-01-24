@@ -1,6 +1,5 @@
 <template>
   <div>
-     <!-- String truthy value를 boolean으로 만들기 위해 !! -->
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
@@ -32,7 +31,6 @@
         <h3 v-else>목록이 없습니다.</h3>
       </base-card>
     </section>
-  
   </div>
 </template>
 
@@ -87,7 +85,7 @@ export default {
   },
   async created(){
     await this.loadCoaches()
-    await this.$store.dispatch('getUsersInfo')
+    await this.$store.dispatch('fetchAllUsersInfo')
     // console.log(this.filteredCoaches)
   },
   methods:{

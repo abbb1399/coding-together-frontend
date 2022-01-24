@@ -13,8 +13,8 @@
         <ul v-else-if="hasRequests && !isLoading">
           <request-item
             v-for="req in receivedRequests"
-            :key="req.id"
-            :email="req.userEmail"
+            :key="req._id"
+            :email="req.email"
             :message="req.message"
           >
           </request-item>
@@ -40,9 +40,6 @@ export default {
       error:null
     }
   },
-  created(){
-    this.loadRequests()
-  },
   computed:{
     receivedRequests(){
       return this.$store.getters['requests/requests']
@@ -51,7 +48,9 @@ export default {
       return this.$store.getters['requests/hasRequests']
     }
   },
- 
+  created(){
+    this.loadRequests()
+  },
   methods:{
     async loadRequests(){
       this.isLoading = true

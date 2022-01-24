@@ -107,7 +107,8 @@ export default {
     context.commit('setAutoLogout')
   },
 
-  async getUsersInfo(context){
+  // 모든 유저 정보 가져오기
+  async fetchAllUsersInfo(context){
     try{
       const {data} = await axios.get(`http://localhost:3000/users/usersList`)
       context.commit('setUsersInfo', data)
