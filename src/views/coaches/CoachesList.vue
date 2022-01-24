@@ -57,9 +57,6 @@ export default {
       }
     }
   },
-  created(){
-    this.loadCoaches()
-  },
   computed:{
     isLoggedIn(){
       return this.$store.getters.isAuthenticated
@@ -87,6 +84,11 @@ export default {
     hasCoaches(){
       return !this.isLoading && this.$store.getters['coaches/hasCoaches']
     }
+  },
+  async created(){
+    await this.loadCoaches()
+    await this.$store.dispatch('getUsersInfo')
+    // console.log(this.filteredCoaches)
   },
   methods:{
     setFilters(updatedFilters){

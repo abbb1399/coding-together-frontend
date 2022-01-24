@@ -15,8 +15,8 @@ export default {
     CoachForm
   },
   methods:{
-    saveData(data){
-      this.$store.dispatch('coaches/registerCoach',data)
+    async saveData(data){
+      await this.$store.dispatch('coaches/registerCoach',data)
       this.$router.replace('/coaches')
     }
   }

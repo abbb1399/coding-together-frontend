@@ -29,11 +29,16 @@ export default {
     } 
   },
 
-  async loadCoaches(context, payload){
-    if(!payload.forceRefresh && !context.getters.shouldUpdate){
-      return
-    }
+  async loadCoaches(context){
+    // console.log(payload.forceRefresh)
+    // console.log(context.getters.shouldUpdate)
 
+    // if(!payload.forceRefresh && !context.getters.shouldUpdate){
+    //   console.log('여기임??')
+    //   return
+    // }
+
+  
     try{
       const { data } = await axios.get('http://localhost:3000/coach-list')
 
@@ -52,7 +57,7 @@ export default {
       });  
       
       context.commit('setCoaches', coaches)
-      context.commit('setFetchTimestamp')  
+      // context.commit('setFetchTimestamp')  
     }catch(e) {
       console.log(e)
     }

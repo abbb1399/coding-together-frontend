@@ -1,10 +1,11 @@
 <template>
   <li>
-    <h3>{{ name }} by {{getOwner}}</h3>
+    <h3>{{ name }} by {{owner}}</h3>
 
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
+
     <div class="actions">
       <base-button mode="outline" link :to="coachContactLink">연락</base-button>
       <base-button link :to="coachDetailsLink">상세보기</base-button>
@@ -25,7 +26,6 @@ export default {
     },
     owner:{
       type:String,
-      required:true
     }
   },
   computed:{
@@ -44,9 +44,9 @@ export default {
       return matchedOwner.name
     }
   },
-  created(){
-   
-  }
+  async created(){
+    // console.log(this.$store.getters.getUsersInfo)
+  } 
 }
 </script>
 

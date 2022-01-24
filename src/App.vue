@@ -20,13 +20,12 @@ export default {
     }
   },
   // inject:['$moment'],
-  async created(){
+  created(){
     // const $moment = this.$moment
     // console.log($moment())
   
     // auto login
-    await this.$store.dispatch('tryLogin')
-    await this.$store.dispatch('getUsersInfo')
+    this.$store.dispatch('tryLogin')
   },
   watch:{
     didAutoLogout(curValue, oldValue){
