@@ -1,7 +1,9 @@
 <template>
   <header>
     <nav>
-      <h1><router-link to="/">Coding Together</router-link></h1>
+      <h1>
+        <router-link to="/">Coding Together</router-link>
+      </h1>
       <ul class="navbar-menu">
         <li>
           <router-link to="/coaches">공고 목록</router-link>
@@ -15,6 +17,18 @@
         <li v-if="isLoggedIn">
           <base-button @click="logout">로그아웃</base-button>
         </li>
+        <!-- 아바타 -->
+        <li v-if="isLoggedIn">
+          <drop-down>
+            <template #content></template>
+            <template #default>
+              <ul class="dropdown-menu" @contextmenu.prevent>
+                <li > 폴더 만들기 </li>
+                <li > 파일 업로드 </li>
+              </ul>
+            </template>
+          </drop-down>
+        </li>
       </ul>
 
       <a href="#" class="navbar-togleBtn" @click="openMenu">
@@ -25,7 +39,12 @@
 </template>
 
 <script>
+import DropDown from '../../components/ui/BaseDropdown.vue'
+
 export default {
+  components:{
+    DropDown
+  },
   computed:{
     isLoggedIn(){
       return this.$store.getters.isAuthenticated
@@ -94,7 +113,7 @@ export default {
     align-items: center;
   }
 
-  header ul {
+  header .navbar-menu {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -105,6 +124,26 @@ export default {
 
   li {
     margin: 0 0.5rem;
+  }
+
+  .dropdown-menu{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    max-width: 250px;
+    width: 100%;
+  }
+
+  .dropdown-menu li{
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 5px;
+    font-family: "Roboto", "-apple-system", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .dropdown-menu li:hover{
+    background: #0000001f;
   }
 
   .navbar-togleBtn{

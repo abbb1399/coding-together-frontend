@@ -86,7 +86,7 @@ export default {
     margin-top: 25px;
   }
 
-  ::v-deep .toastui-editor-contents{
+  :deep(.toastui-editor-contents){
     font-family: inherit;
     font-size: 18px;
   }
