@@ -11,7 +11,12 @@ export default {
   didAutoLogout(state){
     return state.didAutoLogout
   },
+  // 모든 유저 정보 가져오기
   getUsersInfo(state){
     return state.userInfo
+  },
+  // 내 정보 가져오기
+  getMyInfo(state){
+    return state.myInfo
   }
 }

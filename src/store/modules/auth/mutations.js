@@ -8,7 +8,12 @@ export default {
   setAutoLogout(state){
     state.didAutoLogout = true
   },
+  // 모든 유저 정보 가져오기
   setUsersInfo(state, payload){
     state.userInfo = payload
+  },
+  // 내 정보 보기
+  setMyInfo(state, payload){
+    state.myInfo = payload
   }
 }

@@ -111,15 +111,29 @@ export default {
   async fetchAllUsersInfo(context,payload){
     try{
       const {data} = await axios.get(`http://localhost:3000/users/usersList`)
-      
-      
       const [matchedOwner]= data.filter((info) => info._id === payload)
     
-      
       
       context.commit('setUsersInfo', matchedOwner)
     }catch(e){
       console.log(e)
     }
+  },
+
+  // 내 정보 보기
+  async fetchMyInfo(context){
+    const token = localStorage.getItem('token')
+    
+    try{
+      const {data} = await axios.get(`http://localhost:3000/users/me`,
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+      context.commit('setMyInfo',data)
+    }catch(e){
+      console.log(e)
+    }
+
+
   }
 }

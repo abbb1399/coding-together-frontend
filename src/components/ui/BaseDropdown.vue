@@ -1,7 +1,7 @@
 <template>
   <section class="dropDownMenuWrapper" > 
     <slot name="content" >
-      <img src="../../assets/avatar.jpg"  height="40" width="40" style="border-radius:5px;"  ref="menu" @click="openClose"/>
+      <img src="../../assets/avatar.jpg"  height="40" width="40" style="border-radius:20px;"  ref="menu" @click="openClose"/>
     </slot>
 
     <section class="dropdownMenu" v-if="isOpen" >
@@ -45,15 +45,15 @@ export default {
 <style lang="scss" scoped>
   .dropDownMenuWrapper {
     cursor: pointer;
-    position: relative;
-    border-radius: 8px;
-    box-shadow: 10px 10px 0 0 rgba(black,.03);
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    // position: relative;
+    // border-radius: 8px;
+    // box-shadow: 10px 10px 0 0 rgba(black,.03);
+    // -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-    * {
-      box-sizing: border-box;
-      text-align: left;
-    }
+    // * {
+    //   box-sizing: border-box;
+    //   text-align: left;
+    // }
 
     .dropdownMenu {
       position: fixed;
@@ -66,10 +66,5 @@ export default {
       cursor: pointer;
       width: 180px;
     }
-
-  @keyframes menu {
-    from { transform: translate3d( 0, 30px ,0 ) }
-    to { transform: translate3d( 0, 20px ,0 ) }
-  }
 }
 </style>

@@ -14,17 +14,17 @@
         <li v-else>
           <router-link to="/auth">로그인</router-link>
         </li>
-        <li v-if="isLoggedIn">
+        <!-- <li v-if="isLoggedIn">
           <base-button @click="logout">로그아웃</base-button>
-        </li>
+        </li> -->
         <!-- 아바타 -->
         <li v-if="isLoggedIn">
           <drop-down>
             <template #content></template>
             <template #default>
-              <ul class="dropdown-menu" @contextmenu.prevent>
-                <li > 폴더 만들기 </li>
-                <li > 파일 업로드 </li>
+              <ul class="dropdown-menu">
+                <li @click="toUserInfo">내 정보</li>
+                <li @click="logout">로그아웃</li>
               </ul>
             </template>
           </drop-down>
@@ -61,6 +61,9 @@ export default {
     openMenu(){
       const menu = document.querySelector('.navbar-menu');
       menu.classList.toggle('active');
+    },
+    toUserInfo(){
+      this.$router.push('user-info')
     }
   }
 }

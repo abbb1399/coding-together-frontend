@@ -9,7 +9,8 @@ export default {
       email:null,
       token: null,
       didAutoLogout:false,
-      userInfo:[]
+      userInfo:[],
+      myInfo:null
     }
   },
   mutations,
