@@ -15,5 +15,8 @@ export default {
   // 내 정보 보기
   setMyInfo(state, payload){
     state.myInfo = payload
+  },
+  setMyAvatar(state, payload){
+    state.myAvatar = payload
   }
 }

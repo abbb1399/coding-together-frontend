@@ -18,5 +18,9 @@ export default {
   // 내 정보 가져오기
   getMyInfo(state){
     return state.myInfo
+  },
+  // 내 아바타 가져오기
+  getMyAvatar(state){
+    return state.myAvatar
   }
 }

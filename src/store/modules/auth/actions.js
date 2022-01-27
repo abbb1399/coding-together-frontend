@@ -123,7 +123,6 @@ export default {
   // 내 정보 보기
   async fetchMyInfo(context){
     const token = localStorage.getItem('token')
-    
     try{
       const {data} = await axios.get(`http://localhost:3000/users/me`,
         { headers: { Authorization: `Bearer ${token}` }}
@@ -133,7 +132,33 @@ export default {
     }catch(e){
       console.log(e)
     }
+  },
 
+  // 아바타 업로드하기
+  async uploadAvatar(_, file){
+    const token = localStorage.getItem('token')
 
+    try{
+      await axios.post(
+        'http://localhost:3000/users/me/avatar', 
+        file, 
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+    }catch(e){
+      console.log(e)
+    }
+  },
+
+  // 아바타 불러오기
+  async fetchAvatar(context,id){
+    try{
+      const {data} = await axios.get(`http://localhost:3000/users/${id}/avatar`,
+        {responseType: 'blob'}
+      )
+      context.commit('setMyAvatar',data)
+    }catch(e){
+      console.log(e)
+    }
   }
 }

@@ -10,7 +10,8 @@ export default {
       token: null,
       didAutoLogout:false,
       userInfo:[],
-      myInfo:null
+      myInfo:{},
+      myAvatar:null
     }
   },
   mutations,
