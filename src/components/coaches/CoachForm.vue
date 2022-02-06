@@ -58,16 +58,17 @@ export default {
         isValid:true
       },
       formIsValid:true,
+      tuiEditor:null 
     }
   },
   mounted() {
-    new Editor({
+    const editor = new Editor({
       el: document.querySelector("#editor"),
       initialEditType: "wysiwyg",
       previewStyle: "vertical",
       language: 'ko-KR',
-      autofocus:false
     })
+    this.tuiEditor = editor
   },
   methods:{
     // input이 blur될때마다 에러표시 지워주기
@@ -93,8 +94,8 @@ export default {
     },
     submitForm(){
       // tui 에디터 글내용 받아오기
-      const tuiContent = this.$refs.tuiEditor.getMarkdown()
-      
+      const tuiContent = this.tuiEditor.getMarkdown()
+    
       this.validateForm(tuiContent)
 
       if(!this.formIsValid){

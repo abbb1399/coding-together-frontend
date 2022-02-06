@@ -134,6 +134,17 @@ export default {
     }
   },
 
+  // 회원탈퇴하기
+  async deleteAccount(){
+    const token = localStorage.getItem('token')
+    try{
+      await axios.delete('http://localhost:3000/users/me',
+       { headers: { Authorization: `Bearer ${token}` }}
+      )
+    }catch(e){
+      console.log(e)
+    }
+  },
   // 아바타 업로드하기
   async uploadAvatar(_, file){
     const token = localStorage.getItem('token')
