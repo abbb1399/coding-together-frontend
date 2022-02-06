@@ -18,7 +18,17 @@ export default {
   },
   computed:{
     text(){
-      return this.title.toUpperCase()
+      const title = this.title
+
+      if(title === 'frontend'){
+        return '프론트엔드'
+      }else if(title === 'backend'){
+        return '백엔드'
+      }else if(title === 'publisher'){
+        return '퍼블리셔'
+      }else {
+        return '모름'
+      } 
     }
   }
 }

@@ -68,6 +68,7 @@ export default {
       previewStyle: "vertical",
       language: 'ko-KR',
     })
+    // tuiEditor 바인딩
     this.tuiEditor = editor
   },
   methods:{
@@ -119,9 +120,9 @@ export default {
 </script>
 
 <style>
-  .toastui-editor-contents {
+  /* .toastui-editor-contents {
     font: inherit;
-  }
+  } */
 </style>
 
 

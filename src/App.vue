@@ -19,11 +19,7 @@ export default {
       return this.$store.getters.didAutoLogout
     }
   },
-  // inject:['$moment'],
   created(){
-    // const $moment = this.$moment
-    // console.log($moment())
-  
     // auto login
     this.$store.dispatch('tryLogin')
   },
