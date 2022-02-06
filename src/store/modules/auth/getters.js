@@ -13,7 +13,7 @@ export default {
   },
   // 모든 유저 정보 가져오기
   getUsersInfo(state){
-    return state.userInfo
+    return state.usersInfo
   },
   // 내 정보 가져오기
   getMyInfo(state){

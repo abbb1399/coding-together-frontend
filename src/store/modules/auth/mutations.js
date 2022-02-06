@@ -10,7 +10,7 @@ export default {
   },
   // 모든 유저 정보 가져오기
   setUsersInfo(state, payload){
-    state.userInfo = payload
+    state.usersInfo = payload
   },
   // 내 정보 보기
   setMyInfo(state, payload){

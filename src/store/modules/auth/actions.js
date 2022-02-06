@@ -110,10 +110,13 @@ export default {
   // 모든 유저 정보 가져오기
   async fetchAllUsersInfo(context,payload){
     try{
+      console.log(payload)
+      
       const {data} = await axios.get(`http://localhost:3000/users/usersList`)
       const [matchedOwner]= data.filter((info) => info._id === payload)
-    
       
+      console.log(matchedOwner)
+
       context.commit('setUsersInfo', matchedOwner)
     }catch(e){
       console.log(e)

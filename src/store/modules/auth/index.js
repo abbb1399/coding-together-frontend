@@ -9,7 +9,7 @@ export default {
       email:null,
       token: null,
       didAutoLogout:false,
-      userInfo:[],
+      usersInfo:[],
       myInfo:{},
       myAvatar:null
     }

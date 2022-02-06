@@ -57,6 +57,7 @@ export default {
 
   body {
     margin: 0;
+    background: #edeef0;
   }
   
   .route-enter-from{
