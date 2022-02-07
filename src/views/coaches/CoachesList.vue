@@ -10,9 +10,11 @@
       <coach-filter @change-filter="setFilters"></coach-filter>
     </section>
     
+    <!-- 공고 list -->
     <section>
       <base-card>
         <div class="controls"> 
+          <button @click="test">테스트</button>
           <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
           <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
           <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">공고 등록</base-button>
@@ -44,7 +46,7 @@ import CoachFilter from '../../components/coaches/CoachFilter.vue'
 export default {
    components:{
       CoachItem,
-      CoachFilter 
+      CoachFilter,
    },
    data(){
      return{
@@ -54,7 +56,8 @@ export default {
         frontend:true,
         backend:true,
         publisher:true
-      }
+      },
+      pageNum:2
     }
   },
   computed:{
@@ -104,17 +107,29 @@ export default {
     },
     handleError(){
       this.error = null
+    },
+    async test(){
+      this.pageNum += 2
+      await this.$store.dispatch('coaches/moreLoadCoaches', this.pageNum)
+    },
+    async infiniteHandler($state){
+      this.pageNum += 2
+      await this.$store.dispatch('coaches/moreLoadCoaches', this.pageNum)
+        $state.loaded()
     }
+
   }
 }
 </script>
 
 <style scoped>
   ul{
+    /* 초기화 */
     list-style: none;;
     margin: 0;
     padding: 0;
 
+    /* 그리드 */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;

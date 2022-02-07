@@ -61,5 +61,31 @@ export default {
     }catch(e) {
       console.log(e)
     }
+  },
+
+  async moreLoadCoaches(context, pageNum){  
+
+    try{
+      const { data } = await axios.get(`http://localhost:3000/more-coach-list/${pageNum}`)
+
+      const coaches = []
+
+      data.forEach(element => {
+        const obj = {
+          id: element._id,
+          name: element.name,
+          description: element.description,
+          // hourlyRate: 10,
+          areas: element.areas,
+          owner: element.owner
+        }
+        coaches.push(obj)
+      });  
+      
+      context.commit('setCoaches', coaches)
+      // context.commit('setFetchTimestamp')  
+    }catch(e) {
+      console.log(e)
+    }
   }
 }

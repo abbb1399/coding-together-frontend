@@ -9,7 +9,7 @@ import CoachRegistration from '../views/coaches/CoachRegistration.vue'
 import RequestsReceived from '../views/requests/RequestsReceived.vue'
 import UserAuth from '../views/auth/UserAuth.vue'
 import UserInfo from '../views/auth/UserInfo.vue'
-
+import Test from '../views/Test.vue'
 
 const routes = [
   { path:'/', redirect: '/coaches' },
@@ -28,6 +28,7 @@ const routes = [
   {path: '/user-info', component:UserInfo, meta:{ requiresAuth: true}},
 
 
+  {path:'/test', component: Test},
   {path:'/:notFound(.*)*', component: () => import('../views/NotFound.vue')}
 ]
 

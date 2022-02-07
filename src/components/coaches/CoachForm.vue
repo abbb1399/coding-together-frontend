@@ -67,6 +67,7 @@ export default {
       initialEditType: "wysiwyg",
       previewStyle: "vertical",
       language: 'ko-KR',
+      autofocus:false
     })
     // tuiEditor 바인딩
     this.tuiEditor = editor
