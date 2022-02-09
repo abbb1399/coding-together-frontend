@@ -67,6 +67,7 @@ export default {
 
     try{
       const { data } = await axios.get(`http://localhost:3000/more-coach-list/${pageNum}`)
+      // console.log(data)
 
       const coaches = []
 

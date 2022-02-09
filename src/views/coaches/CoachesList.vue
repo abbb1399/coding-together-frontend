@@ -9,12 +9,12 @@
     <section>
       <coach-filter @change-filter="setFilters"></coach-filter>
     </section>
-    
+  
     <!-- 공고 list -->
     <section>
       <base-card>
         <div class="controls"> 
-          <button @click="test">테스트</button>
+          <button @click="test22">테스트</button>
           <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
           <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
           <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">공고 등록</base-button>
@@ -24,7 +24,7 @@
         </div>
         <ul v-else-if="hasCoaches">
           <coach-item
-            v-for="coach in filteredCoaches"
+            v-for="coach in list"
             :key="coach.id"
             :name="coach.name"
             :areas="coach.areas"
@@ -33,20 +33,25 @@
           </coach-item>
         </ul>
         <h3 v-else>목록이 없습니다.</h3>
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
       </base-card>
     </section>
   </div>
+          
+         
 </template>
 
 
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue'
 import CoachFilter from '../../components/coaches/CoachFilter.vue'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
    components:{
       CoachItem,
       CoachFilter,
+      InfiniteLoading
    },
    data(){
      return{
@@ -57,7 +62,8 @@ export default {
         backend:true,
         publisher:true
       },
-      pageNum:2
+      list:[],
+      page:0,
     }
   },
   computed:{
@@ -89,7 +95,8 @@ export default {
     }
   },
   async created(){
-    await this.loadCoaches()
+    // await this.loadCoaches()
+    // this.test22()
     // console.log(this.filteredCoaches)
   },
   methods:{
@@ -108,17 +115,28 @@ export default {
     handleError(){
       this.error = null
     },
-    async test(){
-      this.pageNum += 2
-      await this.$store.dispatch('coaches/moreLoadCoaches', this.pageNum)
+    async test22(){
+      await this.$store.dispatch('coaches/moreLoadCoaches', this.page)
+    
+      this.list.push(...this.$store.getters['coaches/coaches'])
+      this.page += 2
     },
     async infiniteHandler($state){
-      this.pageNum += 2
-      await this.$store.dispatch('coaches/moreLoadCoaches', this.pageNum)
-        $state.loaded()
-    }
+      console.log('infinite')
+      await this.$store.dispatch('coaches/moreLoadCoaches', this.page)
+      const array = this.$store.getters['coaches/coaches']
+      console.log(array)
+      // console.log('배열 갯수 : '+array)
 
-  }
+      if(array.length){
+        this.list.push(...array)
+        $state.loaded()
+        this.page += 2
+      }else{
+        $state.complete()
+      }
+    }
+  },
 }
 </script>
 
