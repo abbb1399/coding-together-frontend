@@ -14,7 +14,7 @@
     <section>
       <base-card>
         <div class="controls"> 
-          <button @click="test22">테스트</button>
+          <!-- <button @click="test22">테스트</button> -->
           <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
           <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
           <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">공고 등록</base-button>
@@ -22,7 +22,8 @@
         <div v-if="isLoading">
           <base-spinner></base-spinner>
         </div>
-        <ul v-else-if="hasCoaches">
+        <!-- <ul v-else-if="hasCoaches"> -->
+        <ul v-else>
           <coach-item
             v-for="coach in list"
             :key="coach.id"
@@ -32,15 +33,14 @@
           >
           </coach-item>
         </ul>
-        <h3 v-else>목록이 없습니다.</h3>
-        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        <!-- <h3 v-else>목록이 없습니다.</h3> -->
+        <infinite-loading @infinite="infiniteHandler">
+          <template #no-more>모든 데이터를 불러왔습니다.</template>
+        </infinite-loading>
       </base-card>
     </section>
   </div>
-          
-         
 </template>
-
 
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue'
@@ -122,16 +122,13 @@ export default {
       this.page += 2
     },
     async infiniteHandler($state){
-      console.log('infinite')
       await this.$store.dispatch('coaches/moreLoadCoaches', this.page)
-      const array = this.$store.getters['coaches/coaches']
-      console.log(array)
-      // console.log('배열 갯수 : '+array)
+      const listArray = this.$store.getters['coaches/coaches']
 
-      if(array.length){
-        this.list.push(...array)
-        $state.loaded()
+      if(listArray.length){
         this.page += 2
+        this.list.push(...listArray)
+        $state.loaded()
       }else{
         $state.complete()
       }

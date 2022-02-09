@@ -64,7 +64,6 @@ export default {
   },
 
   async moreLoadCoaches(context, pageNum){  
-
     try{
       const { data } = await axios.get(`http://localhost:3000/more-coach-list/${pageNum}`)
       // console.log(data)
@@ -84,7 +83,7 @@ export default {
       });  
       
       context.commit('setCoaches', coaches)
-      // context.commit('setFetchTimestamp')  
+      // context.commit('setFetchTimestamp')
     }catch(e) {
       console.log(e)
     }
