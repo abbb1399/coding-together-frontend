@@ -2,7 +2,7 @@
   <div>
     <section>
       <base-card>
-        <h2>{{title}} by {{getOwnerName}}</h2>
+        <h2>{{name}} by {{getOwnerName}}</h2>
         <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
         <div id="viewer"/>
       </base-card>
@@ -39,15 +39,6 @@ export default {
     }
   },
   computed:{
-    title(){
-      return this.selectedCoach.name
-    },
-    areas(){
-      return this.selectedCoach.areas
-    },
-    description(){
-      return this.selectedCoach.description
-    },
     getOwnerName(){
       return this.$store.getters.getUsersInfo.name
     },
@@ -61,20 +52,39 @@ export default {
   data(){
     return{
       selectedCoach:null,
+      name:'',
+      areas:[],
     }
   },
-  created(){
-    this.selectedCoach = this.$store.getters['coaches/coaches'].find(coach => coach.owner === this.owner)
-  },
-  mounted(){
-    new Viewer({
+  async created(){
+    await this.loadCoaches()
+    
+    const info = this.$store.getters['coaches/coaches'].find(coach => coach.owner === this.owner)
+    this.name = info.name
+    this.areas = info.areas
+    this.description = info.description
+
+     new Viewer({
       el: document.querySelector('#viewer'),
       // 표시하고자 하는 내용은 여기에 들어간다.
       initialValue: this.description
     });
+
+
+  },
+  mounted(){
+    
   },
   methods:{
-    
+    async loadCoaches(refresh = false) {
+      this.isLoading = true
+      try{
+        await this.$store.dispatch('coaches/loadCoaches', { forceRefresh : refresh})
+      }catch(error){
+        this.error = error.message || '에러 발생!'
+      }
+      this.isLoading = false
+    },
 
   }
 }

@@ -46,7 +46,7 @@ export default {
     this.ownerName = this.$store.getters.getUsersInfo.name
   },
   methods:{
-   
+    
   }
 }
 </script>
