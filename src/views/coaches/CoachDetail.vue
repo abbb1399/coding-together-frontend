@@ -2,7 +2,10 @@
   <div>
     <section>
       <base-card>
-        <h2>{{name}} by {{getOwnerName}}</h2>
+        <div>
+          <h2>{{name}} by {{getOwnerName}}</h2> 
+          <span>{{updatedAt}}</span>       
+        </div>
         <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
         <div id="viewer"/>
       </base-card>
@@ -38,13 +41,12 @@ export default {
       type:String
     }
   },
+  inject:['$moment'],
   computed:{
     getOwnerName(){
       return this.$store.getters.getUsersInfo.name
     },
     contactLink(){
-      // console.log(this.id)
-      // console.log(this.$route.path )
       return this.$route.path + '/' + this.owner + '/contact'
       // return this.$route.path + '/contact'
     }
@@ -54,6 +56,8 @@ export default {
       selectedCoach:null,
       name:'',
       areas:[],
+      updatedAt:'',
+      description:''
     }
   },
   async created(){
@@ -63,8 +67,9 @@ export default {
     this.name = info.name
     this.areas = info.areas
     this.description = info.description
+    this.updatedAt = this.$moment(info.updatedAt).format('YYYY-MM-DD')
 
-     new Viewer({
+    new Viewer({
       el: document.querySelector('#viewer'),
       // 표시하고자 하는 내용은 여기에 들어간다.
       initialValue: this.description

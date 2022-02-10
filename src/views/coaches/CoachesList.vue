@@ -13,9 +13,14 @@
     <!-- 공고 list -->
     <section>
       <base-card>
-        <div class="controls"> 
-          <!-- <button @click="test22">테스트</button> -->
+        <div class="controls">
+          <select v-model="selectType" @change="changeType">
+            <option v-for=" (data,i) in selectArray" :value="data" :key="i">
+              {{data}}
+            </option>
+          </select>
           <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
+          
           <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
           <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">공고 등록</base-button>
         </div>
@@ -34,7 +39,7 @@
           </coach-item>
         </ul>
         <!-- <h3 v-else>목록이 없습니다.</h3> -->
-        <infinite-loading @infinite="infiniteHandler">
+        <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
           <template #no-more>모든 데이터를 불러왔습니다.</template>
         </infinite-loading>
       </base-card>
@@ -64,6 +69,9 @@ export default {
       },
       list:[],
       page:0,
+      selectType: 'all',
+      selectArray: ['all','frontend','backend','publisher'],
+      infiniteId: +new Date(),
     }
   },
   computed:{
@@ -94,14 +102,27 @@ export default {
       return !this.isLoading && this.$store.getters['coaches/hasCoaches']
     }
   },
-  async created(){
-    // await this.loadCoaches()
-    // this.test22()
-    // console.log(this.filteredCoaches)
+  created(){
+  
   },
   methods:{
     setFilters(updatedFilters){
-      this.activeFilters = updatedFilters
+      const array = []      
+      Object.keys(updatedFilters).forEach(key => {
+        let value = updatedFilters[key]
+        if(key && value){
+          array.push(key)
+        }
+      })
+      console.log(array)
+
+      // const payload = {
+      //   pageNum:0,
+      //   filter: array
+      // }
+
+      // this.$store.dispatch('coaches/moreLoadCoaches', payload)
+      // console.log(this.$store.getters['coaches/coaches'])
     },
     async loadCoaches(refresh = false) { //default value
       this.isLoading = true
@@ -115,14 +136,14 @@ export default {
     handleError(){
       this.error = null
     },
-    async test22(){
-      await this.$store.dispatch('coaches/moreLoadCoaches', this.page)
-    
-      this.list.push(...this.$store.getters['coaches/coaches'])
-      this.page += 2
-    },
     async infiniteHandler($state){
-      await this.$store.dispatch('coaches/moreLoadCoaches', this.page)
+      const payload = {
+        pageNum:this.page,
+        filter: this.selectType
+      }
+
+      await this.$store.dispatch('coaches/moreLoadCoaches', payload)
+      
       const listArray = this.$store.getters['coaches/coaches']
 
       if(listArray.length){
@@ -132,6 +153,11 @@ export default {
       }else{
         $state.complete()
       }
+    },
+    changeType(){
+      this.page = 0;
+      this.list = [];
+      this.infiniteId += 1;
     }
   },
 }
@@ -152,6 +178,6 @@ export default {
 
   .controls {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
   }
 </style>

@@ -7,7 +7,6 @@ export default {
     const coachData = {
       name : data.name,
       description : data.desc,
-      // hourlyRate  : data.rate,
       areas : data.areas
     }
 
@@ -45,15 +44,15 @@ export default {
       const coaches = []
 
       data.forEach(element => {
-        const obj = {
+        const dataObj = {
           id: element._id,
           name: element.name,
           description: element.description,
-          // hourlyRate: 10,
           areas: element.areas,
-          owner: element.owner
+          owner: element.owner,
+          updatedAt: element.updatedAt
         }
-        coaches.push(obj)
+        coaches.push(dataObj)
       });  
       
       context.commit('setCoaches', coaches)
@@ -63,23 +62,27 @@ export default {
     }
   },
 
-  async moreLoadCoaches(context, pageNum){  
+  async moreLoadCoaches(context, payload){  
+    // console.log(payload.filter)
     try{
-      const { data } = await axios.get(`http://localhost:3000/more-coach-list/${pageNum}`)
-      // console.log(data)
+      const { data } = await axios.get(`http://localhost:3000/more-coach-list/${payload.pageNum}`,{
+        params: {
+          filter: payload.filter
+        }
+      })
 
       const coaches = []
 
       data.forEach(element => {
-        const obj = {
+        const dataObj = {
           id: element._id,
           name: element.name,
           description: element.description,
-          // hourlyRate: 10,
           areas: element.areas,
-          owner: element.owner
+          owner: element.owner,
+          updatedAt: element.updatedAt
         }
-        coaches.push(obj)
+        coaches.push(dataObj)
       });  
       
       context.commit('setCoaches', coaches)

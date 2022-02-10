@@ -1,7 +1,6 @@
 <template>
   <li>
     <h3>{{ name }} by {{ownerName}}</h3>
-
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>

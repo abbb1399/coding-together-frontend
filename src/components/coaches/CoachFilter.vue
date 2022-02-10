@@ -30,6 +30,9 @@ export default {
   },
   methods:{
     setFilter(event){
+      // console.log(event.target.id)
+      // console.log(event.target.checked)
+
       const inputId = event.target.id   
       const isActive = event.target.checked
       const updatedFilters ={
