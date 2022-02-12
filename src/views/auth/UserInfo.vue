@@ -1,7 +1,7 @@
 <template>
   <base-card>
     <div class="card">
-      <img @click="imageUpload" id="myImage" alt="내 이미지" style="width:100%">
+      <img @click="imageUpload" id="myImage" alt="내 이미지" style="width:100%" src="../../assets/avatar.jpg">
       <h1>{{name}}</h1>
       <p class="title">{{email}}</p>
       <p>가입일: {{createdAt}}</p>
@@ -41,9 +41,12 @@ export default {
     },
     async getMyAvatar(){
       await this.$store.dispatch('fetchAvatar', this.myId)
-    
-      const urlCreator = window.URL || window.webkitURL;
-      this.myAvatar = urlCreator.createObjectURL(this.$store.getters.getMyAvatar )
+      document.querySelector('#myImage').src = `http://localhost:3000/users/${this.myId}/avatar`
+
+      // const urlCreator = window.URL || window.webkitURL;
+      // if(this.$store.getters.getMyAvatar.size > 0){
+      //   document.querySelector('#myImage').src = urlCreator.createObjectURL(this.$store.getters.getMyAvatar)
+      // }
     },  
     imageUpload(){
       const upload = document.createElement('input')
@@ -59,12 +62,9 @@ export default {
         data.append('avatar', fileToUpload)
 
         // 서버 로직
-        try{
-          await this.$store.dispatch('uploadAvatar',data)
-          this.getMyAvatar()
-        }catch(e){
-          alert(e)
-        }
+        await this.$store.dispatch('uploadAvatar',data)
+        this.getMyAvatar()
+       
       }
       upload.click()
     },

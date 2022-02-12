@@ -19,9 +19,11 @@ export default {
       return this.$store.getters.didAutoLogout
     }
   },
-  created(){
+  async created(){
     // auto login
-    this.$store.dispatch('tryLogin')
+    await this.$store.dispatch('tryLogin')
+    // await this.$store.dispatch('fetchMyInfo')
+  
   },
   watch:{
     didAutoLogout(curValue, oldValue){
@@ -30,6 +32,9 @@ export default {
         this.$router.replace('/coaches')
       }
     } 
+  },
+  methods:{
+  
   }
 }
 </script>

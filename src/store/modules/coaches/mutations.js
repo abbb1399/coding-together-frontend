@@ -7,5 +7,9 @@ export default {
   },
   setFetchTimestamp(state){
     state.lastFetch = new Date().getTime()
+  },
+  setUploadFileName(state, fileName){
+    state.fileName = fileName
   }
+
 }

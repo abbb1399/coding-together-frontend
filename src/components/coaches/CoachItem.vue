@@ -4,6 +4,7 @@
     <div>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
+    <img id="list-img" src="../../assets/logo.png" style="width:50px; height:50px;">
 
     <div class="actions">
       <!-- <base-button mode="outline" link :to="coachContactLink">연락</base-button> -->
@@ -25,7 +26,10 @@ export default {
     },
     owner:{
       type:String,
-    }
+    },
+    thumbnail:{
+      type:String,
+    },
   },
   data(){
     return{
@@ -41,11 +45,20 @@ export default {
     },
   },
   async created(){
-    await this.$store.dispatch('fetchAllUsersInfo', this.owner)
-    this.ownerName = this.$store.getters.getUsersInfo.name
+    await this.getOnwerName()
+    this.getListImage()
   },
   methods:{
-    
+    async getOnwerName(){
+      await this.$store.dispatch('fetchAllUsersInfo', this.owner)
+      this.ownerName = this.$store.getters.getUsersInfo.name
+    },
+    async getListImage(){
+      if(this.thumbnail){
+        await this.$store.dispatch('coaches/fetchListImage',this.thumbnail)
+        document.querySelector('#list-img').src = `http://localhost:3000/images/${this.thumbnail}`
+      }
+    }
   }
 }
 </script>

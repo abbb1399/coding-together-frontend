@@ -5,14 +5,16 @@
       <input type="text" id="name" v-model.trim="name.val" v-focus required @blur="clearValidity('name')" > 
       <p v-if="!name.isValid">이름은 반드시 입력되야 합니다.</p>
     </div>
+    
     <div class="form-control" :class="{invalid: !description.isValid}">
       <label for="description">설명</label>
       <div id="editor" ref="tuiEditor" ></div>
       <!-- <textarea id="description" rows="5" v-model.trim="description.val" @blur="clearValidity('description')"></textarea>  -->
       <!-- <p v-if="!description.isValid">설명은 반드시 입력되야 합니다..</p> -->
     </div>
+    
     <div class="form-control" :class="{invalid: !areas.isValid}"> 
-      <h3>Areas of Expertise</h3>
+      <h3>분야</h3>
       <div>
         <input type="checkbox" id="frontend" value="frontend" v-model="areas.val" @blur="clearValidity('areas')"> 
         <label for="frontend">프론트엔드 개발자</label>
@@ -27,6 +29,17 @@
       </div>
       <p v-if="!areas.isValid">최소한 하나는 선택 되어야 합니다.</p>
     </div>
+
+    <div class="form-control">
+      <h3>썸네일 첨부</h3>
+      <input 
+        type="file" 
+        name="thumbnail"
+        accept="image/png, image/jpeg"
+        @change="uploadFile"
+      >
+    </div>
+
     <p v-if="!formIsValid">제대로 입력 하신 후, 다시 등록해주세요.</p>
     <base-button>등록</base-button>
   </form>
@@ -49,16 +62,13 @@ export default {
         // val:'',
         isValid:true
       },
-      // rate:{
-      //   val:null,
-      //   isValid:true
-      // },
       areas:{
         val:[],
         isValid:true
       },
       formIsValid:true,
-      tuiEditor:null 
+      tuiEditor:null,
+      file:null
     }
   },
   mounted() {
@@ -94,7 +104,10 @@ export default {
         this.formIsValid = false
       }
     },
-    submitForm(){
+    uploadFile(e){
+      this.file = e.target.files[0]
+    },
+    async submitForm(){
       // tui 에디터 글내용 받아오기
       const tuiContent = this.tuiEditor.getMarkdown()
     
@@ -104,27 +117,26 @@ export default {
         return
       }
 
+      // 파일업로드 로직
+      const data = new FormData()
+      const fileToUpload = this.file
+      data.append('images', fileToUpload)
+
+      await this.$store.dispatch('coaches/uploadImage',data)
+      
+      // console.log(this.$store.getters['coaches/getUploadFileName'])
+
       const formData={
         name: this.name.val,
         desc: tuiContent,
-        // rate: this.rate.val,
-        areas:this.areas.val
+        areas:this.areas.val,
+        thumbnail: this.$store.getters['coaches/getUploadFileName']
       }
-      this.$emit('save-data',formData)
+      this.$emit('save-data', formData)
     },
-    // 이름(input)에서 설명(tui-editor)으로 tab키를 통해 넘어가도록 편의성 제공. 
-    useTab () {
-      // this.tuiEditor.focus()
-    }
   }
 }
 </script>
-
-<style>
-  /* .toastui-editor-contents {
-    font: inherit;
-  } */
-</style>
 
 
 <style scoped>

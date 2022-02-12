@@ -10,7 +10,7 @@ export default {
     const coaches = getters.coaches
     const userId = rootGetters.userId
 
-
+    // console.log(coaches)
     // console.log(userId)
     return coaches.some(coach => coach.owner === userId)
   },
@@ -21,5 +21,10 @@ export default {
     }
     const currentTimeStamp = new Date().getTime()
     return (currentTimeStamp - lastFetch) / 1000 > 60 // 1분 보단 길게
+  },
+  getUploadFileName(state){
+    return state.fileName
   }
+
+
 }

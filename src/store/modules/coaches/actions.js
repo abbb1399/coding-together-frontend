@@ -7,7 +7,8 @@ export default {
     const coachData = {
       name : data.name,
       description : data.desc,
-      areas : data.areas
+      areas : data.areas,
+      thumbnail: data.thumbnail
     }
 
     const token = context.rootGetters.token
@@ -80,6 +81,7 @@ export default {
           description: element.description,
           areas: element.areas,
           owner: element.owner,
+          thumbnail: element.thumbnail,
           updatedAt: element.updatedAt
         }
         coaches.push(dataObj)
@@ -88,6 +90,28 @@ export default {
       context.commit('setCoaches', coaches)
       // context.commit('setFetchTimestamp')
     }catch(e) {
+      console.log(e)
+    }
+  },
+
+  async uploadImage(context,file){
+    try{
+      const {data} = await axios.post(
+       'http://localhost:3000/images',
+       file
+      )
+      context.commit('setUploadFileName', data)
+    }catch(e){
+      console.log(e)
+    }
+  },
+
+  async fetchListImage(context, filename){
+    try{
+      await axios.get(
+        `http://localhost:3000/images/${filename}`
+      )
+    }catch(e){
       console.log(e)
     }
   }

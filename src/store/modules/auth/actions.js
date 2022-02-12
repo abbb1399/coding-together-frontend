@@ -33,7 +33,7 @@ export default {
       const {data} = await axios.post(url, payload)
       
       // 로그인 유지 기간
-      const expiresIn = 1000000
+      const expiresIn = 10000000
       const expirationDate = new Date().getTime() + expiresIn
       localStorage.setItem('tokenExpiration', expirationDate)
 

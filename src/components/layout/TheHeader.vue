@@ -50,8 +50,7 @@ export default {
       return this.$store.getters.isAuthenticated
     }
   },
-  created(){
-
+  async created(){
   },
   methods:{ 
     logout(){

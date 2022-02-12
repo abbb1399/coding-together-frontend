@@ -22,11 +22,13 @@
           <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
           
           <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
-          <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">공고 등록</base-button>
+          <base-button v-if="isLoggedIn && !isLoading" link to="/register">공고 등록</base-button>
         </div>
+
         <div v-if="isLoading">
           <base-spinner></base-spinner>
         </div>
+        
         <!-- <ul v-else-if="hasCoaches"> -->
         <ul v-else>
           <coach-item
@@ -35,6 +37,7 @@
             :name="coach.name"
             :areas="coach.areas"
             :owner="coach.owner"
+            :thumbnail="coach.thumbnail"
           >
           </coach-item>
         </ul>
@@ -79,6 +82,8 @@ export default {
       return this.$store.getters.isAuthenticated
     },
     isCoach(){
+      // console.log(this.$store.getters['coaches/isCoach'])
+      console.log(this.list)
       return this.$store.getters['coaches/isCoach']
     },
     filteredCoaches(){
@@ -103,7 +108,7 @@ export default {
     }
   },
   created(){
-  
+    this.loadCoaches()
   },
   methods:{
     setFilters(updatedFilters){
