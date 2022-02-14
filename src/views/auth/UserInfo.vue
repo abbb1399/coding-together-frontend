@@ -7,6 +7,13 @@
       <p>가입일: {{createdAt}}</p>
       <p><button @click="deleteAccount">회원 탈퇴</button></p>
     </div>
+
+    <div>
+      <ul>
+        <li>내가 쓴글</li>
+      </ul>
+    </div>
+
   </base-card>
 </template>
 
@@ -81,7 +88,7 @@ export default {
   .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
-    margin: auto;
+    /* margin: auto; */
     text-align: center;
   }
 
