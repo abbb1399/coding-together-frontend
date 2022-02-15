@@ -2,7 +2,6 @@
   <li @click="toDetail" >
     <img id="list-img" src="../../assets/ent1.jpg" alt="">
     <div>
-      <!-- <div class="category category-ent">Entertainment</div> -->
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
       <h3>{{ name }} by {{ownerName}}</h3>
     </div>
@@ -70,6 +69,12 @@ export default {
     padding: 1rem;
     grid-gap: 1rem;
     cursor:pointer;
+    /* align-items: center; */    
+  }
+
+  h3{
+    margin-top: 10px;
+    line-height: 1.3;
   }
 
   img{

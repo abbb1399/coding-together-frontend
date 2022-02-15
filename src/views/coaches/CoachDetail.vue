@@ -2,11 +2,17 @@
   <div>
     <section>
       <base-card>
-        <div>
-          <h2>{{name}} by {{getOwnerName}}</h2> 
-          <span>{{updatedAt}}</span>       
+        <img src="../../assets/ent1.jpg" alt="">
+        <h1 class="l-heading">{{name}}</h1> 
+        <div class="meta">
+          <small>
+            <i class="fas fa-user"></i> Written By {{getOwnerName}} {{updatedAt}}
+          </small>
+          <!-- <div class="category category-ent">Entertainment</div> -->
+          <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
         </div>
-        <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
+
+       
         <div id="viewer"/>
       </base-card>
     </section>
@@ -106,5 +112,20 @@ export default {
     font-size: 18px;
   }
 
+  img{
+    width:100%;
+  }
 
+  .l-heading{
+    font-size: 3rem;
+  }
+
+  
+  .meta{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eee;
+    padding: 0.5rem;
+  }
 </style>
