@@ -8,7 +8,6 @@
   #main-footer{
     background: #444;
     color: #fff;
-    grid-column: 1 / span 4;
     padding: 1.2rem 0;
     text-align: center;
     font-size: 0.75rem;

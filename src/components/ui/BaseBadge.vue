@@ -42,6 +42,7 @@ export default {
     padding: 0.5rem 1.5rem;
     display: inline-block;
     margin-right: 0.5rem;
+    font-size: 12px;
   }
 
   .frontend {

@@ -1,14 +1,10 @@
 <template>
-  <li>
-    <h3>{{ name }} by {{ownerName}}</h3>
+  <li @click="toDetail" >
+    <img id="list-img" src="../../assets/ent1.jpg" alt="">
     <div>
+      <!-- <div class="category category-ent">Entertainment</div> -->
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
-    </div>
-    <img id="list-img" src="../../assets/logo.png" style="width:50px; height:50px;">
-
-    <div class="actions">
-      <!-- <base-button mode="outline" link :to="coachContactLink">연락</base-button> -->
-      <base-button link :to="coachDetailsLink">상세보기</base-button>
+      <h3>{{ name }} by {{ownerName}}</h3>
     </div>
   </li>
 </template>
@@ -58,6 +54,9 @@ export default {
         await this.$store.dispatch('coaches/fetchListImage',this.thumbnail)
         document.querySelector('#list-img').src = `http://localhost:3000/images/${this.thumbnail}`
       }
+    },
+    toDetail(){
+      this.$router.push(this.$route.path + '/' + this.owner)
     }
   }
 }
@@ -65,27 +64,18 @@ export default {
 
 <style scoped>
   li{
-    margin: 1rem 0;
-    border: 1px solid #424242;
-    border-radius: 12px;
-    padding: 1rem;
-  }
-
-  h3{
-    font-size: 1.5rem;
-  }
-
-  h3,
-  h4{
-    margin: 0.5rem 0;
-  }
-
-  div{
-    margin: 0.5rem 0;
-  }
-
-  .actions{
     display: flex;
-    justify-content: flex-end;
+    border-radius: 5px;
+    background: #fff;
+    padding: 1rem;
+    grid-gap: 1rem;
+    cursor:pointer;
+  }
+
+  img{
+    width: 50%;
+    border-radius: 5px;
+    width: 255px;
+    height: 170px;
   }
 </style>

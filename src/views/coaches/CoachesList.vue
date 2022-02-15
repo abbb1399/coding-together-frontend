@@ -5,14 +5,9 @@
       <p>{{ error }}</p>
     </base-dialog>
     
-    <!-- 검색 필터 -->
-    <section>
-      <coach-filter @change-filter="setFilters"></coach-filter>
-    </section>
-  
     <!-- 공고 list -->
-    <section>
-      <base-card>
+    <section id="list">
+      <!-- <base-card> -->
         <div class="controls">
           <select v-model="selectType" @change="changeType">
             <option v-for=" (data,i) in selectArray" :value="data" :key="i">
@@ -45,20 +40,20 @@
         <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
           <template #no-more>모든 데이터를 불러왔습니다.</template>
         </infinite-loading>
-      </base-card>
+      <!-- </base-card> -->
     </section>
   </div>
 </template>
 
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue'
-import CoachFilter from '../../components/coaches/CoachFilter.vue'
+// import CoachFilter from '../../components/coaches/CoachFilter.vue'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
    components:{
       CoachItem,
-      CoachFilter,
+      // CoachFilter,
       InfiniteLoading
    },
    data(){
@@ -172,13 +167,16 @@ export default {
   ul{
     /* 초기화 */
     list-style: none;;
-    margin: 0;
-    padding: 0;
 
     /* 그리드 */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
+  }
+
+  #list{
+    max-width: 1100px;
+    margin: auto;
   }
 
   .controls {

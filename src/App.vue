@@ -1,11 +1,15 @@
 <template>
-  <the-header></the-header>
-  <router-view v-slot="slotProps">
-    <!-- <transition name="route" mode="out-in"> -->
-      <component :is="slotProps.Component"></component>
-    <!-- </transition> -->
-  </router-view>  
-  <the-footer></the-footer>
+  <div id="main">
+    <the-header></the-header>
+
+    <router-view v-slot="slotProps" style="flex:1;">
+      <transition name="route" mode="out-in">
+        <component :is="slotProps.Component"></component>
+      </transition>
+    </router-view>  
+    
+    <the-footer></the-footer>
+  </div>
 </template>
 
 <script>
@@ -49,9 +53,17 @@ export default {
     --text-color: #f0f4f5;
     --background-color: #263343;
     --accent-color: pink;
+    --dark-color: #333;
+    --primary-color: #c72727;
+    --secondary-color: #f99500;
+    --light-color: #f3f3f3;
+    --dark-color: #333;
+    --max-width: 1100px;
   }
 
   * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
   }
 
@@ -60,8 +72,13 @@ export default {
   }
 
   body {
-    margin: 0;
     background: #edeef0;
+  }
+
+  #main{
+    min-height: 100vh;
+    display: flex; 
+    flex-direction:column; 
   }
   
   .route-enter-from{
