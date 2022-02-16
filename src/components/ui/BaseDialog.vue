@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .backdrop{
     position: fixed;
     top:0;
@@ -81,10 +81,10 @@ export default {
     color: white;
     width: 100%;
     padding: 1rem;
-  }
 
-  header h2 {
-    margin: 0;
+    h2{
+      margin: 0;
+    }
   }
 
   section {

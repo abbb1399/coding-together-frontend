@@ -84,7 +84,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
@@ -112,9 +112,9 @@ export default {
     cursor: pointer;
     width: 100%;
     font-size: 18px;
-  }
-
-  button:hover{
-    opacity: 0.7;
+  
+    &:hover{
+      background-color: lighten(#000, 70%);
+    }
   }
 </style>

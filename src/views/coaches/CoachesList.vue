@@ -1,46 +1,50 @@
 <template>
   <div>
-    <!-- 에러 Dialog -->
-    <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
-      <p>{{ error }}</p>
-    </base-dialog>
-    
-    <!-- 공고 list -->
     <section id="list">
-      <!-- <base-card> -->
-        <div class="controls">
-          <select v-model="selectType" @change="changeType">
-            <option v-for=" (data,i) in selectArray" :value="data" :key="i">
-              {{data}}
-            </option>
-          </select>
-          <base-button mode="outline" @click="loadCoaches(true)">새로고침</base-button>
-          
-          <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
-          <base-button v-if="isLoggedIn && !isLoading" link to="/register">공고 등록</base-button>
-        </div>
+      <!-- 에러 Dialog -->
+      <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
+        <p>{{ error }}</p>
+      </base-dialog>
+      
+      <header class="page-heading">
+        <h1>동료 찾기</h1>
+        <div class="filter">
+          <div>
+            <select v-model="selectType" @change="changeType">
+              <option v-for=" (data,i) in selectArray" :value="data.value" :key="i">
+                {{data.label}}
+              </option>
+            </select>
+            <base-button style="margin-left: 15px;" mode="outline" @click="loadCoaches(true)">새로고침</base-button>
+          </div>
 
-        <div v-if="isLoading">
-          <base-spinner></base-spinner>
+          <div>
+            <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
+            <base-button v-if="isLoggedIn && !isLoading" link to="/register">공고 등록</base-button>
+          </div>
         </div>
-        
-        <!-- <ul v-else-if="hasCoaches"> -->
-        <ul v-else>
-          <coach-item
-            v-for="coach in list"
-            :key="coach.id"
-            :name="coach.name"
-            :areas="coach.areas"
-            :owner="coach.owner"
-            :thumbnail="coach.thumbnail"
-          >
-          </coach-item>
-        </ul>
-        <!-- <h3 v-else>목록이 없습니다.</h3> -->
-        <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
-          <template #no-more>모든 데이터를 불러왔습니다.</template>
-        </infinite-loading>
-      <!-- </base-card> -->
+      </header>
+
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
+      </div>
+      
+      <!-- <ul v-else-if="hasCoaches"> -->
+      <ul v-else>
+        <coach-item
+          v-for="coach in list"
+          :key="coach.id"
+          :name="coach.name"
+          :areas="coach.areas"
+          :owner="coach.owner"
+          :thumbnail="coach.thumbnail"
+        >
+        </coach-item>
+      </ul>
+      <!-- <h3 v-else>목록이 없습니다.</h3> -->
+      <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
+        <template #no-more>모든 데이터를 불러왔습니다.</template>
+      </infinite-loading>
     </section>
   </div>
 </template>
@@ -58,17 +62,17 @@ export default {
    },
    data(){
      return{
-       isLoading:false,
-       error:null,
-       activeFilters:{
-        frontend:true,
-        backend:true,
-        publisher:true
-      },
+      isLoading:false,
+      error:null,
       list:[],
       page:0,
       selectType: 'all',
-      selectArray: ['all','frontend','backend','publisher'],
+      selectArray: [
+        {label: '전체', value: 'all'},
+        {label: '프론트엔드', value: 'frontend'},
+        {label: '백엔드',value: 'backend'},
+        {label: '퍼블리셔', value: 'publisher'},
+      ],
       infiniteId: +new Date(),
     }
   },
@@ -81,23 +85,7 @@ export default {
       console.log(this.list)
       return this.$store.getters['coaches/isCoach']
     },
-    filteredCoaches(){
-      const coaches =  this.$store.getters['coaches/coaches']
-      // console.log(coaches)
-      return coaches.filter(coach => {
-        // 내가 fronteend를 체크했고, 선생도 frontend를 가지고 있는 경우
-        if(this.activeFilters.frontend && coach.areas.includes('frontend')){
-          return true;
-        }
-        if(this.activeFilters.backend && coach.areas.includes('backend')){
-          return true;
-        }
-        if(this.activeFilters.publisher && coach.areas.includes('publisher')){
-          return true;
-        }
-        return false
-      })
-    },
+ 
     hasCoaches(){
       return !this.isLoading && this.$store.getters['coaches/hasCoaches']
     }
@@ -163,24 +151,39 @@ export default {
 }
 </script>
 
-<style scoped>
-  ul{
-    /* 초기화 */
-    list-style: none;;
-
-    /* 그리드 */
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
-  }
-
+<style lang="scss" scoped>
   #list{
     max-width: 1100px;
     margin: auto;
   }
 
-  .controls {
+  ul{
+    list-style: none;;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+  }
+
+  .filter {
     display: flex;
     /* justify-content: space-between; */
+  }
+
+  .page-heading{
+    padding: 48px 0 20px 0;
+  }
+
+  .page-heading h1{
+    font-size: 34px;
+  }
+
+  .filter{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  .filter > div:first-child{
+    display: flex;
   }
 </style>

@@ -117,7 +117,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   form{
     margin: 1rem;
     padding: 1rem;
@@ -141,12 +141,12 @@ export default {
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 5px;
-  }
-
-  input:focus{
-    border-color: #3d008d;
-    background-color: #faf6ff;
-    outline: none;    
+  
+    &:focus{
+      border-color: #3d008d;
+      background-color: #faf6ff;
+      outline: none;   
+    }
   }
 
   .button-container{

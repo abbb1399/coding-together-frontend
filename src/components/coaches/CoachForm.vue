@@ -139,7 +139,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
   .form-control {
     margin: 0.5rem 0;
   }

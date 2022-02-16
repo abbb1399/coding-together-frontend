@@ -49,16 +49,25 @@ export default {
 <style lang="scss">
   @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
-  :root{
-    --text-color: #f0f4f5;
-    --background-color: #263343;
-    --accent-color: pink;
-    --dark-color: #333;
-    --primary-color: #c72727;
-    --secondary-color: #f99500;
-    --light-color: #f3f3f3;
-    --dark-color: #333;
-    --max-width: 1100px;
+  // 변수
+  $text-color: #f0f4f5;
+  $background-color: #263343;
+  $accent-color: pink;
+  $primary-color: #c72727;
+  $secondary-color: #f99500;
+  
+  $dark-color: #333;
+  $medium-color: #ccc;
+  $light-color: #f3f3f3;
+  $max-width: 1100px;
+  
+  // 배경화면에 따른 text 컬러 변경시켜주는 함수
+  @function set-text-color($backGroundColor) {
+    @if (lightness($backGroundColor) > 50) {
+      @return #000;
+    } @else {
+      @return #fff;
+    }
   }
 
   * {
@@ -81,6 +90,7 @@ export default {
     flex-direction:column; 
   }
   
+  // Vue Transitoin css
   .route-enter-from{
     opacity: 0;
     transform: translateY(-30px);

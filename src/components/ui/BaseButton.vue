@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   /* router-link는 a태그로 처리 됨 */
   button,
   a {
