@@ -65,7 +65,7 @@ export default {
   header {
     width: 100%;
     height: 5rem;
-    background-color: #3d008d;
+    background-color: $primary-color;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,6 +136,7 @@ export default {
       font-family: "Roboto", "-apple-system", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 14px;
       line-height: 1.5;
+      margin:0;
 
       &:hover{
          background: #0000001f;
