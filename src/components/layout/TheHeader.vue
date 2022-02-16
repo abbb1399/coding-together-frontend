@@ -65,14 +65,16 @@ export default {
   header {
     width: 100%;
     height: 5rem;
-    background-color: $primary-color;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px $light-color solid;
+  
   
     a{
       text-decoration: none;
-      color: #f391e3;
+      color: #333;
       display: inline-block;
       padding: 0.75rem 1.5rem;
       border: 1px solid transparent;
@@ -80,16 +82,18 @@ export default {
       &:active,
       &:hover,
       &.router-link-active {
-        border: 1px solid #f391e3;
+        border: 1px solid #333;
       }
     }
 
     nav {
-      width: 90%;
+      width: 80%;
       margin: auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      
     }
 
     
@@ -103,7 +107,8 @@ export default {
     margin: 0;
   
     a{
-      color: white;
+      font-family: 'Lobster', cursive;
+      color: $primary-color;
       margin: 0;
 
       &:hover,

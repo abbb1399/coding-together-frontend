@@ -36,8 +36,8 @@ export default {
     text-decoration: none;
     padding: 0.75rem 1.5rem;
     font: inherit;
-    background-color: #3a0061;
-    border: 1px solid #3a0061;
+    background-color: $secondary-color;
+    border: 1px solid $secondary-color;
     color: white;
     cursor: pointer;
     border-radius: 30px;
@@ -55,7 +55,7 @@ export default {
 
   .flat {
     background-color: transparent;
-    color: #3a0061;
+    color: $secondary-color;
     border: none;
   }
 

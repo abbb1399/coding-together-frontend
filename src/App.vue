@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+  @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap');
 
   * {
     margin: 0;
@@ -60,7 +60,7 @@ export default {
   }
 
   body {
-    background: #edeef0;
+    // background: ;
   }
 
   #main{
