@@ -10,8 +10,9 @@
  $medium-color: #ccc;
  $light-color: #e9ecef;
 
+ $main-color: #ffbc00;
+
  $website-width: 1280px;
- $max-width: 1100px;
  
  // 배경화면에 따른 text 컬러 변경시켜주는 함수
  @function set-text-color($backGroundColor) {

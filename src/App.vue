@@ -2,7 +2,7 @@
   <div id="main">
     <the-header></the-header>
 
-    <router-view v-slot="slotProps" style="flex:1;">
+    <router-view v-slot="slotProps" >
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"></component>
       </transition>
@@ -47,12 +47,16 @@ export default {
 </script>
 
 <style lang="scss">
-  @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap');
-
-  * {
+  // Loboto, Lobster 폰트
+  @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
+  
+  
+  *,
+  *::after,
+  *::before{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: inherit;
   }
 
   html {
@@ -60,7 +64,15 @@ export default {
   }
 
   body {
-    // background: ;
+    box-sizing: border-box;
+  }
+
+  ul{
+    list-style: none;
+  }
+
+  a{
+    text-decoration: none;
   }
 
   #main{

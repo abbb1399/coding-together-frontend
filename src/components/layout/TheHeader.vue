@@ -19,7 +19,7 @@
           <drop-down>
             <template #content></template>
             <template #default>
-              <ul class="dropdown-menu">
+              <ul id="dropdown-menu">
                 <li @click="toUserInfo">내 정보</li>
                 <li @click="logout">로그아웃</li>
               </ul>
@@ -51,7 +51,7 @@ export default {
       this.$router.replace('/coaches')
     },
     openMenu(){
-      const menu = document.querySelector('.navbar-menu');
+      const menu = document.querySelector('ul');
       menu.classList.toggle('active');
     },
     toUserInfo(){
@@ -63,28 +63,9 @@ export default {
 
 <style lang="scss" scoped>
   header {
-    width: 100%;
     height: 5rem;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-bottom: 1px $light-color solid;
-  
-  
-    a{
-      text-decoration: none;
-      color: #333;
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      border: 1px solid transparent;
-    
-      &:active,
-      &:hover,
-      &.router-link-active {
-        border: 1px solid #333;
-      }
-    }
+    display: flex;
 
     nav {
       width: 80%;
@@ -92,56 +73,55 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-
       
-    }
+      // Coding Together 로고
+      h1 {
+        a{
+          font-family: 'Lobster', cursive;
+          color: $primary-color;
 
-    
-    li {
-      margin: 0 0.5rem;
-    }
-  }
+          // &:hover,
+          // &:active,
+          // &.router-link-active{
+          //   border-color: transparent;
+          // }
+        }
+      }
 
 
-  h1 {
-    margin: 0;
-  
-    a{
-      font-family: 'Lobster', cursive;
-      color: $primary-color;
-      margin: 0;
+      // 공고목록,요청들,로그인,아바타.. 목록들
+      .navbar-menu {
+        display: flex;
+        align-items: center;
 
-      &:hover,
-      &:active,
-      &.router-link-active{
-        border-color: transparent;
+        li {
+          padding: 0 1rem;
+
+          a{
+            color: #333;
+            padding: 5px;
+          
+            &:hover{
+              border-bottom: 3px solid $medium-color;
+            }
+
+            &.router-link-active {
+              border-bottom: 3px solid $primary-color;
+            }
+          }
+        }
       }
     }
   }
 
-  .navbar-menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .dropdown-menu{
-    list-style: none;
-    margin: 0px;
-    padding: 0px;
-    max-width: 250px;
-    width: 100%;
 
+  // 아바타 dropdown 메뉴
+  #dropdown-menu{
     li{
       padding: 8px 16px 8px 16px;
-      margin-bottom: 5px;
-      font-family: "Roboto", "-apple-system", "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 14px;
       line-height: 1.5;
-      margin:0;
 
       &:hover{
          background: #0000001f;
