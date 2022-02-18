@@ -33,42 +33,44 @@ export default {
   /* router-link는 a태그로 처리 됨 */
   button,
   a {
-    text-decoration: none;
-    padding: 1.2rem 2.4rem;
-    font: inherit;
-    background-color: $secondary-color;
-    border: 1px solid $secondary-color;
-    color: white;
+    display: inline-block;
+    padding: 1.2rem 2rem;
+    background-color: $primary-color;
+    border: 1px solid $primary-color;
     cursor: pointer;
     border-radius: 30px;
-    margin-right: .8rem;
-    display: inline-block;
+    color: #fff;
+
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
   a:hover,
   a:active,
   button:hover,
   button:active {
-    background-color: #270041;
-    border-color: #270041;
+    background-color: darken($primary-color, 3%);
+    border-color: darken($primary-color, 3%);
   }
 
   .flat {
     background-color: transparent;
-    color: $secondary-color;
+    color: $primary-color;
     border: none;
   }
 
   .outline {
     background-color: transparent;
-    border-color: #270041;
-    color: #270041;
+    color: #000;
+    border: 1px solid black;
+    // border: 1px solid #000;
   }
 
   .flat:hover,
   .flat:active,
   .outline:hover,
   .outline:active {
-    background-color: #edd2ff;
+    background-color: $medium-color;
+    border-color: lightgray;
   }
 </style>

@@ -9,7 +9,7 @@ import BaseButton from './components/ui/BaseButton.vue'
 import BaseBadge from './components/ui/BaseBadge.vue'
 import BaseSpinner from './components/ui/BaseSpinner.vue'
 
-// import FontAwesome from 'font-awesome'
+import FontAwesomeIcon from "./utilities/font-awesome";
 
 
 // dialog는 필요할때만 import
@@ -28,6 +28,7 @@ app.component('base-badge',BaseBadge)
 app.component('base-spinner',BaseSpinner)
 app.component('base-dialog',BaseDialog)
 
-// app.component('font-awesome',FontAwesome)
+// 폰트어썸
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.mount('#app')

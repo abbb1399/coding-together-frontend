@@ -15,7 +15,9 @@
                 {{data.label}}
               </option>
             </select>
-            <base-button style="margin-left: 15px;" mode="outline" @click="loadCoaches(true)">새로고침</base-button>
+            <base-button style="margin-left: 15px;" mode="outline" @click="loadCoaches(true)">
+              <i class="fa-solid fa-rotate-right"></i>
+            </base-button>
           </div>
 
           <div>
@@ -157,6 +159,10 @@ export default {
     margin: auto;
   }
 
+  select{
+    border-radius: 5px;
+  }
+
   ul{
     list-style: none;;
     display: grid;
@@ -174,11 +180,12 @@ export default {
   }
 
   .page-heading h1{
-    font-size: 3.4rem;
+    font-size: 3.0rem;
   }
 
   .filter{
     display: flex;
+
     justify-content: space-between;
     margin-top: 1.6rem;
   }
