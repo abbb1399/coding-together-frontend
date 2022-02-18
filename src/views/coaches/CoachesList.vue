@@ -135,7 +135,7 @@ export default {
       const listArray = this.$store.getters['coaches/coaches']
 
       if(listArray.length){
-        this.page += 2
+        this.page += 4
         this.list.push(...listArray)
         $state.loaded()
       }else{
@@ -160,8 +160,8 @@ export default {
   ul{
     list-style: none;;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
   }
 
   .filter {

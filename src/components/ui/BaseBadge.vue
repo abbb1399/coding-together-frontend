@@ -36,13 +36,11 @@ export default {
 
 <style scoped>
   .badge {
-    background-color: #ccc;
-    color: #252525;
-    border-radius: 30px;
-    padding: .8rem 2.4rem;
     display: inline-block;
-    margin-right: .8rem;
-    font-size: 1.2rem;
+    border-radius: 30px;
+    padding: .8rem 1.4rem;
+    margin-right: 0.3rem;
+    font-size: 1rem;
   }
 
   .frontend {

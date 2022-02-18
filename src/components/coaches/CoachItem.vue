@@ -2,8 +2,8 @@
   <li @click="toDetail" >
     <img id="list-img" src="../../assets/ent1.jpg" alt="">
     <div>
-      <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
       <h3>{{ name }} by {{ownerName}}</h3>
+      <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
   </li>
 </template>
@@ -64,23 +64,23 @@ export default {
 <style scoped>
   li{
     display: flex;
+    flex-direction: column;
+
     border-radius: 5px;
-    background: #fff;
-    padding: 1.6rem;
-    grid-gap: 1.6rem;
     cursor:pointer;
-    /* align-items: center; */    
+
+    margin-bottom: 1.6rem;
   }
 
   h3{
-    margin-top: 1rem;
+    font-size: 1.6rem;
+    margin: 1rem 0;
     line-height: 1.3;
   }
 
   img{
-    width: 50%;
+    width: 100%;
     border-radius: 5px;
-    width: 255px;
-    height: 170px;
+    height: 17rem;
   }
 </style>
