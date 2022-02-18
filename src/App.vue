@@ -2,7 +2,7 @@
   <div id="main">
     <the-header></the-header>
 
-    <router-view v-slot="slotProps" >
+    <router-view v-slot="slotProps" style="flex:1;" >
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"></component>
       </transition>
@@ -60,10 +60,12 @@ export default {
   }
 
   html {
-    font-family: "Roboto", sans-serif;
+    // 10px
+    font-size: 62.5%;
   }
 
   body {
+    font-family: "Roboto", sans-serif;
     box-sizing: border-box;
   }
 

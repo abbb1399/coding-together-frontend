@@ -170,17 +170,17 @@ export default {
   }
 
   .page-heading{
-    padding: 48px 0 20px 0;
+    padding: 4.8rem 0 2rem 0;
   }
 
   .page-heading h1{
-    font-size: 34px;
+    font-size: 3.4rem;
   }
 
   .filter{
     display: flex;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 1.6rem;
   }
 
   .filter > div:first-child{

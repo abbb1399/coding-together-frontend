@@ -34,14 +34,14 @@ export default {
   button,
   a {
     text-decoration: none;
-    padding: 0.75rem 1.5rem;
+    padding: 1.2rem 2.4rem;
     font: inherit;
     background-color: $secondary-color;
     border: 1px solid $secondary-color;
     color: white;
     cursor: pointer;
     border-radius: 30px;
-    margin-right: 0.5rem;
+    margin-right: .8rem;
     display: inline-block;
   }
 

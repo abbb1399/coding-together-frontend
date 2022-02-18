@@ -141,19 +141,19 @@ export default {
 
 <style lang="scss" scoped>
   .form-control {
-    margin: 0.5rem 0;
+    margin: .8rem 0;
   }
 
   label {
     font-weight: bold;
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem;
   }
 
   input[type='checkbox'] + label {
     font-weight: normal;
     display: inline;
-    margin: 0 0 0 0.5rem;
+    margin: 0 0 0 .8rem;
   }
 
   input,
@@ -182,8 +182,8 @@ export default {
   }
 
   h3 {
-    margin: 0.5rem 0;
-    font-size: 1rem;
+    margin: .8rem 0;
+    font-size: 1.6rem;
   }
 
   .invalid label {

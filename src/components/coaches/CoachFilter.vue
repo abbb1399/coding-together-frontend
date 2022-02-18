@@ -48,18 +48,18 @@ export default {
 
 <style lang="scss" scoped>
   h2 {
-    margin: 0.5rem 0;
+    margin: .8rem 0;
   }
 
   .filter-option {
-    margin-right: 1rem;
+    margin-right: 1.6rem;
 
     label,input{
       vertical-align: middle;
     }
   
     label{
-      margin-left: 0.25rem;
+      margin-left: .4rem;
     }
   
     &.active label{

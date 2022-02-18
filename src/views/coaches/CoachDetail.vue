@@ -104,12 +104,12 @@ export default {
 
 <style scoped>
   #viewer{
-    margin-top: 25px;
+    margin-top: 2.5rem;
   }
 
   :deep(.toastui-editor-contents){
     font-family: inherit;
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 
   img{
@@ -117,7 +117,7 @@ export default {
   }
 
   .l-heading{
-    font-size: 3rem;
+    font-size: 4.8rem;
   }
 
   
@@ -126,6 +126,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     background: #eee;
-    padding: 0.5rem;
+    padding: 0.8rem;
   }
 </style>

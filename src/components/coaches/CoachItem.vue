@@ -66,14 +66,14 @@ export default {
     display: flex;
     border-radius: 5px;
     background: #fff;
-    padding: 1rem;
-    grid-gap: 1rem;
+    padding: 1.6rem;
+    grid-gap: 1.6rem;
     cursor:pointer;
     /* align-items: center; */    
   }
 
   h3{
-    margin-top: 10px;
+    margin-top: 1rem;
     line-height: 1.3;
   }
 

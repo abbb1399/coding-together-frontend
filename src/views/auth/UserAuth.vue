@@ -119,17 +119,17 @@ export default {
 
 <style lang="scss" scoped>
   form{
-    margin: 1rem;
-    padding: 1rem;
+    margin: 1.6rem;
+    padding: 1.6rem;
   }
   
   .form-control{
-    margin: 0.5rem 0 1rem 0;
+    margin: .8rem 0 1.6rem 0;
   }
   
   label{
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: .8rem;
     display: block;
   }
 
@@ -139,7 +139,7 @@ export default {
 
     font: inherit;
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: .5rem;
     border-radius: 5px;
   
     &:focus{
@@ -151,6 +151,6 @@ export default {
 
   .button-container{
     text-align: right;
-    margin-top: 40px;
+    margin-top: 4rem;
   }
 </style>

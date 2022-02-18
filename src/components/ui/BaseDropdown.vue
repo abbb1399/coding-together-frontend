@@ -57,7 +57,7 @@ export default {
 
     .dropdownMenu {
       position: fixed;
-      right: 50px;
+      right: 5rem;
       background: white;
       z-index: 999;
       outline: none;

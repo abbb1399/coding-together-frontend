@@ -8,8 +8,9 @@
   #main-footer{
     background: #444;
     color: #fff;
-    padding: 1.2rem 0;
+    height: 10vh;
+    padding: 3rem 0;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 1.2rem;
   }
 </style>

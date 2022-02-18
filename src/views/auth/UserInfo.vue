@@ -94,7 +94,7 @@ export default {
 
   .title {
     color: grey;
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 
   img{
@@ -105,13 +105,13 @@ export default {
     border: none;
     outline: 0;
     display: inline-block;
-    padding: 8px;
+    padding: 0.8rem;
     color: white;
     background-color: #000;
     text-align: center;
     cursor: pointer;
     width: 100%;
-    font-size: 18px;
+    font-size: 1.8rem;
   
     &:hover{
       background-color: lighten(#000, 70%);

@@ -39,10 +39,10 @@ export default {
     background-color: #ccc;
     color: #252525;
     border-radius: 30px;
-    padding: 0.5rem 1.5rem;
+    padding: .8rem 2.4rem;
     display: inline-block;
-    margin-right: 0.5rem;
-    font-size: 12px;
+    margin-right: .8rem;
+    font-size: 1.2rem;
   }
 
   .frontend {

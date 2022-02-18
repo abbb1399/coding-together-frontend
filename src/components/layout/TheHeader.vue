@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss" scoped>
   header {
-    height: 5rem;
+    height: 8rem;
     border-bottom: 1px $light-color solid;
     display: flex;
 
@@ -78,6 +78,7 @@ export default {
       h1 {
         a{
           font-family: 'Lobster', cursive;
+          font-size: 2.4rem;
           color: $primary-color;
 
           // &:hover,
@@ -99,7 +100,9 @@ export default {
 
           a{
             color: #333;
-            padding: 5px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            padding: .5rem;
           
             &:hover{
               border-bottom: 3px solid $medium-color;
@@ -119,8 +122,8 @@ export default {
   // 아바타 dropdown 메뉴
   #dropdown-menu{
     li{
-      padding: 8px 16px 8px 16px;
-      font-size: 14px;
+      padding: .8rem 1.6rem .8rem 1.6rem;
+      font-size: 1.4rem;
       line-height: 1.5;
 
       &:hover{
