@@ -8,7 +8,7 @@ import CoachRegistration from '../views/coaches/CoachRegistration.vue'
 // import ContactCoach from '../views/requests/ContactCoach.vue'
 import RequestsReceived from '../views/requests/RequestsReceived.vue'
 import UserAuth from '../views/auth/UserAuth.vue'
-import UserInfo from '../views/auth/UserInfo.vue'
+import MyPage from '../views/user/MyPage.vue'
 import Test from '../views/Test.vue'
 
 const routes = [
@@ -25,7 +25,7 @@ const routes = [
   {path:'/register', component: CoachRegistration, meta:{ requiresAuth: true}},
   {path: '/requests', component: RequestsReceived, meta:{ requiresAuth: true}},
   {path: '/auth', component: UserAuth, meta:{ requiresUnauth: true}},
-  {path: '/user-info', name:'userInfo', component:UserInfo, meta:{ requiresAuth: true}},
+  {path: '/mypage', name:'myPage', component:MyPage, meta:{ requiresAuth: true}},
 
 
   {path:'/test', component: Test},

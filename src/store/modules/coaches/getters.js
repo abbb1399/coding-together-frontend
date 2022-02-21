@@ -24,7 +24,8 @@ export default {
   },
   getUploadFileName(state){
     return state.fileName
+  },
+  getMyPageList(state){
+    return state.myList
   }
-
-
 }

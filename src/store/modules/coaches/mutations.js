@@ -10,6 +10,9 @@ export default {
   },
   setUploadFileName(state, fileName){
     state.fileName = fileName
+  },
+  setMyList(state, myList){
+    state.myList = myList
   }
 
 }

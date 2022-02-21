@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="app-main">
     <the-header></the-header>
 
     <router-view v-slot="slotProps" style="flex:1;" >
@@ -50,7 +50,6 @@ export default {
   // Loboto, Lobster 폰트
   @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
   
-  
   *,
   *::after,
   *::before{
@@ -72,7 +71,7 @@ export default {
     text-decoration: none;
   }
 
-  #main{
+  #app-main{
     min-height: 100vh;
     display: flex; 
     flex-direction:column; 

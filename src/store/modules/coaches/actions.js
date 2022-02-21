@@ -95,6 +95,19 @@ export default {
     }
   },
 
+  async fetchMyList(context){
+    try{
+      const token = context.rootGetters.token
+      const { data } = await axios.get(`http://localhost:3000/my-list`,
+       { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+      context.commit('setMyList', data)
+    }catch(e){
+      console.log(e)
+    }
+  },
+
   async uploadImage(context,file){
     try{
       const {data} = await axios.post(
