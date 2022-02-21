@@ -33,7 +33,9 @@
           <!-- 회원가입/로그인 -->
           <base-button>{{submitButtonCaption}}</base-button>
           <!-- 회원가입/로그인 하러가기-->
-          <base-button type="button" mode="flat" @click="switchAuthMode">{{switchModeButtonCaption}}</base-button>
+          <base-button type="button" mode="secondary" @click="switchAuthMode" style="margin-left:0.2rem;" >
+            {{switchModeButtonCaption}}
+          </base-button>
         </div>
       </form>
     </base-card>
@@ -119,17 +121,17 @@ export default {
 
 <style lang="scss" scoped>
   form{
-    margin: 1.6rem;
-    padding: 1.6rem;
+    margin: 1rem;
+    padding: 1rem;
   }
   
   .form-control{
-    margin: .8rem 0 1.6rem 0;
+    margin: 0.5rem 0 1rem 0;
   }
   
   label{
     font-weight: bold;
-    margin-bottom: .8rem;
+    margin-bottom: 0.5rem;
     display: block;
   }
 
@@ -139,18 +141,18 @@ export default {
 
     font: inherit;
     border: 1px solid #ccc;
-    padding: .5rem;
+    padding: 0.3125rem;
     border-radius: 5px;
   
     &:focus{
-      border-color: #3d008d;
-      background-color: #faf6ff;
+      border-color: $primary-color;
+      background-color: $primary-bg-color;
       outline: none;   
     }
   }
 
   .button-container{
     text-align: right;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 </style>

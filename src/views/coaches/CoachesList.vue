@@ -7,7 +7,7 @@
       </base-dialog>
       
       <header class="page-heading">
-        <h1>동료 찾기</h1>
+        <h1>동료 찾기 </h1>
         <div class="filter">
           <div>
             <select v-model="selectType" @change="changeType">
@@ -15,9 +15,9 @@
                 {{data.label}}
               </option>
             </select>
-            <base-button style="margin-left: 15px;" mode="outline" @click="loadCoaches(true)">
-              <i class="fa-solid fa-rotate-right"></i>
-            </base-button>
+            <!-- <base-button id="refresh-btn" mode="secondary" @click="loadCoaches(true)">
+              <font-awesome-icon icon="rotate-right"/>
+            </base-button> -->
           </div>
 
           <div>
@@ -161,6 +161,9 @@ export default {
 
   select{
     border-radius: 5px;
+    width: 130px;
+    margin-right: 15px;
+    font-weight: 700;
   }
 
   ul{
@@ -172,25 +175,31 @@ export default {
 
   .filter {
     display: flex;
+    margin-top:0;
     /* justify-content: space-between; */
   }
 
   .page-heading{
-    padding: 4.8rem 0 2rem 0;
+    padding: 48px 0 20px 0;
   }
 
   .page-heading h1{
-    font-size: 3.0rem;
+    font-size: 34px;
   }
 
   .filter{
     display: flex;
 
-    justify-content: space-between;
-    margin-top: 1.6rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
   }
 
   .filter > div:first-child{
     display: flex;
   }
+
+  h1{
+    text-align: center;
+  }
+
 </style>

@@ -38,9 +38,9 @@ export default {
   .badge {
     display: inline-block;
     border-radius: 30px;
-    padding: .8rem 1.4rem;
-    margin-right: 0.3rem;
-    font-size: 1rem;
+    padding: 0.5rem 0.875rem;
+    margin-right: 0.18rem;
+    font-size: 0.625rem;
   }
 
   .frontend {

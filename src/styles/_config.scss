@@ -1,24 +1,26 @@
- // 변수
- $primary-color: #00c7ae;
- $secondary-color: #3a0061;
- 
- $text-color: #f0f4f5;
- $background-color: #263343;
- $accent-color: pink;
- 
- $dark-color: #333;
- $medium-color: #ccc;
- $light-color: #e9ecef;
+// 변수
+$primary-color: #00c7ae;
+$secondary-color: #0B83D4;
+$tertiary-color: #0BC1DE;
+$quaternary-color: #0BDE86;
+$quinary-color: #0BD447;
 
- $main-color: #ffbc00;
+$primary-bg-color: #eafaf9;
 
- $website-width: 1280px;
+$text-color: #f0f4f5;
+$background-color: #263343;
+
+$dark-color: #333;
+$medium-color: #ccc;
+$light-color: #e9ecef;
+
+$website-width: 1280px;
  
- // 배경화면에 따른 text 컬러 변경시켜주는 함수
- @function set-text-color($backGroundColor) {
-   @if (lightness($backGroundColor) > 50) {
-     @return #000;
-   } @else {
-     @return #fff;
-   }
- }
+// 배경화면에 따른 text 컬러 변경시켜주는 함수
+@function set-text-color($backGroundColor) {
+  @if (lightness($backGroundColor) > 50) {
+    @return #000;
+  } @else {
+    @return #fff;
+  }
+} 

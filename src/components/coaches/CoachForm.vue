@@ -2,7 +2,7 @@
   <form @submit.prevent="submitForm">
     <div class="form-control" :class="{invalid: !name.isValid}">
       <label for="name">이름</label>
-      <input type="text" id="name" v-model.trim="name.val" v-focus required @blur="clearValidity('name')" > 
+      <input type="text" id="name" v-model.trim="name.val" v-focus required @blur="clearValidity('name')" @keydown.tab="useTab"> 
       <p v-if="!name.isValid">이름은 반드시 입력되야 합니다.</p>
     </div>
     
@@ -14,7 +14,7 @@
     </div>
     
     <div class="form-control" :class="{invalid: !areas.isValid}"> 
-      <h3>분야</h3>
+      <label for="frontend">분야</label>
       <div>
         <input type="checkbox" id="frontend" value="frontend" v-model="areas.val" @blur="clearValidity('areas')"> 
         <label for="frontend">프론트엔드 개발자</label>
@@ -31,8 +31,9 @@
     </div>
 
     <div class="form-control">
-      <h3>썸네일 첨부</h3>
+      <label for="file">썸내일</label>
       <input 
+        id="file"
         type="file" 
         name="thumbnail"
         accept="image/png, image/jpeg"
@@ -41,7 +42,11 @@
     </div>
 
     <p v-if="!formIsValid">제대로 입력 하신 후, 다시 등록해주세요.</p>
-    <base-button>등록</base-button>
+    
+    <div id="btn-container">
+      <base-button>등록</base-button>
+    </div>
+
   </form>
 </template>
 
@@ -134,65 +139,84 @@ export default {
       }
       this.$emit('save-data', formData)
     },
+    useTab(){
+      // 버전업 필요 
+      // this.tuiEditor.focus()
+    }
   }
 }
 </script>
 
+<style>
+  /* .toastui-editor-contents {
+    font-size: 20px;
+  } */
+</style>
 
 <style lang="scss" scoped>
+   :deep(.toastui-editor-contents){
+    font:inherit;
+  }
+
   .form-control {
-    margin: .8rem 0;
+    margin: 0.5rem 0;
   }
 
   label {
     font-weight: bold;
     display: block;
-    margin-bottom: .5rem;
+    margin: 1.2rem 0 0.5rem 0;
   }
 
-  input[type='checkbox'] + label {
-    font-weight: normal;
-    display: inline;
-    margin: 0 0 0 .8rem;
-  }
-
-  input,
-  textarea {
+  input{
     display: block;
     width: 100%;
     border: 1px solid #ccc;
     font: inherit;
+  
+    &[type='text']{
+      padding: 5px;
+    }
+
+    &[type='checkbox'] {
+      display: inline;
+      width: auto;
+      border: none;
+    }
+
+    &[type='checkbox'] + label {
+      font-weight: normal;
+      display: inline;
+      margin: 0 0 0 0.5rem;
+    }
+
+    &:focus{
+      border-color: $primary-color;
+      background-color: $primary-bg-color;
+      outline: none;
+    }  
   }
 
-  input:focus,
-  textarea:focus {
-    background-color: #f0e6fd;
-    outline: none;
-    border-color: #3d008d;
+  .invalid{
+    label {
+      color: red;
+    }
+    input{
+      border: 1px solid red;
+    }
   }
 
-  input[type='checkbox'] {
-    display: inline;
-    width: auto;
-    border: none;
-  }
 
-  input[type='checkbox']:focus {
-    outline: #3d008d solid 1px;
-  }
 
-  h3 {
-    margin: .8rem 0;
-    font-size: 1.6rem;
-  }
+  #btn-container{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
 
-  .invalid label {
-    color: red;
-  }
-
-  .invalid input,
-  .invalid textarea {
-    border: 1px solid red;
+    *{
+      font-size: 1rem;
+      width: 7rem;
+    }
   }
 </style>      
 

@@ -1,10 +1,11 @@
 <template>
-  <button v-if="!link" :class="mode">
-    <slot></slot>
-  </button>
-  <router-link v-else :to="to" :class="mode">
+  <router-link v-if="link" :to="to" :class="mode">
     <slot></slot>
   </router-link>
+  <button v-else :class="mode">
+    <slot></slot>
+  </button>
+  
 </template>
 
 <script>
@@ -34,43 +35,51 @@ export default {
   button,
   a {
     display: inline-block;
-    padding: 1.2rem 2rem;
+    padding: 0.75rem 1.25rem;
     background-color: $primary-color;
     border: 1px solid $primary-color;
     cursor: pointer;
     border-radius: 30px;
     color: #fff;
 
-    font-size: 1.2rem;
+    font-size: 0.75rem;
     font-weight: bold;
+
+
+    &:hover,
+    &:active{
+      background-color: darken($primary-color, 3%);
+    }
+
   }
 
-  a:hover,
-  a:active,
-  button:hover,
-  button:active {
-    background-color: darken($primary-color, 3%);
-    border-color: darken($primary-color, 3%);
-  }
-
-  .flat {
-    background-color: transparent;
-    color: $primary-color;
+  .secondary{
+    background: $secondary-color;
     border: none;
+
+    &:hover{
+      background: darken($secondary-color, 3%);
+    }
   }
 
-  .outline {
-    background-color: transparent;
-    color: #000;
-    border: 1px solid black;
-    // border: 1px solid #000;
-  }
+  // .flat {
+  //   background-color: transparent;
+  //   color: $primary-color;
+  //   border: none;
+  // }
 
-  .flat:hover,
-  .flat:active,
-  .outline:hover,
-  .outline:active {
-    background-color: $medium-color;
-    border-color: lightgray;
-  }
+  // .outline {
+  //   background-color: transparent;
+  //   color: #000;
+  //   border: 1px solid black;
+  //   // border: 1px solid #000;
+  // }
+
+  // .flat:hover,
+  // .flat:active,
+  // .outline:hover,
+  // .outline:active {
+  //   background-color: $medium-color;
+  //   border-color: lightgray;
+  // }
 </style>

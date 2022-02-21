@@ -1,19 +1,31 @@
 <template>
-  <div class="card">
+  <div class="card" :class="cardWidth">
     <slot></slot>
   </div>
 </template>
 
+<script>
+export default {
+  props:{
+    cardWidth:{
+      type:String,
+      required: false
+    }
+  }
+}
+</script>
+
 <style scoped>
   .card{
-    border-radius: 1.2rem;
-    box-shadow:0 .2rem .8rem rgba(0, 0, 0, 0.26);
-    /*  */
-    padding: 1.6rem;
-    /*  */
-    margin: 3.2rem auto;
-    
-    max-width: 64rem;
+    border-radius: 12px;
+    box-shadow:0 2px 8px rgba(0, 0, 0, 0.26);
+    padding: 1rem;
+    margin: 2rem auto;
+    max-width: 40rem;
     background: #fff;
+  }
+  
+  .large-card{
+    max-width: 50rem;
   }
 </style>

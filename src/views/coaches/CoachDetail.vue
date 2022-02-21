@@ -1,24 +1,24 @@
 <template>
   <div>
     <section>
-      <base-card>
-        <img src="../../assets/ent1.jpg" alt="">
+      <base-card :card-width="cardWidth">
+        <img id="thumbnail" :src="imgSrc" alt="썸내일">
         <h1 class="l-heading">{{name}}</h1> 
         <div class="meta">
           <small>
             <i class="fas fa-user"></i> Written By {{getOwnerName}} {{updatedAt}}
           </small>
-          <!-- <div class="category category-ent">Entertainment</div> -->
-          <base-badge v-for="area in areas" :key="area" :type="area" :title="area" ></base-badge>
+          <div>
+            <base-badge class="bagde" v-for="area in areas" :key="area" :type="area" :title="area"/>
+          </div>
         </div>
 
-       
         <div id="viewer"/>
       </base-card>
     </section>
 
     <section>
-      <base-card>
+      <base-card :card-width="cardWidth">
         <header>
           <h2>관심있나요? 지금 신청하세요!</h2>
           <!-- <base-button link :to="contactLink">연락하기</base-button> -->
@@ -63,17 +63,24 @@ export default {
       name:'',
       areas:[],
       updatedAt:'',
-      description:''
+      description:'',
+      cardWidth:'large-card',
+      imgSrc: require('../../assets/ent1.jpg')
     }
   },
   async created(){
     await this.loadCoaches()
     
     const info = this.$store.getters['coaches/coaches'].find(coach => coach.owner === this.owner)
+
     this.name = info.name
     this.areas = info.areas
     this.description = info.description
     this.updatedAt = this.$moment(info.updatedAt).format('YYYY-MM-DD')
+
+    if(info.thumbnail){
+      this.imgSrc =  `http://localhost:3000/images/${info.thumbnail}`
+    }
 
     new Viewer({
       el: document.querySelector('#viewer'),
@@ -82,9 +89,6 @@ export default {
     });
 
 
-  },
-  mounted(){
-    
   },
   methods:{
     async loadCoaches(refresh = false) {
@@ -96,20 +100,18 @@ export default {
       }
       this.isLoading = false
     },
-
   }
 }
 </script>
 
 
-<style scoped>
-  #viewer{
-    margin-top: 2.5rem;
-  }
-
+<style lang="scss" scoped>
   :deep(.toastui-editor-contents){
-    font-family: inherit;
-    font-size: 1.8rem;
+    font: inherit;
+  }
+  
+  #viewer{
+    margin-top: 1.56rem;
   }
 
   img{
@@ -117,15 +119,24 @@ export default {
   }
 
   .l-heading{
-    font-size: 4.8rem;
+    font-size: 3rem;
   }
 
+  #thumbnail{
+    height: 32rem;
+  }
   
   .meta{
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #eee;
-    padding: 0.8rem;
+    padding: 0.5rem;
+
+    .badge{
+      text-align: center;
+      font-size: 12px;
+      width: 5.5rem;
+    }
   }
 </style>

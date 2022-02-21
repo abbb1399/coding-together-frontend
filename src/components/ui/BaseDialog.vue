@@ -80,7 +80,7 @@ export default {
     background-color: #3a0061;
     color: white;
     width: 100%;
-    padding: 1.6rem;
+    padding: 1rem;
 
     h2{
       margin: 0;
@@ -88,11 +88,11 @@ export default {
   }
 
   section {
-    padding: 1.6rem;
+    padding: 1rem;
   }
 
   menu {
-    padding: 1.6rem;
+    padding: 1rem;
     display: flex;
     justify-content: flex-end;
     margin: 0;
@@ -120,8 +120,8 @@ export default {
 
   @media(min-width: 768px){
     dialog{
-      left: calc(50% - 32rem);
-      width: 64rem;
+      left: calc(50% - 20rem);
+      width: 40rem;
     }
   }
 </style>

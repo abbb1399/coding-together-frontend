@@ -51,6 +51,7 @@ export default {
           description: element.description,
           areas: element.areas,
           owner: element.owner,
+          thumbnail: element.thumbnail,
           updatedAt: element.updatedAt
         }
         coaches.push(dataObj)

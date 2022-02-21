@@ -69,18 +69,18 @@ export default {
     border-radius: 5px;
     cursor:pointer;
 
-    margin-bottom: 1.6rem;
+    margin-bottom: 1rem;
   }
 
   h3{
-    font-size: 1.6rem;
-    margin: 1rem 0;
+    font-size: 1rem;
+    margin: 0.625rem 0;
     line-height: 1.3;
   }
 
   img{
     width: 100%;
     border-radius: 5px;
-    height: 17rem;
+    height: 10.6rem;
   }
 </style>

@@ -55,7 +55,7 @@ export default {
       menu.classList.toggle('active');
     },
     toUserInfo(){
-      this.$router.push('user-info')
+      this.$router.push({name:'userInfo'})
     }
   }
 }
@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss" scoped>
   header {
-    height: 8rem;
+    height: 5rem;
     border-bottom: 1px $light-color solid;
     display: flex;
 
@@ -78,7 +78,7 @@ export default {
       h1 {
         a{
           font-family: 'Lobster', cursive;
-          font-size: 2.4rem;
+          font-size: 1.5rem;
           color: $primary-color;
 
           // &:hover,
@@ -96,13 +96,13 @@ export default {
         align-items: center;
 
         li {
-          padding: 0 1rem;
+          padding: 0 0.625rem;
 
           a{
             color: #333;
-            font-size: 1.6rem;
+            font-size: 1rem;
             font-weight: 700;
-            padding: .5rem;
+            padding: 0.3rem;
           
             &:hover{
               border-bottom: 3px solid $medium-color;
@@ -122,8 +122,8 @@ export default {
   // 아바타 dropdown 메뉴
   #dropdown-menu{
     li{
-      padding: .8rem 1.6rem .8rem 1.6rem;
-      font-size: 1.4rem;
+      padding: .5rem 1rem .5rem 1rem;
+      font-size: 0.875rem;
       line-height: 1.5;
 
       &:hover{

@@ -1,7 +1,7 @@
 <template>
   <section>
     <base-card>
-      <h2>지금 코치로 등록하세요!</h2>
+      <h2>동료를 모아 보세요!</h2>
       <coach-form @save-data="saveData"></coach-form>
     </base-card>
   </section>
@@ -22,3 +22,7 @@ export default {
   }
 }
 </script>
+
+<style scoped> 
+ 
+</style>

@@ -1,20 +1,44 @@
 <template>
-  <base-card>
-    <div class="card">
-      <img @click="imageUpload" id="myImage" alt="내 이미지" style="width:100%" src="../../assets/avatar.jpg">
-      <h1>{{name}}</h1>
-      <p class="title">{{email}}</p>
-      <p>가입일: {{createdAt}}</p>
-      <p><button @click="deleteAccount">회원 탈퇴</button></p>
-    </div>
+  <section id="article">
+    <div class="container">
+      <div class="page-container">
+        <aside id="categories" class="card">
+          <h2>내 정보</h2>
+          <ul class="list">
+            <li>
+              <a href="#"><i class="fas fa-chevron-right"></i>프로필</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-chevron-right"></i>Entertainment</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-chevron-right"></i>Technology</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-chevron-right"></i>Fashion</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-chevron-right"></i>Shopping</a>
+            </li>
+          </ul>
+        </aside>
 
-    <div>
-      <ul>
-        <li>내가 쓴글</li>
-      </ul>
+        <article class="card">
+          <img src="../../assets/ent1.jpg" alt="">
+          <h1 class="l-heading">Lorem ipsum dolor sit amet.</h1>
+          <div class="meta">
+            <small>
+              <i class="fas fa-user"></i> Written By John Doe January 12, 2019
+            </small>
+            <div class="category category-ent">Entertainment</div>
+          </div>
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore debitis beatae ad doloremque voluptate, blanditiis suscipit error quam fugit sapiente, aliquid quia libero incidunt recusandae enim voluptas nulla sequi similique? Temporibus ad est minima magni molestias obcaecati consequatur cumque exercitationem deleniti eos, animi facere recusandae, pariatur eveniet neque? Voluptatem, molestias.</p>
+          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Beatae dignissimos dolorum ipsam corporis similique! Quis, esse minus? Ducimus tempore provident sunt officia? Velit temporibus harum voluptate, ipsum quisquam rerum doloremque consectetur quos incidunt deleniti dicta excepturi ratione, fugiat ad fuga in nam dolorum aut minus esse voluptatum suscipit et quae. Repellendus minus, ratione aperiam commodi voluptas iusto aliquam sapiente. Aut obcaecati, corporis praesentium porro nostrum excepturi animi repellendus incidunt non quis nisi assumenda voluptas possimus molestiae laboriosam iure sed architecto in perferendis magnam blanditiis voluptatum placeat labore odio? Unde id dolore aliquam, quas sit harum, saepe maiores facilis aliquid molestiae qui. Praesentium rerum, minima fugit laudantium quaerat voluptatem pariatur sequi saepe blanditiis nobis natus possimus quo, assumenda numquam sit, eaque accusamus incidunt exercitationem quis deleniti quisquam corrupti vel? Ut quisquam consequatur, doloribus voluptatibus iusto quaerat, sint non magnam reiciendis amet quos sapiente excepturi omnis laboriosam nobis, expedita delectus odio provident?</p>
+        </article>
+    
+      </div>
     </div>
-
-  </base-card>
+  </section>
 </template>
 
 <script>
@@ -32,9 +56,9 @@ export default {
   },
   async created(){
     // 내 정보 불러오기
-    await this.getMyInfo()  
+    // await this.getMyInfo()  
     // 내 아바타 불러오기
-    await this.getMyAvatar()
+    // await this.getMyAvatar()
   },
   methods:{
     async getMyInfo(){
@@ -85,36 +109,111 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
-    /* margin: auto; */
-    text-align: center;
-  }
+.category{
+  --ent-color: #a66bbe;
+}
 
-  .title {
-    color: grey;
-    font-size: 1.8rem;
-  }
+a{
+  color: #333;
+}
 
-  img{
-    cursor:pointer
-  }
+p{
+  margin: .5rem 0;
+}
 
-  button {
-    border: none;
-    outline: 0;
-    display: inline-block;
-    padding: 0.8rem;
-    color: white;
-    background-color: #000;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1.8rem;
-  
-    &:hover{
-      background-color: lighten(#000, 70%);
-    }
-  }
+img{
+  width: 100%;
+}
+
+
+/* Utility */
+.container{
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 2rem;
+  overflow: hidden;
+}
+
+.category{
+  display: inline-block;
+  color: #fff;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  padding: 0.4rem 0.6rem;
+  border-radius: 15px;
+  margin-bottom: 0.5rem;
+}
+
+.category-ent{ background: var(--ent-color);}
+
+.btn{
+  display: inline-block;
+  border: none;
+  background: black;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+}
+
+
+.btn-block{
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.btn:hover{
+  opacity: 0.9;
+}
+
+.card{
+  background: #fff;
+  padding: 1rem;
+}
+
+
+.bg-secondary{
+  background: orangered;
+  color: #fff;
+}
+
+
+.l-heading{
+  font-size: 3rem;
+}
+
+
+.list li{
+  padding: .5rem 0;
+  border-bottom:  #555 dotted 1px;
+  width: 90%;
+}
+
+.list li a:hover{
+  color: $primary-color;
+}
+
+/* Inner page grid container */
+.page-container{
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  margin: 2rem 0;
+  gap: 1.5rem;
+}
+
+
+#article .meta{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eee;
+  padding: 0.5rem;
+}
+
+#article .meta .category{
+  margin-top: 0.4rem;
+}
+
+h2{
+  margin-bottom: 1rem;
+}
 </style>

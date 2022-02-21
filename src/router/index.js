@@ -25,7 +25,7 @@ const routes = [
   {path:'/register', component: CoachRegistration, meta:{ requiresAuth: true}},
   {path: '/requests', component: RequestsReceived, meta:{ requiresAuth: true}},
   {path: '/auth', component: UserAuth, meta:{ requiresUnauth: true}},
-  {path: '/user-info', component:UserInfo, meta:{ requiresAuth: true}},
+  {path: '/user-info', name:'userInfo', component:UserInfo, meta:{ requiresAuth: true}},
 
 
   {path:'/test', component: Test},

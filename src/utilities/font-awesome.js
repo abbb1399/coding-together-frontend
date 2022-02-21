@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faPhone } from "@fortawesome/free-solid-svg-icons"
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons"
 
-library.add(faPhone)
+library.add(faRotateRight)
 
 export default FontAwesomeIcon

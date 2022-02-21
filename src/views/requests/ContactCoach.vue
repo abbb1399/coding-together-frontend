@@ -2,7 +2,7 @@
   <form @submit.prevent="submitForm">
     <div class="form-control">
       <label for="email">당신의 이메일</label>
-      <input type="email" id="email" v-model.trim="email" v-focus>
+      <input type="email" id="email" v-model.trim="email">
     </div>
     <div class="form-control">
       <label for="message">메세지</label>
@@ -59,7 +59,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   form {
     margin: 1rem;
     border: 1px solid #ccc;
@@ -83,14 +83,14 @@ export default {
     width: 100%;
     font: inherit;
     border: 1px solid #ccc;
-    padding: 0.15rem;
-  }
+    padding: 0.3rem;
+    border-radius: 5px;
 
-  input:focus,
-  textarea:focus {
-    border-color: #3d008d;
-    background-color: #faf6ff;
-    outline: none;
+    &:focus{
+      border-color: $primary-color;
+      background-color: $primary-bg-color;
+      outline: none;
+    }
   }
 
   .errors {
@@ -99,6 +99,12 @@ export default {
   }
 
   .actions {
+    margin-top: 1.2rem;
     text-align: center;
+
+    *{
+      font-size: 1rem;
+      width: 11rem;
+    }
   }
 </style>

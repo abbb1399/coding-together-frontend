@@ -59,11 +59,6 @@ export default {
     box-sizing: inherit;
   }
 
-  html {
-    // 10px
-    font-size: 62.5%;
-  }
-
   body {
     font-family: "Roboto", sans-serif;
     box-sizing: border-box;

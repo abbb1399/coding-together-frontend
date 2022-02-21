@@ -32,9 +32,9 @@ export default {
 
 <style lang="scss" scoped>
   li {
-    margin: 1.6rem 0;
+    margin: 1rem 0;
     border: 1px solid #ccc;
-    padding: 1.6rem;
+    padding: 1rem;
   }
 
   a {
