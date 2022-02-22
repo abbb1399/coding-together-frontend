@@ -34,8 +34,8 @@ const routes = [
     component:MyPage, 
     meta:{ requiresAuth: true},
     children:[
-      {path:'profile', component: MyProfile},
-      {path:'list', component: MyList},
+      {path:'profile', name:"myProfile", component: MyProfile},
+      {path:'list', name:"MyList", component: MyList},
     ]
   },
   {path:'/test', component: Test},
