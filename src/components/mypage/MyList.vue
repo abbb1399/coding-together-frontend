@@ -7,7 +7,7 @@
         <base-badge class="badge" v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>  
       </p>
     </header>
-    <img id="list-img" src="../../assets/ent1.jpg" alt="">
+    <img id="list-img" :src="imgSrc" alt="글 이미지">
     
     <div id="viewer"/>
  
@@ -25,7 +25,8 @@ export default {
       title:'',
       createdAt:'',
       description:'',
-      areas:[]
+      areas:[],
+      imgSrc:null
     }
   },
   async created(){
@@ -38,13 +39,13 @@ export default {
   },
   methods:{
     async getMyList(){
-      await this.$store.dispatch('coaches/fetchMyList')
-      const myList = {...this.$store.getters['coaches/getMyPageList']}
-
+      await this.$store.dispatch('articles/fetchMyArticle')
+      const myList = {...this.$store.getters['articles/getMyPageList']}
       this.title = myList.name
       this.createdAt = this.$moment(myList.createdAt).format('YYYY-MM-DD')
       this.description = myList.description
       this.areas = myList.areas
+      this.imgSrc = `http://localhost:3000/images/${myList.thumbnail}`
     }
   }
 }
@@ -81,7 +82,7 @@ export default {
       font-style: italic;
       border-top: 1px solid rgba(144, 144, 144, 0.25);
       border-bottom: 1px solid rgba(144, 144, 144, 0.25);
-      padding: .5em 0;
+      padding: 5px 0;
     }
   }
 

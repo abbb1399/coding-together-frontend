@@ -29,8 +29,8 @@ export default {
   },
   methods:{
     async infiniteHandler($state){
-      await this.$store.dispatch('coaches/moreLoadCoaches', this.page)
-      const array = this.$store.getters['coaches/coaches']
+      await this.$store.dispatch('articles/moreLoadArticles', this.page)
+      const array = this.$store.getters['articles/articles']
       console.log(array)
       // console.log('배열 갯수 : '+array)
 

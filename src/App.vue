@@ -36,7 +36,7 @@ export default {
     didAutoLogout(curValue, oldValue){
       // curval이 true고(autologout 한거고) 값이 변한거면
       if(curValue && curValue !== oldValue){
-        this.$router.replace('/coaches')
+        this.$router.replace('/articles')
       }
     } 
   },

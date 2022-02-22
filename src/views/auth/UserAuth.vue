@@ -95,7 +95,7 @@ export default {
         // 회원가입
           await this.$store.dispatch('signup', userInfo)
         }
-        const redirectUrl = '/' + (this.$route.query.redirect || 'coaches')
+        const redirectUrl = '/' + (this.$route.query.redirect || 'articles')
         this.$router.replace(redirectUrl)
       
       }catch(err){

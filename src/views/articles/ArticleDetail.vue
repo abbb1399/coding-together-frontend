@@ -23,7 +23,7 @@
           <h2>관심있나요? 지금 신청하세요!</h2>
           <!-- <base-button link :to="contactLink">연락하기</base-button> -->
         </header>
-        <contact-coach></contact-coach>
+        <contact-owner></contact-owner>
         <!-- <router-view></router-view> -->
       </base-card>
     </section>
@@ -35,11 +35,11 @@
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 // import '@toast-ui/editor/dist/toastui-editor.css'
-import ContactCoach from '../requests/ContactCoach.vue'
+import ContactOwner from '../requests/ContactOwner.vue'
 
 export default {
   components:{
-    ContactCoach
+    ContactOwner
   },
   // router로 props 넘김
   props:{
@@ -69,9 +69,9 @@ export default {
     }
   },
   async created(){
-    await this.loadCoaches()
+    await this.loadArticles()
     
-    const info = this.$store.getters['coaches/coaches'].find(coach => coach.owner === this.owner)
+    const info = this.$store.getters['articles/articles'].find(coach => coach.owner === this.owner)
 
     this.name = info.name
     this.areas = info.areas
@@ -91,10 +91,10 @@ export default {
 
   },
   methods:{
-    async loadCoaches(refresh = false) {
+    async loadArticles(refresh = false) {
       this.isLoading = true
       try{
-        await this.$store.dispatch('coaches/loadCoaches', { forceRefresh : refresh})
+        await this.$store.dispatch('articles/loadArticles', { forceRefresh : refresh})
       }catch(error){
         this.error = error.message || '에러 발생!'
       }

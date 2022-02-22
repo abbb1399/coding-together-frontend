@@ -53,7 +53,7 @@ export default {
         message: this.message,
         coachId: this.$route.params.owner
       })
-      this.$router.replace('/coaches')
+      this.$router.replace('/articles')
     }
   }
 }

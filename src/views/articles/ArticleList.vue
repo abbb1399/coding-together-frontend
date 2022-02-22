@@ -15,7 +15,7 @@
                 {{data.label}}
               </option>
             </select>
-            <!-- <base-button id="refresh-btn" mode="secondary" @click="loadCoaches(true)">
+            <!-- <base-button id="refresh-btn" mode="secondary" @click="loadArticles(true)">
               <font-awesome-icon icon="rotate-right"/>
             </base-button> -->
           </div>
@@ -31,9 +31,9 @@
         <base-spinner></base-spinner>
       </div>
       
-      <!-- <ul v-else-if="hasCoaches"> -->
+      <!-- <ul v-else-if="hasArticles"> -->
       <ul v-else>
-        <coach-item
+        <article-item
           v-for="coach in list"
           :key="coach.id"
           :name="coach.name"
@@ -41,7 +41,7 @@
           :owner="coach.owner"
           :thumbnail="coach.thumbnail"
         >
-        </coach-item>
+        </article-item>
       </ul>
       <!-- <h3 v-else>목록이 없습니다.</h3> -->
       <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
@@ -52,13 +52,13 @@
 </template>
 
 <script>
-import CoachItem from '../../components/coaches/CoachItem.vue'
-// import CoachFilter from '../../components/coaches/CoachFilter.vue'
+import ArticleItem from '../../components/articles/ArticleItem.vue'
+// import CoachFilter from '../../components/articles/CoachFilter.vue'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
    components:{
-      CoachItem,
+      ArticleItem,
       // CoachFilter,
       InfiniteLoading
    },
@@ -82,18 +82,18 @@ export default {
     isLoggedIn(){
       return this.$store.getters.isAuthenticated
     },
-    isCoach(){
-      // console.log(this.$store.getters['coaches/isCoach'])
+    isArticle(){
+      // console.log(this.$store.getters['articles/isArticle'])
       console.log(this.list)
-      return this.$store.getters['coaches/isCoach']
+      return this.$store.getters['articles/isArticle']
     },
  
-    hasCoaches(){
-      return !this.isLoading && this.$store.getters['coaches/hasCoaches']
+    hasArticles(){
+      return !this.isLoading && this.$store.getters['articles/hasArticles']
     }
   },
   created(){
-    this.loadCoaches()
+    this.loadArticles()
   },
   methods:{
     setFilters(updatedFilters){
@@ -111,13 +111,13 @@ export default {
       //   filter: array
       // }
 
-      // this.$store.dispatch('coaches/moreLoadCoaches', payload)
+      // this.$store.dispatch('articles/moreLoadCoaches', payload)
       // console.log(this.$store.getters['coaches/coaches'])
     },
-    async loadCoaches(refresh = false) { //default value
+    async loadArticles(refresh = false) { //default value
       this.isLoading = true
       try{
-        await this.$store.dispatch('coaches/loadCoaches', { forceRefresh : refresh})
+        await this.$store.dispatch('articles/loadArticles', { forceRefresh : refresh})
       }catch(error){
         this.error = error.message || '에러 발생!'
       }
@@ -132,9 +132,9 @@ export default {
         filter: this.selectType
       }
 
-      await this.$store.dispatch('coaches/moreLoadCoaches', payload)
+      await this.$store.dispatch('articles/moreLoadArticles', payload)
       
-      const listArray = this.$store.getters['coaches/coaches']
+      const listArray = this.$store.getters['articles/articles']
 
       if(listArray.length){
         this.page += 4

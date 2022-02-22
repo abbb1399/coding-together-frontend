@@ -1,10 +1,10 @@
 const axios = require('axios');
 
 export default {
-  async registerCoach(context, data){
+  async registerArticle(context, data){
     const userId = context.rootGetters.userId
 
-    const coachData = {
+    const articleData = {
       name : data.name,
       description : data.desc,
       areas : data.areas,
@@ -15,13 +15,13 @@ export default {
 
     try{
       await axios.post(
-        'http://localhost:3000/coaches', 
-        coachData,
+        'http://localhost:3000/articles', 
+        articleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )   
 
-      context.commit('registerCoach',{
-        ...coachData,
+      context.commit('registerArticle',{
+        ...articleData,
         id:userId
       })
     }catch(e){
@@ -29,7 +29,7 @@ export default {
     } 
   },
 
-  async loadCoaches(context){
+  async loadArticles(context){
     // console.log(payload.forceRefresh)
     // console.log(context.getters.shouldUpdate)
 
@@ -37,12 +37,11 @@ export default {
     //   console.log('여기임??')
     //   return
     // }
-
   
     try{
-      const { data } = await axios.get('http://localhost:3000/coach-list')
+      const { data } = await axios.get('http://localhost:3000/article-list')
 
-      const coaches = []
+      const articles = []
 
       data.forEach(element => {
         const dataObj = {
@@ -54,26 +53,26 @@ export default {
           thumbnail: element.thumbnail,
           updatedAt: element.updatedAt
         }
-        coaches.push(dataObj)
+        articles.push(dataObj)
       });  
       
-      context.commit('setCoaches', coaches)
+      context.commit('setArticles', articles)
       // context.commit('setFetchTimestamp')  
     }catch(e) {
       console.log(e)
     }
   },
 
-  async moreLoadCoaches(context, payload){  
+  async moreLoadArticles(context, payload){  
     // console.log(payload.filter)
     try{
-      const { data } = await axios.get(`http://localhost:3000/more-coach-list/${payload.pageNum}`,{
+      const { data } = await axios.get(`http://localhost:3000/more-article-list/${payload.pageNum}`,{
         params: {
           filter: payload.filter
         }
       })
 
-      const coaches = []
+      const articles = []
 
       data.forEach(element => {
         const dataObj = {
@@ -85,24 +84,24 @@ export default {
           thumbnail: element.thumbnail,
           updatedAt: element.updatedAt
         }
-        coaches.push(dataObj)
+        articles.push(dataObj)
       });  
       
-      context.commit('setCoaches', coaches)
+      context.commit('setArticles', articles)
       // context.commit('setFetchTimestamp')
     }catch(e) {
       console.log(e)
     }
   },
 
-  async fetchMyList(context){
+  async fetchMyArticle(context){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`http://localhost:3000/my-list`,
+      const { data } = await axios.get(`http://localhost:3000/my-article`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 
-      context.commit('setMyList', data)
+      context.commit('setMyArticle', data)
     }catch(e){
       console.log(e)
     }
@@ -120,7 +119,7 @@ export default {
     }
   },
 
-  async fetchListImage(context, filename){
+  async fetchArticleImage(context, filename){
     try{
       await axios.get(
         `http://localhost:3000/images/${filename}`

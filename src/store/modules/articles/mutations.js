@@ -1,9 +1,9 @@
 export default {
-  registerCoach(state, payload){
-    state.coaches.push(payload)
+  registerArticle(state, payload){
+    state.articles.push(payload)
   },
-  setCoaches(state, payload){
-    state.coaches = payload
+  setArticles(state, payload){
+    state.articles = payload
   },
   setFetchTimestamp(state){
     state.lastFetch = new Date().getTime()
@@ -11,7 +11,7 @@ export default {
   setUploadFileName(state, fileName){
     state.fileName = fileName
   },
-  setMyList(state, myList){
+  setMyArticle(state, myList){
     state.myList = myList
   }
 

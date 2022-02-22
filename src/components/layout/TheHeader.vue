@@ -6,7 +6,7 @@
       </h1>
       <ul class="navbar-menu">
         <li>
-          <router-link to="/coaches">공고 목록</router-link>
+          <router-link to="/articles">공고 목록</router-link>
         </li>
         <li v-if="isLoggedIn">
           <router-link to="/requests">요청들</router-link>
@@ -48,7 +48,7 @@ export default {
   methods:{ 
     logout(){
       this.$store.dispatch('logout')
-      this.$router.replace('/coaches')
+      this.$router.replace('/articles')
     },
     openMenu(){
       const menu = document.querySelector('ul');

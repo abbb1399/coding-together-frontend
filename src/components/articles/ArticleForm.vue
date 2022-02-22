@@ -64,7 +64,7 @@ export default {
         isValid:true
       },
       description: {
-        // val:'',
+        val:'',
         isValid:true
       },
       areas:{
@@ -93,19 +93,22 @@ export default {
       // this.name ....
       this[input].isValid = true
     },
-    validateForm(tuiContent){
+    validateForm(){
       this.formIsValid = true
   
       if(this.name.val === ''){
         this.name.isValid = false
         this.formIsValid = false
       }
-      if(tuiContent === ''){
+      if(this.description.val === ''){
         this.description.isValid = false
         this.formIsValid = false
       }
       if(this.areas.val.length === 0){
         this.areas.isValid = false
+        this.formIsValid = false
+      }
+      if(!this.file){
         this.formIsValid = false
       }
     },
@@ -114,9 +117,9 @@ export default {
     },
     async submitForm(){
       // tui 에디터 글내용 받아오기
-      const tuiContent = this.tuiEditor.getMarkdown()
-    
-      this.validateForm(tuiContent)
+      this.description.val = this.tuiEditor.getMarkdown()
+
+      this.validateForm()
 
       if(!this.formIsValid){
         return
@@ -127,15 +130,15 @@ export default {
       const fileToUpload = this.file
       data.append('images', fileToUpload)
 
-      await this.$store.dispatch('coaches/uploadImage',data)
+      await this.$store.dispatch('articles/uploadImage',data)
       
-      // console.log(this.$store.getters['coaches/getUploadFileName'])
+      // console.log(this.$store.getters['articles/getUploadFileName'])
 
       const formData={
         name: this.name.val,
-        desc: tuiContent,
+        desc: this.description.val,
         areas:this.areas.val,
-        thumbnail: this.$store.getters['coaches/getUploadFileName']
+        thumbnail: this.$store.getters['articles/getUploadFileName']
       }
       this.$emit('save-data', formData)
     },

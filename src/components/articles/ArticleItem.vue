@@ -1,6 +1,6 @@
 <template>
   <li @click="toDetail" >
-    <img id="list-img" src="../../assets/ent1.jpg" alt="">
+    <img id="list-img" :src="imgSrc" alt="">
     <div>
       <h3>{{ name }} by {{ownerName}}</h3>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
@@ -28,14 +28,15 @@ export default {
   },
   data(){
     return{
-      ownerName:''
+      ownerName:'',
+      imgSrc:null
     }
   },
   computed:{
-    coachContactLink(){ 
+    articleContactLink(){ 
       return this.$route.path + '/' + this.owner + '/contact'
     },
-    coachDetailsLink(){
+    articleDetailsLink(){
       return this.$route.path + '/' + this.owner
     },
   },
@@ -49,10 +50,9 @@ export default {
       this.ownerName = this.$store.getters.getUsersInfo.name
     },
     async getListImage(){
-      if(this.thumbnail){
-        await this.$store.dispatch('coaches/fetchListImage',this.thumbnail)
-        document.querySelector('#list-img').src = `http://localhost:3000/images/${this.thumbnail}`
-      }
+      await this.$store.dispatch('articles/fetchArticleImage',this.thumbnail)
+      this.imgSrc = `http://localhost:3000/images/${this.thumbnail}`
+      
     },
     toDetail(){
       this.$router.push(this.$route.path + '/' + this.owner)

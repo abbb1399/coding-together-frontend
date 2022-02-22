@@ -1,18 +1,18 @@
 export default {
-  coaches(state){
-    return state.coaches
+  articles(state){
+    return state.articles
   },
-  hasCoaches(state){
-    return state.coaches && state.coaches.length > 0
+  hasArticles(state){
+    return state.articles && state.articles.length > 0
   },
   // state,getters,rootState,rootGetters
-  isCoach(_,getters,_2,rootGetters){
-    const coaches = getters.coaches
+  isArticle(_,getters,_2,rootGetters){
+    const articles = getters.articles
     const userId = rootGetters.userId
 
-    // console.log(coaches)
+    // console.log(articles)
     // console.log(userId)
-    return coaches.some(coach => coach.owner === userId)
+    return articles.some(article => article.owner === userId)
   },
   shouldUpdate(state){
     const lastFetch = state.lastFetch
