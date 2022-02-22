@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 export default {
+  // 글 등록
   async registerArticle(context, data){
     const userId = context.rootGetters.userId
 
@@ -29,6 +30,7 @@ export default {
     } 
   },
 
+  // 글 불러오기 1
   async loadArticles(context){
     // console.log(payload.forceRefresh)
     // console.log(context.getters.shouldUpdate)
@@ -63,6 +65,7 @@ export default {
     }
   },
 
+  // 글 불러오기 2
   async moreLoadArticles(context, payload){  
     // console.log(payload.filter)
     try{
@@ -94,6 +97,7 @@ export default {
     }
   },
 
+  // 내가 쓴 글 불러오기
   async fetchMyArticle(context){
     try{
       const token = context.rootGetters.token
@@ -107,6 +111,18 @@ export default {
     }
   },
 
+  // 내가 쓴 글 삭제
+  async deleteMyArticle(context){
+    try{
+      const token = context.rootGetters.token
+      await axios.delete(`http://localhost:3000/article`,
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+    }catch(e){
+      console.log(e)
+    }
+  },
+  // 이미지 업로드
   async uploadImage(context,file){
     try{
       const {data} = await axios.post(
@@ -119,6 +135,7 @@ export default {
     }
   },
 
+  // 이미지 불러오기
   async fetchArticleImage(context, filename){
     try{
       await axios.get(
@@ -128,4 +145,5 @@ export default {
       console.log(e)
     }
   }
+
 }

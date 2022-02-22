@@ -1,8 +1,10 @@
 <template>
   <form @submit.prevent="submitForm">
     <div class="form-control" :class="{invalid: !name.isValid}">
-      <label for="name">이름</label>
-      <input type="text" id="name" v-model.trim="name.val" v-focus required @blur="clearValidity('name')" @keydown.tab="useTab"> 
+      <label for="name">제목</label>
+      <input type="text" id="name" v-model.trim="name.val" maxlength="30" 
+        v-focus required @blur="clearValidity('name')" @keydown.tab="useTab"
+      > 
       <p v-if="!name.isValid">이름은 반드시 입력되야 합니다.</p>
     </div>
     

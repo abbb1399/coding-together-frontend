@@ -1,7 +1,14 @@
 <template>
-  <section id="main">
+  <section id="main" v-if="hasArticle">
     <header>
-      <h2>{{title}}</h2>
+      <div class="title-section">
+        <h2>{{title}}</h2>
+        <span>
+          <base-button mode="secondary" @click="editArticle">수정</base-button>
+          <base-button mode="primary" @click="deleteArticle">삭제</base-button>
+        </span>
+      </div>
+
       <p class="info">
         {{createdAt}}  
         <base-badge class="badge" v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>  
@@ -10,7 +17,9 @@
     <img id="list-img" :src="imgSrc" alt="글 이미지">
     
     <div id="viewer"/>
- 
+  </section>
+  <section v-else>
+    <h2>작성된 글이 없습니다.</h2>
   </section>
 </template>
 
@@ -26,26 +35,41 @@ export default {
       createdAt:'',
       description:'',
       areas:[],
-      imgSrc:null
+      imgSrc:null,
+      hasArticle: null
     }
   },
   async created(){
+    await this.$store.dispatch('articles/fetchMyArticle')
     await this.getMyList()
-
-    new Viewer({
-      el: document.querySelector('#viewer'),
-      initialValue: this.description
-    });
   },
   methods:{
     async getMyList(){
-      await this.$store.dispatch('articles/fetchMyArticle')
-      const myList = {...this.$store.getters['articles/getMyPageList']}
-      this.title = myList.name
-      this.createdAt = this.$moment(myList.createdAt).format('YYYY-MM-DD')
-      this.description = myList.description
-      this.areas = myList.areas
-      this.imgSrc = `http://localhost:3000/images/${myList.thumbnail}`
+      const myList = this.$store.getters['articles/getMyPageList']
+  
+      if(myList){
+        this.title = myList.name
+        this.createdAt = this.$moment(myList.createdAt).format('YYYY-MM-DD')
+        this.description = myList.description
+        this.areas = myList.areas
+        this.imgSrc = `http://localhost:3000/images/${myList.thumbnail}`
+
+        new Viewer({
+          el: document.querySelector('#viewer'),
+          initialValue: this.description
+        });
+
+        this.hasArticle = true
+      }else{
+        this.hasArticle = false
+      }
+    },
+    async deleteArticle(){
+      await this.$store.dispatch('articles/deleteMyArticle')
+      this.$router.replace('/articles')
+    },
+    editArticle(){
+
     }
   }
 }
@@ -88,6 +112,11 @@ export default {
 
   .badge{
     margin-left: .5rem;
+  }
+
+  .title-section{
+    display: flex;
+    justify-content: space-between;
   }
 
 

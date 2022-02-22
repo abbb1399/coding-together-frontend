@@ -9,7 +9,7 @@ export default {
       lastFetch: null,
       articles: [],
       fileName:'',
-      myList:{}
+      myList: null
     }
   },
   mutations,

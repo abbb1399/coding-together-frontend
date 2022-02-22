@@ -1,0 +1,8 @@
+// 배경화면에 따른 text 컬러 변경시켜주는 함수
+@function set-text-color($backGroundColor) {
+  @if (lightness($backGroundColor) > 50) {
+    @return #000;
+  } @else {
+    @return #fff;
+  }
+} 

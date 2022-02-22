@@ -50,27 +50,6 @@ export default {
   // Loboto, Lobster 폰트
   @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
   
-  *,
-  *::after,
-  *::before{
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-  }
-
-  body {
-    font-family: "Roboto", sans-serif;
-    box-sizing: border-box;
-  }
-
-  ul{
-    list-style: none;
-  }
-
-  a{
-    text-decoration: none;
-  }
-
   #app-main{
     min-height: 100vh;
     display: flex; 
