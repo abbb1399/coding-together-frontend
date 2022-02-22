@@ -11,6 +11,9 @@ import UserAuth from '../views/auth/UserAuth.vue'
 import MyPage from '../views/user/MyPage.vue'
 import Test from '../views/Test.vue'
 
+import MyProfile from '../views/user/MyProfile.vue'
+import MyList from '../views/user/MyList.vue'
+
 const routes = [
   { path:'/', redirect: '/articles' },
   { path: '/articles', component: ArticleList },
@@ -25,9 +28,16 @@ const routes = [
   {path:'/register', component: ArticleRegistration, meta:{ requiresAuth: true}},
   {path: '/requests', component: RequestsReceived, meta:{ requiresAuth: true}},
   {path: '/auth', component: UserAuth, meta:{ requiresUnauth: true}},
-  {path: '/mypage', name:'myPage', component:MyPage, meta:{ requiresAuth: true}},
-
-
+  {
+    path: '/mypage', 
+    name:'myPage', 
+    component:MyPage, 
+    meta:{ requiresAuth: true},
+    children:[
+      {path:'profile', component: MyProfile},
+      {path:'list', component: MyList},
+    ]
+  },
   {path:'/test', component: Test},
   {path:'/:notFound(.*)*', component: () => import('../views/NotFound.vue')}
 ]

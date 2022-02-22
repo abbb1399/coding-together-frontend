@@ -5,16 +5,18 @@
         <aside id="categories" class="card">
           <h2>내 정보</h2>
           <ul class="list">
-            <li @click="selectComponent('my-profile')">
-              <a :class="{ 'profile-class': currentClass === 'my-profile'}">프로필</a>
+            <li>
+              <router-link to="/mypage/profile">프로필</router-link>
             </li>
-            <li @click="selectComponent('my-list')">
-              <a :class="{ 'list-class': currentClass === 'my-list'}">내가 쓴 공고</a>
+            <li>
+              <router-link to="/mypage/list">내가 쓴 공고</router-link>
             </li>
           </ul>
         </aside>
         <article class="card">
-          <component :is="selectedComponent"></component>
+          <router-view v-slot="slotProps">
+            <component :is="slotProps.Component"></component>
+          </router-view>  
         </article>
       </div>
     </div>
@@ -22,23 +24,14 @@
 </template>
 
 <script>
-import MyList from '../../components/mypage/MyList.vue'
-import MyProfile from '../../components/mypage/MyProfile.vue'
-
 export default {
-  components:{
-    MyList,
-    MyProfile
-  },
   data(){
     return{
       selectedComponent: 'my-profile',
-      currentClass:'my-profile'
     }
   },
   methods:{
     selectComponent (cmp) {
-      this.currentClass = cmp
       this.selectedComponent = cmp
     },
   }
@@ -79,16 +72,14 @@ export default {
     width: 90%;
     list-style: inside;
 
-    a{
-      cursor:pointer;      
+     a{
+      color: #333;
+    
+      &.router-link-active {
+        color: $primary-color;
+      }
     }
   }
 
-  .profile-class{
-    color: $primary-color;
-  }
 
-  .list-class{
-    color: $primary-color;
-  }
 </style>

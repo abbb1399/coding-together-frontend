@@ -28,7 +28,7 @@ import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 
 export default {
-  inject:['$moment'],
+  inject:['$moment','$swal'],
   data(){
     return{
       title:'',
@@ -40,36 +40,56 @@ export default {
     }
   },
   async created(){
-    await this.$store.dispatch('articles/fetchMyArticle')
     await this.getMyList()
   },
   methods:{
     async getMyList(){
+      this.hasArticle = true
+      await this.$store.dispatch('articles/fetchMyArticle')
       const myList = this.$store.getters['articles/getMyPageList']
-  
+     
       if(myList){
         this.title = myList.name
         this.createdAt = this.$moment(myList.createdAt).format('YYYY-MM-DD')
-        this.description = myList.description
+        // this.description = myList.description
         this.areas = myList.areas
         this.imgSrc = `http://localhost:3000/images/${myList.thumbnail}`
 
         new Viewer({
           el: document.querySelector('#viewer'),
-          initialValue: this.description
+          initialValue: myList.description
         });
-
-        this.hasArticle = true
       }else{
         this.hasArticle = false
       }
     },
     async deleteArticle(){
-      await this.$store.dispatch('articles/deleteMyArticle')
-      this.$router.replace('/articles')
-    },
-    editArticle(){
+      const result = await this.$swal.fire({
+        title: '삭제 하시겠습니까??',
+        text: '해당 글을 삭제합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#34c38f',
+        cancelButtonColor: '#f46a6a',
+        confirmButtonText: '네',
+        cancelButtonText: '아니오'
+      })
 
+      if(result.value){
+        await this.$store.dispatch('articles/deleteMyArticle')
+        this.$router.replace('/articles')
+        this.$swal.fire({
+          icon: 'success',
+          title: `글 삭제에 성공 하였습니다.`,
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    },
+    async editArticle(){
+      
+
+      // this.$swal.fire('재기안완료!', '다시 기안된글은 기안함-기안된에서 확인 가능합니다.', 'success')
     }
   }
 }
@@ -118,6 +138,4 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-
-
 </style>

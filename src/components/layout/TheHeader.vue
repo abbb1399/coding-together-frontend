@@ -55,7 +55,7 @@ export default {
       menu.classList.toggle('active');
     },
     toUserInfo(){
-      this.$router.push({name:'myPage'})
+      this.$router.push({name:'myProfile'})
     }
   }
 }
