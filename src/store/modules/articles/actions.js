@@ -122,6 +122,31 @@ export default {
       console.log(e)
     }
   },
+  
+  // 글 업데이트하기
+  async updateArticle(context, data){
+    const id = data._id
+
+    const articleData = {
+      name : data.name,
+      description : data.desc,
+      areas : data.areas,
+      thumbnail: data.thumbnail
+    }
+
+    try{
+      const token = context.rootGetters.token
+      const articles = await axios.patch(`http://localhost:3000/articles/${id}`,
+        articleData,
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+      console.log(articles)
+    }catch(e){
+      console.log(e)
+    }
+  },
+
   // 이미지 업로드
   async uploadImage(context,file){
     try{

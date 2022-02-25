@@ -20,20 +20,20 @@
         </article>
       </div>
     </div>
-  </section>
+
+ 
+  </section>      
 </template>
 
 <script>
 export default {
   data(){
     return{
-      selectedComponent: 'my-profile',
+     
     }
   },
   methods:{
-    selectComponent (cmp) {
-      this.selectedComponent = cmp
-    },
+  
   }
 }
 </script>

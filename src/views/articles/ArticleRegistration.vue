@@ -16,8 +16,8 @@ export default {
   },
   methods:{
     async saveData(data){
-      await this.$store.dispatch('coaches/registerCoach',data)
-      this.$router.replace('/coaches')
+      await this.$store.dispatch('articles/registerArticle',data)
+      this.$router.replace('/articles')
     }
   }
 }

@@ -11,8 +11,8 @@ import UserAuth from '../views/auth/UserAuth.vue'
 import MyPage from '../views/user/MyPage.vue'
 import Test from '../views/Test.vue'
 
-import MyProfile from '../views/user/MyProfile.vue'
-import MyList from '../views/user/MyList.vue'
+import MyProfile from '../views/user/mypage/MyProfile.vue'
+import MyList from '../views/user/mypage/MyList.vue'
 
 const routes = [
   { path:'/', redirect: '/articles' },
@@ -35,7 +35,7 @@ const routes = [
     meta:{ requiresAuth: true},
     children:[
       {path:'profile', name:"myProfile", component: MyProfile},
-      {path:'list', name:"MyList", component: MyList},
+      {path:'list', name:"myList", component: MyList},
     ]
   },
   {path:'/test', component: Test},

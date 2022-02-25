@@ -6,6 +6,9 @@
       </h1>
       <ul class="navbar-menu">
         <li>
+          <router-link to="/test">나의 일정</router-link>
+        </li>
+        <li>
           <router-link to="/articles">공고 목록</router-link>
         </li>
         <li v-if="isLoggedIn">

@@ -18,6 +18,7 @@ export default {
     })
   },
 
+  // 회원가입 and 로그인
   async auth(context, payload){
     const mode = payload.mode
 
@@ -77,6 +78,7 @@ export default {
     }
   },
   
+  // 로그아웃
   async logout(context){
     const token = localStorage.getItem('token')
 

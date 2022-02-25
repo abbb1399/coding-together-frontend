@@ -1,5 +1,5 @@
 <template>
-  <section id="main" v-if="hasArticle">
+  <section id="main" v-if="!editMode && hasArticle">
     <header>
       <div class="title-section">
         <h2>{{title}}</h2>
@@ -18,17 +18,27 @@
     
     <div id="viewer"/>
   </section>
-  <section v-else>
+  <section v-else-if="!editMode">
     <h2>작성된 글이 없습니다.</h2>
   </section>
+  
+  <div v-else>
+    <h2>공고 수정</h2>
+    <article-form id="article-form" ></article-form>
+  </div>
 </template>
 
 <script>
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+import ArticleForm from '../../../components/articles/ArticleForm.vue'
+
 
 export default {
   inject:['$moment','$swal'],
+  components:{
+    ArticleForm
+  },
   data(){
     return{
       title:'',
@@ -36,7 +46,8 @@ export default {
       description:'',
       areas:[],
       imgSrc:null,
-      hasArticle: null
+      hasArticle: null,
+      editMode: false
     }
   },
   async created(){
@@ -77,7 +88,7 @@ export default {
 
       if(result.value){
         await this.$store.dispatch('articles/deleteMyArticle')
-        this.$router.replace('/articles')
+        this.$router.replace({name:'myList'})
         this.$swal.fire({
           icon: 'success',
           title: `글 삭제에 성공 하였습니다.`,
@@ -86,11 +97,13 @@ export default {
         })
       }
     },
-    async editArticle(){
+    editArticle(){
+      this.editMode = true
+      // vuex로 article form에 데이터 전달
       
 
-      // this.$swal.fire('재기안완료!', '다시 기안된글은 기안함-기안된에서 확인 가능합니다.', 'success')
-    }
+
+    },
   }
 }
 </script>
@@ -137,5 +150,9 @@ export default {
   .title-section{
     display: flex;
     justify-content: space-between;
+  }
+
+  #article-form{
+    width: 45vw;
   }
 </style>

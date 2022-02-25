@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img @click="imageUpload" id="myImage" alt="내 이미지" src="../../assets/avatar.jpg">
+    <img @click="imageUpload" id="myImage" alt="내 이미지" :src="imgSrc">
     <p><strong>이름 : </strong>{{name}}</p>
     <p><strong>이메일 : </strong>{{email}}</p>
     <p><strong>가입일 : </strong>{{createdAt}}</p>
@@ -17,6 +17,7 @@ export default {
       createdAt:'',
       myId:'',
       myAvatar:null,
+      imgSrc:require('../../../assets/avatar.jpg') 
     }
   },
   async created(){
@@ -30,16 +31,18 @@ export default {
     async getMyInfo(){
       await this.$store.dispatch('fetchMyInfo')
       const myInfo = {...this.$store.getters.getMyInfo}
-    
+
       this.email = myInfo.email
       this.name = myInfo.name
       this.createdAt = this.$moment(myInfo.createdAt).format('YYYY-MM-DD'),
       this.myId = myInfo._id
     },
     async getMyAvatar(){
-      await this.$store.dispatch('fetchAvatar', this.myId)
-      document.querySelector('#myImage').src = `http://localhost:3000/users/${this.myId}/avatar`
-
+      if(this.$store.getters.getMyInfo.thumbnail){
+        await this.$store.dispatch('fetchAvatar', this.myId)
+        this.imgSrc = `http://localhost:3000/users/${this.myId}/avatar`
+      }
+      
       // const urlCreator = window.URL || window.webkitURL;
       // if(this.$store.getters.getMyAvatar.size > 0){
       //   document.querySelector('#myImage').src = urlCreator.createObjectURL(this.$store.getters.getMyAvatar)
@@ -66,7 +69,6 @@ export default {
       upload.click()
     },
     async deleteAccount(){
-      console.log('qweqwe')
       await this.$store.dispatch('deleteAccount')
       this.$router.push('/')
     }
