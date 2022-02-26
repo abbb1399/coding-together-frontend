@@ -27,7 +27,6 @@ export default {
     await this.getMyAvatar()
   },
   methods:{
-    
     async getMyInfo(){
       await this.$store.dispatch('fetchMyInfo')
       const myInfo = {...this.$store.getters.getMyInfo}

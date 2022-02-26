@@ -16,6 +16,7 @@
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
     "sweetalert2": "^11.3.10",
+    "tui-calendar": "^1.15.3",
     "vue": "^3.0.0",
     "vue-infinite-loading": "^3.0.0-alpha.0-0",
     "vue-router": "^4.0.0-0",
