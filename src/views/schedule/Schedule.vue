@@ -18,48 +18,25 @@ import 'tui-calendar/dist/tui-calendar.css';
 import 'tui-date-picker/dist/tui-date-picker.css';
 import 'tui-time-picker/dist/tui-time-picker.css';
 
-import tuiCalendarOption from '../../utilities/tui-calendar-option'
+//  src/utilities/tui-calendar
+import calendarOption from '../../utilities/tui-calendar/calendar-option'
+import dummyData from '../../utilities/tui-calendar/calendar-dummy-data'
+import scheduleType from  '../../utilities/tui-calendar/schedule-type'
 
 export default {
   inject:['$moment'],
   mounted(){
     // 캘린더 인스턴스 생성
-    this.calendarInstance = new Calendar(this.$refs.tuiCalendar, tuiCalendarOption)
-    // 날짜설정
+    this.calendarInstance = new Calendar(this.$refs.tuiCalendar, calendarOption)
+    
+    // 오늘 날짜설정
     this.calendarInstance.setDate(this.$moment().format('YYYY-MM-DD'))
 
     // 스케줄 Type
-    this.calendarInstance.setCalendars([
-      {
-        id: 'Major Subject',
-        name: '전공 필수',
-        color: '#ffffff',
-        bgColor: '#ff5583',
-        dragBgColor: '#ff5583',
-        borderColor: '#ff5583'
-      },
-      {
-        id: 'Elective Subject',
-        name: '전공 선택',
-        color: '#ffffff',
-        bgColor: '#ffbb3b',
-        dragBgColor: '#ffbb3b',
-        borderColor: '#ffbb3b'
-      },
-      {
-        id: 'General Subject',
-        name: '일반 교양',
-        color: '#ffffff',
-        bgColor: '#03bd9e',
-        dragBgColor: '#03bd9e',
-        borderColor: '#03bd9e'
-      }
-    ]);
+    this.calendarInstance.setCalendars(scheduleType)
   
     // 스케쥴 생성
-    this.calendarInstance.createSchedules([
-
-    ]);
+    this.calendarInstance.createSchedules(dummyData)
   
     this.calendarInstance.on('beforeCreateSchedule', scheduleData => {
       const schedule = {
@@ -72,23 +49,22 @@ export default {
         category: scheduleData.isAllDay ? 'allday' : 'time',
         location: scheduleData.location
       };
+      console.log([schedule])
 
-      this.calendarInstance.createSchedules([schedule]);
+      this.calendarInstance.createSchedules([schedule])
 
-      alert('일정 생성 완료');
-    });
+      alert('일정 생성 완료')
+    })
 
     this.calendarInstance.on('beforeUpdateSchedule', event => {
-      const {schedule, changes} = event;
-
-      this.calendarInstance.updateSchedule(schedule.id, schedule.calendarId, changes);
-    });
+      const {schedule, changes} = event
+      this.calendarInstance.updateSchedule(schedule.id, schedule.calendarId, changes)
+    })
 
     this.calendarInstance.on('beforeDeleteSchedule', scheduleData => {
-      const {schedule} = scheduleData;
-
-      this.calendarInstance.deleteSchedule(schedule.id, schedule.calendarId);
-    });
+      const {schedule} = scheduleData
+      this.calendarInstance.deleteSchedule(schedule.id, schedule.calendarId)
+    })
   },
   methods:{
     prev(){
@@ -115,8 +91,10 @@ export default {
 
 <style lang="scss" scoped>
   #calendar-section{
-    width: $website-width;
-    margin: 10px auto;
+    max-width: $website-width;
+    // max-width: 80%;
+    margin: 0 auto;
+
   }
   
 </style>

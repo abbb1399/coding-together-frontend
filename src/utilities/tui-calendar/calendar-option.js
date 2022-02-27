@@ -1,16 +1,6 @@
 export default {
-  language: 'ko',
-  timezone: {
-    zones: [
-      {
-        timezoneName: 'Asia/Seoul',
-        displayLabel: 'GMT+09:00',
-        tooltip: 'Seoul'
-      },
-    ],
-  },
-
-  taskView: true,
+  
+  taskView: false,
   defaultView: 'month',
   week: {
     daynames: ['일', '월', '화', '수', '목', '금', '토'],
@@ -42,10 +32,16 @@ export default {
       return '온 종일';
     },
     popupStateFree () {
-      return 'Free'
+      return '한가함'
     },
     popupStateBusy () {
-      return 'Busy'
+      return '바쁨'
     },
+    startDatePlaceholder(){
+      return '시작일'
+    },
+    endDatePlaceholder(){
+      return '종료일'
+    }
   }
 }

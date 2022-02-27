@@ -2,7 +2,8 @@
   <div id="app-main">
     <the-header></the-header>
 
-    <router-view v-slot="slotProps" style="flex:1;" >
+     <!-- style="flex:1;" -->
+    <router-view v-slot="slotProps" >
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"></component>
       </transition>
@@ -50,11 +51,11 @@ export default {
   // Loboto, Lobster 폰트
   @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
   
-  #app-main{
-    min-height: 100vh;
-    display: flex; 
-    flex-direction:column; 
-  }
+  // #app-main{
+  //   min-height: 100vh;
+  //   display: flex; 
+  //   flex-direction:column; 
+  // }
   
   // Vue Transitoin css
   .route-enter-from{
