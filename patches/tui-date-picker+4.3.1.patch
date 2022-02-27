@@ -1,0 +1,13 @@
+diff --git a/node_modules/tui-date-picker/dist/tui-date-picker.js b/node_modules/tui-date-picker/dist/tui-date-picker.js
+index 894b320..5c886c9 100644
+--- a/node_modules/tui-date-picker/dist/tui-date-picker.js
++++ b/node_modules/tui-date-picker/dist/tui-date-picker.js
+@@ -210,7 +210,7 @@ module.exports = {
+   MIN_DATE: new Date(1900, 0, 1),
+   MAX_DATE: new Date(2999, 11, 31),
+ 
+-  DEFAULT_LANGUAGE_TYPE: 'en',
++  DEFAULT_LANGUAGE_TYPE: 'ko',
+ 
+   CLASS_NAME_SELECTED: 'tui-is-selected',
+ 
