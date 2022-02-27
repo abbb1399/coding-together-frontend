@@ -31,12 +31,12 @@ export default {
     popupIsAllDay: function() {
       return '온 종일';
     },
-    popupStateFree () {
-      return '한가함'
-    },
-    popupStateBusy () {
-      return '바쁨'
-    },
+    // popupStateFree () {
+    //   return '한가함'
+    // },
+    // popupStateBusy () {
+    //   return '바쁨'
+    // },
     startDatePlaceholder(){
       return '시작일'
     },

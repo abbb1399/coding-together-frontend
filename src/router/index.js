@@ -38,7 +38,7 @@ const routes = [
       {path:'list', name:"myList", component: MyList},
     ]
   },
-  {path:'/schedule', component: () => import('../views/schedule/Schedule.vue')},
+  {path:'/schedule', component: () => import('../views/schedule/Schedule.vue'), meta:{ requiresAuth: true}},
   {path:'/test', component: Test},
   {path:'/:notFound(.*)*', component: () => import('../views/NotFound.vue')}
 ]

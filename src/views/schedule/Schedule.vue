@@ -20,12 +20,15 @@ import 'tui-time-picker/dist/tui-time-picker.css';
 
 //  src/utilities/tui-calendar
 import calendarOption from '../../utilities/tui-calendar/calendar-option'
-import dummyData from '../../utilities/tui-calendar/calendar-dummy-data'
+// import dummyData from '../../utilities/tui-calendar/calendar-dummy-data'
 import scheduleType from  '../../utilities/tui-calendar/schedule-type'
 
 export default {
   inject:['$moment'],
-  mounted(){
+  async mounted(){
+    await this.$store.dispatch('schedules/fetchSchedules')
+    console.log(this.$store.getters['schedules/schedules'])
+  
     // 캘린더 인스턴스 생성
     this.calendarInstance = new Calendar(this.$refs.tuiCalendar, calendarOption)
     
@@ -36,34 +39,45 @@ export default {
     this.calendarInstance.setCalendars(scheduleType)
   
     // 스케쥴 생성
-    this.calendarInstance.createSchedules(dummyData)
+    this.calendarInstance.createSchedules(this.$store.getters['schedules/schedules'])
   
     this.calendarInstance.on('beforeCreateSchedule', scheduleData => {
       const schedule = {
         calendarId: scheduleData.calendarId,
-        id: String(Math.random() * 100000000000000000),
+        id: String(Date.now()),
         title: scheduleData.title,
-        isAllDay: scheduleData.isAllDay,
+        // isAllDay: scheduleData.isAllDay,
         start: scheduleData.start,
         end: scheduleData.end,
         category: scheduleData.isAllDay ? 'allday' : 'time',
         location: scheduleData.location
       };
-      console.log([schedule])
-
+      
+      // tui-calendar - Create
       this.calendarInstance.createSchedules([schedule])
-
-      alert('일정 생성 완료')
+      // 서버로직 - Create 
+      this.$store.dispatch('schedules/resigerSchedule', schedule)
     })
 
     this.calendarInstance.on('beforeUpdateSchedule', event => {
       const {schedule, changes} = event
+      
+      // tui-calendar - Update
       this.calendarInstance.updateSchedule(schedule.id, schedule.calendarId, changes)
+      // 서버로직 - Update
+      delete changes.state
+      const updateData = [schedule.id, changes]
+      
+      this.$store.dispatch('schedules/updateSchedule', updateData)
     })
 
     this.calendarInstance.on('beforeDeleteSchedule', scheduleData => {
       const {schedule} = scheduleData
+
+      // tui-calendar - Delete
       this.calendarInstance.deleteSchedule(schedule.id, schedule.calendarId)
+      // 서버로직 - Delete
+      this.$store.dispatch('schedules/deleteSchedule', schedule)
     })
   },
   methods:{

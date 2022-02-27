@@ -136,12 +136,10 @@ export default {
 
     try{
       const token = context.rootGetters.token
-      const articles = await axios.patch(`http://localhost:3000/articles/${id}`,
+      await axios.patch(`http://localhost:3000/articles/${id}`,
         articleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )
-
-      console.log(articles)
     }catch(e){
       console.log(e)
     }
