@@ -10,6 +10,7 @@ export default {
       calendarId: payload.calendarId,
       title: payload.title,
       category: payload.category,
+      isAllDay:payload.isAllDay,
       start: payload.start._date,
       end: payload.end._date
     }
@@ -47,7 +48,14 @@ export default {
   async updateSchedule(context,payload){
     const token = context.rootGetters.token  
     const [id, changes] = payload
-   
+
+    if(changes.start ){
+      changes.start = changes.start._date
+    }
+    if(changes.end ){
+      changes.end = changes.end._date
+    }
+
     try{
       axios.patch(
         `http://localhost:3000/schedules/${id}`,

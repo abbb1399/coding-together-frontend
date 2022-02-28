@@ -1,14 +1,24 @@
 <template>
-  <div id="calendar-section">
-    <h1>TOAST UI Calendar</h1>
-    <button id="prevBtn" @click="prev">이전</button>
-    <button id="nextBtn" @click="next">다음</button>
-    <button id="dayViewBtn" @click="dayView">일간</button>
-    <button id="weekViewBtn" @click="weekView">주간</button>
-    <button id="monthViewBtn" @click="monthView">월간</button>
-
+  <div class="calendar">
+    <div class="calendar__header">
+      <div>
+        <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
+        <select v-model="selectedView" class="calendar__select">
+          <option v-for="(options, index) in viewModeOptions" :value="options.value" :key="index">
+            {{options.title}}
+          </option>
+        </select>
+        <span @click="onClickNavi($event)">
+          <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
+          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">Prev</button>
+          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">Next</button>
+        </span>
+      </div>
+      <span class="calendar__render-range">{{dateRange}}</span>
+    </div>
+    
     <!-- 캘린더 컨테이너 요소 작성 -->
-    <div ref="tuiCalendar"></div>
+    <div class="calendar__tui-calendar" ref="tuiCalendar"></div>
   </div>
 </template>
 
@@ -25,9 +35,36 @@ import scheduleType from  '../../utilities/tui-calendar/schedule-type'
 
 export default {
   inject:['$moment'],
+  data(){
+    return{
+      dateRange: `${this.$moment().format('YYYY-MM')} 월`,
+      viewModeOptions: [
+        {
+          title: 'Monthly',
+          value: 'month'
+        },
+        {
+          title: 'Weekly',
+          value: 'week'
+        },
+        {
+          title: 'Daily',
+          value: 'day'
+        }
+      ],
+      selectedView: 'month',
+    }
+  },
+  watch:{
+    // 좌측상단의 select가 변경시 watch('daily', 'weekly', 'monthly')
+    selectedView (newValue) {
+      this.calendarInstance.changeView(newValue, true);
+      this.setRenderRangeText()
+    }
+  },
   async mounted(){
     await this.$store.dispatch('schedules/fetchSchedules')
-    console.log(this.$store.getters['schedules/schedules'])
+   
   
     // 캘린더 인스턴스 생성
     this.calendarInstance = new Calendar(this.$refs.tuiCalendar, calendarOption)
@@ -46,13 +83,13 @@ export default {
         calendarId: scheduleData.calendarId,
         id: String(Date.now()),
         title: scheduleData.title,
-        // isAllDay: scheduleData.isAllDay,
+        isAllDay: scheduleData.isAllDay,
         start: scheduleData.start,
         end: scheduleData.end,
         category: scheduleData.isAllDay ? 'allday' : 'time',
         location: scheduleData.location
       };
-      
+
       // tui-calendar - Create
       this.calendarInstance.createSchedules([schedule])
       // 서버로직 - Create 
@@ -81,34 +118,117 @@ export default {
     })
   },
   methods:{
-    prev(){
-      this.calendarInstance.prev()
+    onClickNavi (event) {
+      if (event.target.tagName === 'BUTTON') {
+        const { target } = event
+        let action = target.dataset ? target.dataset.action : target.getAttribute('data-action')
+        action = action.replace('move-', '')
+        if(action === 'today'){
+           this.calendarInstance.today()
+        }else if(action === 'prev'){
+          this.calendarInstance.prev()
+        }else if(action === 'next'){
+          this.calendarInstance.next()
+        }
+          
+        this.setRenderRangeText()
+      }
     },
-    next(){
-      this.calendarInstance.next()
+    // 날짜를 세팅 해주는 method ex)2021년 5월(monthly)
+    setRenderRangeText () {
+      const view = this.calendarInstance.getViewName()
+      const calDate = this.calendarInstance.getDate()
+      const rangeStart = this.calendarInstance.getDateRangeStart()
+      const rangeEnd = this.calendarInstance.getDateRangeEnd()
+      let year = calDate.getFullYear()
+      let month = calDate.getMonth() + 1
+      let date = calDate.getDate()
+      let dateRangeText = ''
+      let endMonth, endDate, start, end
+      switch (view) {
+        case 'month':
+          dateRangeText = `${year}년 ${month}월`
+          break
+        case 'week':
+          year = rangeStart.getFullYear()
+          month = rangeStart.getMonth() + 1
+          date = rangeStart.getDate()
+          endMonth = rangeEnd.getMonth() + 1
+          endDate = rangeEnd.getDate()
+          start = `${year}-${month}-${date}`
+          end = `${endMonth}-${endDate}`
+          dateRangeText = `${start} ~ ${end}`
+          break
+        default:
+          dateRangeText = `${year}-${month}-${date}`
+      }
+      console.log(dateRangeText)
+      this.dateRange = dateRangeText
     },
-    today(){
-      this.calendarInstance.today()
-    },
-    dayView(){
-       this.calendarInstance.changeView('day', true);
-    },
-    weekView(){
-       this.calendarInstance.changeView('week', true);
-    },
-    monthView(){
-       this.calendarInstance.changeView('month', true);
-    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  #calendar-section{
+  .calendar{
     max-width: $website-width;
-    // max-width: 80%;
     margin: 0 auto;
 
+    &__header{
+      display: flex;
+      padding: .5rem 0;
+    }
+
+    &__select{
+      padding: 5px 15px 5px 5px;
+      margin-right: 8px;
+      border-radius: 4px;
+    }
+
+    &__render-range{
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-left: 20rem;
+    }
+  }  
+
+  .btn {
+    border-radius: 25px;
+    background-color: #fff;
+    border: solid 1px #bbb;
+
+    &:hover{
+      border: solid 1px grey;
+      // background-color: #fff;
+    }
+
+    &:active{
+      background-color: #f9f9f9;
+      border: solid 1px #bbb;
+      outline: none;
+    }
+
+    &:disabled{
+      background-color: #f9f9f9;
+      border: solid 1px #ddd;
+      color: #bbb;
+    }
+
+    &:focus{
+      outline: none;
+    }
   }
-  
+
+  .move-today {
+    padding: 0 1rem;
+    line-height: 1.875rem;
+  }
+
+  .move-day {
+    padding: 8px;
+  }
+
+  @media screen and (max-width: 980px) {
+      
+  }  
 </style>

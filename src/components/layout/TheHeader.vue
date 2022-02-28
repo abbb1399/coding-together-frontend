@@ -12,7 +12,7 @@
           <router-link to="/articles">공고 목록</router-link>
         </li>
         <li v-if="isLoggedIn">
-          <router-link to="/requests">요청들</router-link>
+          <router-link to="/requests">받은 요청</router-link>
         </li>
         <li v-else>
           <router-link to="/auth">로그인</router-link>
