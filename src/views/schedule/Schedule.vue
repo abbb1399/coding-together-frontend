@@ -4,21 +4,21 @@
       <div>
         <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
         <select v-model="selectedView" class="calendar__select">
-          <option v-for="(options, index) in viewModeOptions" :value="options.value" :key="index">
+          <option v-for="(options, index) in viewModeOption" :value="options.value" :key="index">
             {{options.title}}
           </option>
         </select>
         <span @click="onClickNavi($event)">
-          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-today">오늘</button>
-          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">이전</button>
-          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">다음</button>
+          <button type="button" class="btn move-day" data-action="move-today">오늘</button>
+          <button type="button" class="btn move-day" data-action="move-prev">이전</button>
+          <button type="button" class="btn move-day" data-action="move-next">다음</button>
         </span>
       </div>
-      <p class="calendar__render-range">{{dateRange}}</p>
+      <span class="calendar__render-range">{{dateRange}}</span>
     </div>
     
     <!-- 캘린더 컨테이너 요소 작성 -->
-    <div class="calendar__tui-calendar" ref="tuiCalendar"></div>
+    <div ref="tuiCalendar"></div>
   </section>
 </template>
 
@@ -28,7 +28,7 @@ import 'tui-calendar/dist/tui-calendar.css';
 import 'tui-date-picker/dist/tui-date-picker.css';
 import 'tui-time-picker/dist/tui-time-picker.css';
 
-//  src/utilities/tui-calendar
+// 유틸 요소 길어서 따로 빼놓음 - src/utilities/tui-calendar
 import calendarOption from '../../utilities/tui-calendar/calendar-option'
 // import dummyData from '../../utilities/tui-calendar/calendar-dummy-data'
 import scheduleType from  '../../utilities/tui-calendar/schedule-type'
@@ -38,7 +38,7 @@ export default {
   data(){
     return{
       dateRange: `${this.$moment().format('YYYY-MM')} 월`,
-      viewModeOptions: [
+      viewModeOption: [
         {
           title: '월간 뷰',
           value: 'month'
@@ -56,16 +56,16 @@ export default {
     }
   },
   watch:{
-    // 좌측상단의 select가 변경시 watch('daily', 'weekly', 'monthly')
+    // 좌측상단의 select가 변경시 watch('일간', '주간', '월간')
     selectedView (newValue) {
       this.calendarInstance.changeView(newValue, true);
       this.setRenderRangeText()
     }
   },
   async mounted(){
+    // 글 불러오기 - server
     await this.$store.dispatch('schedules/fetchSchedules')
    
-  
     // 캘린더 인스턴스 생성
     this.calendarInstance = new Calendar(this.$refs.tuiCalendar, calendarOption)
     
@@ -195,6 +195,7 @@ export default {
       margin-right: 8px;
       border-radius: 4px;
       width: 90.8px;
+      height: 2rem;
     }
 
     &__render-range{
@@ -232,7 +233,7 @@ export default {
   }
 
   .move-day {
-    padding: .3rem .8rem;
+    padding: .4rem .8rem;
     line-height: 1.1rem;
   }
 

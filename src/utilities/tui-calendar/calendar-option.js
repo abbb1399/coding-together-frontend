@@ -1,5 +1,4 @@
 export default {
-  
   taskView: false,
   defaultView: 'month',
   week: {

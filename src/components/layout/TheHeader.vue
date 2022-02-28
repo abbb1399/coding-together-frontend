@@ -6,6 +6,9 @@
       </h1>
       <ul class="navbar-menu">
         <li>
+          <router-link to="/chat">채팅</router-link>
+        </li>
+        <li>
           <router-link to="/schedule">나의 일정</router-link>
         </li>
         <li>

@@ -9,7 +9,7 @@
       </transition>
     </router-view>  
     
-    <the-footer></the-footer>
+    <the-footer v-if="!$route.meta.hideFooter"></the-footer>
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
   //   flex-direction:column; 
   // }
   
-  // Vue Transitoin css
+  // Vue Transition css
   .route-enter-from{
     opacity: 0;
     transform: translateY(-30px);
