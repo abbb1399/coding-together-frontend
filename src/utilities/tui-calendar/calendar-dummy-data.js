@@ -64,6 +64,7 @@ export default [
     category: 'allday',              // 종일 일정
     start: '2022-02-20',
     end: '2022-02-21',
+    state:'busy',
     // color: '#ffffff',
     // bgColor: '#ff4040',              // 일정 색상을 직접 지정할 수 있어요
     // dragBgColor: '#ff4040',

@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar">
+  <section class="calendar">
     <div class="calendar__header">
       <div>
         <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
@@ -9,17 +9,17 @@
           </option>
         </select>
         <span @click="onClickNavi($event)">
-          <button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
-          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">Prev</button>
-          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">Next</button>
+          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-today">오늘</button>
+          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">이전</button>
+          <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">다음</button>
         </span>
       </div>
-      <span class="calendar__render-range">{{dateRange}}</span>
+      <p class="calendar__render-range">{{dateRange}}</p>
     </div>
     
     <!-- 캘린더 컨테이너 요소 작성 -->
     <div class="calendar__tui-calendar" ref="tuiCalendar"></div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -40,15 +40,15 @@ export default {
       dateRange: `${this.$moment().format('YYYY-MM')} 월`,
       viewModeOptions: [
         {
-          title: 'Monthly',
+          title: '월간 뷰',
           value: 'month'
         },
         {
-          title: 'Weekly',
+          title: '주간 뷰',
           value: 'week'
         },
         {
-          title: 'Daily',
+          title: '일간 뷰',
           value: 'day'
         }
       ],
@@ -87,7 +87,8 @@ export default {
         start: scheduleData.start,
         end: scheduleData.end,
         category: scheduleData.isAllDay ? 'allday' : 'time',
-        location: scheduleData.location
+        location: scheduleData.location,
+        state:scheduleData.state
       };
 
       // tui-calendar - Create
@@ -102,7 +103,6 @@ export default {
       // tui-calendar - Update
       this.calendarInstance.updateSchedule(schedule.id, schedule.calendarId, changes)
       // 서버로직 - Update
-      delete changes.state
       const updateData = [schedule.id, changes]
       
       this.$store.dispatch('schedules/updateSchedule', updateData)
@@ -130,7 +130,6 @@ export default {
         }else if(action === 'next'){
           this.calendarInstance.next()
         }
-          
         this.setRenderRangeText()
       }
     },
@@ -162,7 +161,6 @@ export default {
         default:
           dateRangeText = `${year}-${month}-${date}`
       }
-      console.log(dateRangeText)
       this.dateRange = dateRangeText
     },
   },
@@ -170,6 +168,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  :deep(#tui-full-calendar-schedule-private){
+    display: none;
+  }
+
+  :deep(.tui-full-calendar-section-title){
+    width: 100%;
+  }
+
+  :deep(#tui-full-calendar-schedule-title){
+    width:96.3%
+  }
+
   .calendar{
     max-width: $website-width;
     margin: 0 auto;
@@ -177,18 +187,20 @@ export default {
     &__header{
       display: flex;
       padding: .5rem 0;
+      align-items: center;
     }
 
     &__select{
       padding: 5px 15px 5px 5px;
       margin-right: 8px;
       border-radius: 4px;
+      width: 90.8px;
     }
 
     &__render-range{
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-left: 20rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-left: 20px;
     }
   }  
 
@@ -219,15 +231,12 @@ export default {
     }
   }
 
-  .move-today {
-    padding: 0 1rem;
-    line-height: 1.875rem;
-  }
-
   .move-day {
-    padding: 8px;
+    padding: .3rem .8rem;
+    line-height: 1.1rem;
   }
 
+  
   @media screen and (max-width: 980px) {
       
   }  

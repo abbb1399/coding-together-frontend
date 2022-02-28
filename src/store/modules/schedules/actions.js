@@ -12,7 +12,9 @@ export default {
       category: payload.category,
       isAllDay:payload.isAllDay,
       start: payload.start._date,
-      end: payload.end._date
+      end: payload.end._date,
+      state:payload.state,
+      location:payload.location
     }
 
     try{
@@ -49,10 +51,10 @@ export default {
     const token = context.rootGetters.token  
     const [id, changes] = payload
 
-    if(changes.start ){
+    if(changes.start){
       changes.start = changes.start._date
     }
-    if(changes.end ){
+    if(changes.end){
       changes.end = changes.end._date
     }
 
