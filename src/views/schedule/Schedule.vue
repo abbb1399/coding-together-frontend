@@ -1,24 +1,26 @@
 <template>
-  <section class="calendar">
-    <div class="calendar__header">
-      <div>
-        <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
-        <select v-model="selectedView" class="calendar__select">
-          <option v-for="(options, index) in viewModeOption" :value="options.value" :key="index">
-            {{options.title}}
-          </option>
-        </select>
-        <span @click="onClickNavi($event)">
-          <button type="button" class="btn move-day" data-action="move-today">오늘</button>
-          <button type="button" class="btn move-day" data-action="move-prev">이전</button>
-          <button type="button" class="btn move-day" data-action="move-next">다음</button>
-        </span>
+  <section>
+    <div class="calendar">
+      <div class="calendar__header">
+        <div>
+          <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
+          <select v-model="selectedView" class="calendar__select">
+            <option v-for="(options, index) in viewModeOption" :value="options.value" :key="index">
+              {{options.title}}
+            </option>
+          </select>
+          <span @click="onClickNavi($event)">
+            <button type="button" class="btn move-day" data-action="move-today">오늘</button>
+            <button type="button" class="btn move-day" data-action="move-prev">이전</button>
+            <button type="button" class="btn move-day" data-action="move-next">다음</button>
+          </span>
+        </div>
+        <span class="calendar__render-range">{{dateRange}}</span>
       </div>
-      <span class="calendar__render-range">{{dateRange}}</span>
+      
+      <!-- 캘린더 컨테이너 요소 작성 -->
+      <div ref="tuiCalendar"></div>
     </div>
-    
-    <!-- 캘린더 컨테이너 요소 작성 -->
-    <div ref="tuiCalendar"></div>
   </section>
 </template>
 
@@ -181,7 +183,7 @@ export default {
   }
 
   .calendar{
-    max-width: $website-width;
+    max-width: $website-width ;
     margin: 0 auto;
 
     &__header{

@@ -1,14 +1,14 @@
 <template>
-  <div id="app-main">
+  <div id="app-main">    
     <the-header></the-header>
 
-     <!-- style="flex:1;" -->
-    <router-view v-slot="slotProps" >
+    <router-view v-slot="slotProps" style="flex:1;" >
       <transition name="route" mode="out-in">
-        <component :is="slotProps.Component"></component>
+        <component :is="slotProps.Component" ></component>
       </transition>
     </router-view>  
-    
+
+
     <the-footer v-if="!$route.meta.hideFooter"></the-footer>
   </div>
 </template>
@@ -49,11 +49,11 @@ export default {
   // Loboto, Lobster 폰트
   @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
   
-  // #app-main{
-  //   min-height: 100vh;
-  //   display: flex; 
-  //   flex-direction:column; 
-  // }
+  #app-main{
+    display: flex; 
+    flex-direction:column; 
+    min-height: 100vh;
+  }
   
   // Vue Transition css
   .route-enter-from{

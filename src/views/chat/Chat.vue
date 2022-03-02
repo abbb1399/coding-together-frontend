@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<chat-window
-			height="89vh"
+			height="calc(100vh - 5rem)"
 			:current-user-id="currentUserId"
 			:rooms="rooms"
 			:rooms-loaded="true"
@@ -13,7 +13,6 @@
       :text-messages="textMessages"
 			@send-message="sendMessage"
 			@fetch-messages="fetchMessages"
-
 		/>
 	</div>
 </template>
