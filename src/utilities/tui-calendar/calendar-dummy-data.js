@@ -2,7 +2,7 @@ export default [
   {
     id: '1',
     calendarId: 'major',
-    title: '자료구조론',
+    title: '과제1',
     category: 'time',              // 일반 일정
     start: '2022-02-18T10:00:00',
     end: '2022-02-18T11:00:00'
@@ -10,7 +10,7 @@ export default [
   {
     id: '2',
     calendarId: 'sub',
-    title: '웹 프로그래밍',
+    title: '과제2',
     category: 'time',
     start: '2022-02-18T14:00:00',
     end: '2022-02-18T15:00:00'
@@ -18,7 +18,7 @@ export default [
   {
     id: '3',
     calendarId: 'etc',
-    title: '영양과 건강',
+    title: '과제3',
     category: 'time',
     start: '2022-02-18T13:00:00',
     end: '2022-02-18T14:00:00'
@@ -26,7 +26,7 @@ export default [
   {
     id: '3',
     calendarId: 'sub',
-    title: '인공지능',
+    title: '과제4',
     category: 'time',
     start: '2022-02-16T09:00:00',
     end: '2022-02-16T10:00:00'
@@ -34,7 +34,7 @@ export default [
   {
     id: '4',
     calendarId: 'major',
-    title: '소프트웨어 공학',
+    title: '과제5',
     category: 'time',
     dueDateClass: '',
     start: '2022-02-17T09:00:00',
@@ -43,7 +43,7 @@ export default [
   {
     id: '5',
     calendarId: 'sub',
-    title: '데이터베이스',
+    title: '과제6',
     category: 'time',
     start: '2022-02-17T10:30:00',
     end: '2022-02-17T12:00:00'
@@ -51,7 +51,7 @@ export default [
   {
     id: '6',
     calendarId: 'major',
-    title: '알고리즘',
+    title: '과제7',
     category: 'time',
     dueDateClass: '',
     start: '2022-02-19T13:00:00',
@@ -60,7 +60,7 @@ export default [
   {
     id: '8',
     calendarId: 'major',
-    title: '강촌 OT',
+    title: '과제8',
     category: 'allday',              // 종일 일정
     start: '2022-02-20',
     end: '2022-02-21',
@@ -73,7 +73,7 @@ export default [
   {
     id: '9',
     calendarId: 'Homework',
-    title: '소프트웨어 개론 레포트 제출',
+    title: '과제9',
     category: 'task',                 // 태스크
     start: '2022-02-19T10:30:00',
     end: '2022-02-19T11:30:00',
@@ -85,7 +85,7 @@ export default [
   {
     id: '10',
     calendarId: 'Test',
-    title: '쪽지 시험',
+    title: '과제10',
     category: 'milestone',              // 마일스톤
     start: '2022-02-20T11:30:00',
     end: '2022-02-20T12:00:00',

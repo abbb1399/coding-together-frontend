@@ -9,7 +9,7 @@
   text-align: center;
 }
 
-// Padding
+// Padding Y
 .py {
   &-1 {
     padding: 1rem 0;
@@ -25,7 +25,7 @@
   }
 }
 
-// Margin
+// Margin Y
 .my {
   &-1 {
     margin: 1rem 0;
@@ -40,3 +40,12 @@
     margin: 4rem 0;
   }
 }
+
+.text-center{ text-align: center !important;}
+
+.margin-bottom-small{ margin-bottom: 1.5rem !important;}
+.margin-bottom-medium{ margin-bottom: 4rem !important;}
+.margin-bottom-big{ margin-bottom: 8rem !important;}
+
+.margin-top-big{ margin-top: 8rem !important;}
+.margin-top-huge{ margin-top: 10rem !important;}

@@ -16,6 +16,7 @@
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
+    "socket.io-client": "^4.4.1",
     "sweetalert2": "^11.3.10",
     "tui-calendar": "^1.15.3",
     "vue": "^3.0.0",

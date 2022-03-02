@@ -50,6 +50,8 @@ export default {
         userId: data.user._id,
         email: data.user.email
       })
+
+      context.dispatch('fetchMyInfo')
     }catch(error){
       return Promise.reject(error.data)
     }        
@@ -75,6 +77,8 @@ export default {
         token: token,
         userId: userId
       })
+
+      context.dispatch('fetchMyInfo')
     }
   },
   

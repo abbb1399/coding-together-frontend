@@ -27,12 +27,6 @@ export default {
       return this.$store.getters.didAutoLogout
     }
   },
-  async created(){
-    // auto login
-    await this.$store.dispatch('tryLogin')
-    // await this.$store.dispatch('fetchMyInfo')
-  
-  },
   watch:{
     didAutoLogout(curValue, oldValue){
       // curval이 true고(autologout 한거고) 값이 변한거면
@@ -40,6 +34,10 @@ export default {
         this.$router.replace('/articles')
       }
     } 
+  },
+  async created(){
+    // try login
+    await this.$store.dispatch('tryLogin')
   },
   methods:{
   

@@ -4,7 +4,7 @@
       <p>{{error}}</p>
     </base-dialog>
     
-    <section>
+    <section class="requests-received">
       <base-card>
         <header>
           <h2>받은 요청들</h2>
@@ -69,7 +69,11 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
+  .requests-received{
+    
+  }
+  
   header {
     text-align: center;
   }
