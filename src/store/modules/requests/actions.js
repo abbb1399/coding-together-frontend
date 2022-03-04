@@ -5,7 +5,7 @@ export default {
     const newRequest = {
       email: payload.email,
       message: payload.message,
-      coachId: payload.coachId
+      owner: payload.owner
     }
     
     try{
@@ -24,12 +24,16 @@ export default {
 
   async fetchRequests(context){
     // 로그인한사람의 유저 아이디
-    const userId = context.rootGetters.userId
-    // const token = context.rootGetters.token
+    const ownerId = context.rootGetters.userId
+    const token = context.rootGetters.token
 
     try{
-      const response = await axios.get(`http://localhost:3000/requests/${userId}`)
-      context.commit('setRequests', response)
+      const {data} = await axios.get(
+        `http://localhost:3000/requests/${ownerId}`,
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+      context.commit('setRequests', data)
     }catch(e){
       console.log(e)
     }

@@ -6,8 +6,10 @@ export default {
   },
   setMessages(state,messages){
     messages.forEach(msg => {
-      msg.date = moment(msg.date).format('YYYY-MM-DD')
-    });
+      const date = msg.date
+      msg.timestamp = date.substring(11,16)
+      msg.date = moment(date).format('YYYY-MM-DD')
+    })
 
     state.messages = messages
   },

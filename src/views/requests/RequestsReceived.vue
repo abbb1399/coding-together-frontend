@@ -4,23 +4,22 @@
       <p>{{error}}</p>
     </base-dialog>
     
-    <section class="requests-received">
-      <base-card>
-        <header>
-          <h2>받은 요청들</h2>
-        </header>
-        <base-spinner v-if="isLoading"></base-spinner>
-        <ul v-else-if="hasRequests && !isLoading">
-          <request-item
-            v-for="req in receivedRequests"
-            :key="req._id"
-            :email="req.email"
-            :message="req.message"
-          >
-          </request-item>
-        </ul>
-        <h3 v-else>받은 요청이 없습니다.</h3>
-      </base-card>
+    <section class="requests">
+      <header class="requests__header">
+        <h2>받은 요청들</h2>
+      </header>
+      <base-spinner v-if="isLoading"></base-spinner>
+      <ul class="requests__list" v-else-if="hasRequests && !isLoading">
+        <request-item
+          v-for="req in receivedRequests"
+          :key="req._id"
+          :email="req.email"
+          :message="req.message"
+          :name="req.owner.name"
+        >
+        </request-item>
+      </ul>
+      <h3 class="request__no-request" v-else>받은 요청이 없습니다.</h3>
     </section>
 
   </div>
@@ -37,7 +36,7 @@ export default {
   data(){
     return{
       isLoading:false,
-      error:null
+      error:null,
     }
   },
   computed:{
@@ -50,15 +49,15 @@ export default {
   },
   created(){
     this.loadRequests()
+    
+
   },
   methods:{
     async loadRequests(){
       this.isLoading = true
-      try{
-        await this.$store.dispatch('requests/fetchRequests')
-      }catch(error){
-        this.error = error.message || 'Something Failed'
-      }
+      await this.$store.dispatch('requests/fetchRequests')
+
+
       this.isLoading= false
     },
     handleError(){
@@ -70,22 +69,20 @@ export default {
 
 
 <style lang="scss" scoped>
-  .requests-received{
-    
-  }
+  .requests{
+    &__header{
+      text-align: center;
+    }
+
+    &__list{
+      list-style: none;
+      margin: 2rem auto;
+      padding: 0;
+      max-width: 50rem;
+    }
   
-  header {
-    text-align: center;
-  }
-
-  ul {
-    list-style: none;
-    margin: 2rem auto;
-    padding: 0;
-    max-width: 30rem;
-  }
-
-  h3 {
-    text-align: center;
+    &__no-request{
+      text-align: center;
+    }
   }
 </style>

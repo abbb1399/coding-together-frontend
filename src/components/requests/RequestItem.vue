@@ -3,6 +3,7 @@
     <div>
       <a :href="emailLink"> {{ email }} </a>
     </div>
+    <p>{{name}}</p>
     <p>{{message}}</p>
   </li>
 </template>
@@ -17,6 +18,10 @@ export default {
     message:{
       type:String,
       required:true
+    },
+    name:{
+      type:String,
+      required: true
     }
   },
   computed:{
@@ -24,8 +29,9 @@ export default {
       return 'mailto:' + this.email
     }
   },
-  created(){
- 
+  async created(){
+   
+  
   }
 }
 </script>
@@ -38,16 +44,15 @@ export default {
   }
 
   a {
-    color: #3d008d;
+    color: $primary-color;
     text-decoration: none;
     font-weight: bold;
   
     &:hover,
     &:active{
-       color: #8d007a;
+       color: $primary-color-dark-1;
     }    
   }
-
 
   p {
     margin: .8rem 0 0 0;

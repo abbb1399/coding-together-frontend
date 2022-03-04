@@ -128,7 +128,6 @@ export default {
       setTimeout(() => {
         // 방이 처음 열렸을때 reset:true
 				if (options.reset) {
-          console.log(this.messages)
 					this.messages = [...this.$store.getters['chat/messages']]
 				} else {
           // this.messages = [...this.addMessages(), ...this.messages]

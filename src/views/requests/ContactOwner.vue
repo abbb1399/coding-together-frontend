@@ -10,7 +10,7 @@
     </div>
     <p class="errors" v-if="!formIsValid">유효한 이메일과 메세지란을 입력해주세요.</p>
     <div class="actions">
-      <base-button>메세지 보내기</base-button>
+      <base-button>요청 보내기</base-button>
     </div>
   </form>
 </template>
@@ -43,6 +43,7 @@ export default {
   methods:{
     submitForm(){
       this.formIsValid = true
+      
       if(this.email === '' || !this.email.includes('@') || this.message === ''){
         this.formIsValid = false
         return
@@ -51,7 +52,7 @@ export default {
       this.$store.dispatch('requests/contactCoach',{
         email: this.email,
         message: this.message,
-        coachId: this.$route.params.owner
+        owner: this.$route.params.owner,
       })
       this.$router.replace('/articles')
     }
