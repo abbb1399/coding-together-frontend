@@ -27,7 +27,7 @@ export default {
   },
   methods:{
     async getMyInfo(){
-      // await this.$store.dispatch('fetchMyInfo')
+      await this.$store.dispatch('fetchMyInfo')
       const myInfo = {...this.$store.getters.getMyInfo}
 
       this.email = myInfo.email

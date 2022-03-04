@@ -50,7 +50,6 @@ export default {
         userId: data.user._id,
         email: data.user.email
       })
-      await context.dispatch('fetchMyInfo')
     }catch(error){
       return Promise.reject(error.data)
     }        
@@ -72,11 +71,11 @@ export default {
     }, expiresIn)
 
     if(token && userId){
-      await context.dispatch('fetchMyInfo')
       context.commit('setUser',{
         token: token,
         userId: userId
       })
+      await context.dispatch('fetchMyInfo')
     }
   },
   

@@ -2,12 +2,11 @@
   <div id="app-main">    
     <the-header></the-header>
 
-    <router-view v-slot="slotProps" style="flex:1;" >
+    <router-view v-slot="slotProps" >
       <transition name="route" mode="out-in">
-        <component :is="slotProps.Component" ></component>
+        <component :is="slotProps.Component" :class="{'flex-one':!$route.meta.hideFooter}"></component>
       </transition>
     </router-view>  
-
 
     <the-footer v-if="!$route.meta.hideFooter"></the-footer>
   </div>

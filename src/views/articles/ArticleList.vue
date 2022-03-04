@@ -46,6 +46,7 @@
       <!-- <h3 v-else>목록이 없습니다.</h3> -->
       <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
         <template #no-more>모든 데이터를 불러왔습니다.</template>
+        <template #no-results>결과가 없습니다.</template>
       </infinite-loading>
     </section>
   </div>

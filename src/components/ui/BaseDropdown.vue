@@ -20,8 +20,11 @@ export default {
     }
   },
   created(){
-    // console.log(this.$store.getters.getMyInfo)
-    this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.getMyInfo.avatar}`  
+    setTimeout(() => {
+      if(this.$store.getters.getMyInfo.avatar){
+        this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.getMyInfo.avatar}`  
+      }
+    }, 100);
   },
   methods:{
     openClose(){

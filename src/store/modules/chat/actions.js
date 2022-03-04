@@ -1,7 +1,19 @@
 const axios = require('axios')
 
 export default {
-  // 방 불러오기
+  // 채팅방 생성하기
+  async createRoom(){
+    try{
+      await axios.post(
+        'http://localhost:3000/chatroom'
+
+      )
+    }catch(e){
+      console.log(e)
+    }
+  },
+
+  // 채팅방 불러오기
   async fetchRooms(context){
     const id = '621df5782cc718fc05268417'
 

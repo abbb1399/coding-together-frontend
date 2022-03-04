@@ -1,8 +1,207 @@
 <template>
-  <section>
-    <base-card>
-      <h2>페이지 없음</h2>
-      <p>요청하신 페이지는 없습니다. <router-link to="/articles">코치리스트로 이동</router-link></p>
-    </base-card>
-  </section>
+  <div class="notfound">
+    <div class="center">
+      <div class="error">
+        <div class="number">4</div>
+        <div class="illustration">
+          <div class="circle"></div>
+          <div class="clip">
+            <div class="paper">
+              <div class="face">
+                <div class="eyes">
+                  <div class="eye eye-left"></div>
+                  <div class="eye eye-right"></div>
+                </div>
+                <div class="rosyCheeks rosyCheeks-left"></div>
+                <div class="rosyCheeks rosyCheeks-right"></div>
+                <div class="mouth"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="number">4</div>
+      </div>
+
+      <div class="text">찾고 계신 페이지는 존재 하지 않습니다. 😝</div>
+      <router-link class="button" to="/articles">홈으로</router-link>
+    </div>
+  </div>
 </template>
+
+
+<style scoped>
+  .notfound{
+    font-family: "Lato", sans-serif;
+    font-size: 1.5rem;
+    color: #293b49;
+    margin: auto;
+  }
+
+  .center {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error {
+    display: flex;
+    /* justify-content: space-between; */
+    /* align-content: center; */
+  }
+
+  .number {
+    font-weight: 900;
+    font-size: 15rem;
+    line-height: 1;
+  }
+
+  .illustration {
+    position: relative;
+    width: 12.2rem;
+    margin: 0 2.1rem;
+  }
+
+  .circle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 12.2rem;
+    height: 11.4rem;
+    border-radius: 50%;
+    background-color: #293b49;
+  }
+
+  .clip {
+    position: absolute;
+    bottom: 0.3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    width: 12.5rem;
+    height: 13rem;
+    border-radius: 0 0 50% 50%;
+  }
+
+  .paper {
+    position: absolute;
+    bottom: -0.3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9.2rem;
+    height: 12.4rem;
+    border: 0.3rem solid #293b49;
+    background-color: white;
+    border-radius: 0.8rem;
+  }
+
+  .paper::before {
+      content: "";
+      position: absolute;
+      top: -0.7rem;
+      right: -0.7rem;
+      width: 1.4rem;
+      height: 1rem;
+      background-color: white;
+      border-bottom: 0.3rem solid #293b49;
+      transform: rotate(45deg);
+    }
+
+  .face {
+    position: relative;
+    margin-top: 2.3rem;
+  }
+
+  .eyes {
+    position: absolute;
+    top: 0;
+    left: 2.4rem;
+    width: 4.6rem;
+    height: 0.8rem;
+  }
+
+  .eye {
+    position: absolute;
+    bottom: 0;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: #293b49;
+    animation-name: eye;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+
+  .eye-left {
+      left: 0;
+    }
+
+  .eye-right {
+      right: 0;
+    }
+
+  @keyframes eye {
+    0% {
+      height: 0.8rem;
+    }
+    50% {
+      height: 0.8rem;
+    }
+    52% {
+      height: 0.1rem;
+    }
+    54% {
+      height: 0.8rem;
+    }
+    100% {
+      height: 0.8rem;
+    }
+  }
+
+  .rosyCheeks {
+    position: absolute;
+    top: 1.6rem;
+    width: 1rem;
+    height: 0.2rem;
+    border-radius: 50%;
+    background-color: #fdabaf;
+  }
+
+  .rosyCheeks-left {
+      left: 1.4rem;
+    }
+
+  .rosyCheeks-right {
+      right: 1.4rem;
+    }
+
+  .mouth {
+    position: absolute;
+    top: 3.1rem;
+    left: 50%;
+    width: 1.6rem;
+    height: 0.2rem;
+    border-radius: 0.1rem;
+    transform: translateX(-50%);
+    background-color: #293b49;
+  }
+
+  .text {
+    margin-top: 5rem;
+    font-weight: 300;
+    color: #293b49;
+  }
+
+  .button {
+    margin-top: 4rem;
+    padding: 1.2rem 3rem;
+    color: white;
+    background-color: #04cba0;
+    border-radius: 5px;
+  }
+
+  .button:hover {
+    background-color: #01ac88;
+  }
+</style>

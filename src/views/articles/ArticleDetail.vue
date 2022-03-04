@@ -1,20 +1,18 @@
 <template>
-  <div>
+  <div class="article">
     <section>
-      <base-card :card-width="cardWidth">
-        <img id="thumbnail" :src="imgSrc" alt="썸내일">
-        <h1 class="l-heading">{{name}}</h1> 
-        <div class="meta">
-          <small>
-            <i class="fas fa-user"></i> Written By {{getOwnerName}} {{updatedAt}}
-          </small>
-          <div>
-            <base-badge class="bagde" v-for="area in areas" :key="area" :type="area" :title="area"/>
-          </div>
+      <img class="article__thumbnail" :src="imgSrc" alt="썸내일">
+      <h1 class="l-heading">{{title}}</h1> 
+      <div class="meta">
+        <small>
+          <i class="fas fa-user"></i> Written By {{getOwnerName}} {{updatedAt}}
+        </small>
+        <div>
+          <base-badge class="bagde" v-for="area in areas" :key="area" :type="area" :title="area"/>
         </div>
+      </div>
 
-        <div id="viewer"/>
-      </base-card>
+      <div id="viewer"/>
     </section>
 
     <section>
@@ -23,7 +21,9 @@
           <h2>관심있나요? 지금 신청하세요!</h2>
           <!-- <base-button link :to="contactLink">연락하기</base-button> -->
         </header>
-        <contact-owner></contact-owner>
+        <contact-owner
+          :title="title"
+        />
         <!-- <router-view></router-view> -->
       </base-card>
     </section>
@@ -60,7 +60,7 @@ export default {
   data(){
     return{
       selectedCoach:null,
-      name:'',
+      title:'',
       areas:[],
       updatedAt:'',
       description:'',
@@ -74,7 +74,7 @@ export default {
     
     const info = this.$store.getters['articles/articles'].find(coach => coach.owner === this.owner)
 
-    this.name = info.name
+    this.title = info.name
     this.areas = info.areas
     this.description = info.description
     this.updatedAt = this.$moment(info.updatedAt).format('YYYY-MM-DD')
@@ -111,21 +111,23 @@ export default {
     font: inherit;
   }
   
+  .article{
+    max-width: $website-width;
+    margin: 1rem auto;
+
+    &__thumbnail{
+      height: 32rem;
+      width:100%;
+      border-radius: 5px;
+    }
+  }
+
   #viewer{
     margin-top: 1.56rem;
   }
 
-  img{
-    width:100%;
-  }
 
-  .l-heading{
-    font-size: 3rem;
-  }
 
-  #thumbnail{
-    height: 32rem;
-  }
   
   .meta{
     display: flex;

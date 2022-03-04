@@ -1,10 +1,14 @@
 <template>
-  <li>
-    <div>
-      <a :href="emailLink"> {{ email }} </a>
+  <li class="request" @click="enterChatRoom">
+    <img class="request__img" alt="유저 프로필" :src="imgSrc">
+    <div class="request__group">
+      <div class="request__title">
+        <h4>{{name}}</h4>
+        <p> {{ email }} </p>
+      </div>
+      
+      <p class="request__content">{{message}}</p>
     </div>
-    <p>{{name}}</p>
-    <p>{{message}}</p>
   </li>
 </template>
 
@@ -22,6 +26,15 @@ export default {
     name:{
       type:String,
       required: true
+    },
+    imgSrc:{
+      type:String,
+      default: require('../../assets/avatar.jpg')
+    }
+  },
+  data(){
+    return{
+      // imgSrc:require('../../assets/avatar.jpg') 
     }
   },
   computed:{
@@ -30,31 +43,49 @@ export default {
     }
   },
   async created(){
-   
+    
   
+  },
+  methods:{
+    enterChatRoom(){
+      // const roomName = this.email
+
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  li {
+  .request {
+    display: flex;
     margin: 1rem 0;
-    border: 1px solid #ccc;
+    border-bottom: 1px solid $color-grey-light;
+    border-radius: 5px;
     padding: 1rem;
-  }
+    cursor:pointer;
 
-  a {
-    color: $primary-color;
-    text-decoration: none;
-    font-weight: bold;
-  
-    &:hover,
-    &:active{
-       color: $primary-color-dark-1;
-    }    
-  }
+    &__img{
+      width: 10%;
+      border-radius: 5px;
+    }
 
-  p {
-    margin: .8rem 0 0 0;
+    &__group{
+      margin-left: .9rem;
+    }
+
+    &__title{
+      display:inline-flex;
+
+      p {
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: bold;
+        margin-left: .4rem;
+      }
+    }
+
+    &__content{
+      margin: .8rem 0 0 0;
+    }
   }
 </style>

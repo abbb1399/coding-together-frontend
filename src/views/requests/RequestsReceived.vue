@@ -16,6 +16,7 @@
           :email="req.email"
           :message="req.message"
           :name="req.owner.name"
+          :img-src="req.owner.avatar"
         >
         </request-item>
       </ul>
@@ -56,7 +57,7 @@ export default {
     async loadRequests(){
       this.isLoading = true
       await this.$store.dispatch('requests/fetchRequests')
-
+      console.log(this.$store.getters['requests/requests'])
 
       this.isLoading= false
     },
@@ -80,9 +81,9 @@ export default {
       padding: 0;
       max-width: 50rem;
     }
-  
-    &__no-request{
-      text-align: center;
-    }
+  }
+
+  h3{
+    text-align: center;
   }
 </style>
