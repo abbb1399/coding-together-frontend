@@ -11,7 +11,6 @@ export default {
       didAutoLogout:false,
       usersInfo:[],
       myInfo:{},
-      myAvatar:null
     }
   },
   mutations,

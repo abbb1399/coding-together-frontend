@@ -23,29 +23,19 @@ export default {
   async created(){
     // 내 정보 불러오기
     await this.getMyInfo()  
-    // 내 아바타 불러오기
-    await this.getMyAvatar()
+ 
   },
   methods:{
     async getMyInfo(){
+      // await this.$store.dispatch('fetchMyInfo')
       const myInfo = {...this.$store.getters.getMyInfo}
 
       this.email = myInfo.email
       this.name = myInfo.name
       this.createdAt = this.$moment(myInfo.createdAt).format('YYYY-MM-DD'),
       this.myId = myInfo._id
+      this.imgSrc = `http://localhost:3000/avatars/${myInfo.avatar}`
     },
-    async getMyAvatar(){
-      if(this.$store.getters.getMyInfo.thumbnail){
-        await this.$store.dispatch('fetchAvatar', this.myId)
-        this.imgSrc = `http://localhost:3000/users/${this.myId}/avatar`
-      }
-      
-      // const urlCreator = window.URL || window.webkitURL;
-      // if(this.$store.getters.getMyAvatar.size > 0){
-      //   document.querySelector('#myImage').src = urlCreator.createObjectURL(this.$store.getters.getMyAvatar)
-      // }
-    },  
     imageUpload(){
       const upload = document.createElement('input')
       upload.type = 'file'
@@ -61,7 +51,7 @@ export default {
 
         // 서버 로직
         await this.$store.dispatch('uploadAvatar',data)
-        this.getMyAvatar()
+        this.getMyInfo()
        
       }
       upload.click()

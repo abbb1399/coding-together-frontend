@@ -70,6 +70,7 @@ export default {
   },
   async created(){
     await this.loadArticles()
+    await this.$store.dispatch('fetchAllUsersInfo', this.owner)
     
     const info = this.$store.getters['articles/articles'].find(coach => coach.owner === this.owner)
 

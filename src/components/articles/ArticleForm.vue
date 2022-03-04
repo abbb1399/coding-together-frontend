@@ -74,7 +74,6 @@ export default {
         isValid:true
       },
       formIsValid:true,
-      tuiEditor:null,
       file:null,
       listId:'',
       chosenFileName:'파일을 선택하세요.'
@@ -135,6 +134,7 @@ export default {
       }
     },
     async submitForm(){
+      console.log(this.$route.path)
       const result = await this.swalAlert(this.$route.path ==='/mypage/list' ? '수정' :' 삭제')
       if(result.value){
         // tui 에디터 글내용 받아오기
@@ -190,7 +190,7 @@ export default {
     },
     useTab(){
       // 버전업 필요 
-      // this.tuiEditor.focus()
+      this.tuiEditor.focus()
     },
     selectFile(e){
       this.file = e.target.files[0]

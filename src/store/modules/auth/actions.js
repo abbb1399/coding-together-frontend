@@ -50,14 +50,13 @@ export default {
         userId: data.user._id,
         email: data.user.email
       })
-
-      context.dispatch('fetchMyInfo')
+      await context.dispatch('fetchMyInfo')
     }catch(error){
       return Promise.reject(error.data)
     }        
   },
   
-  tryLogin(context){
+  async tryLogin(context){
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
     const tokenExpiration = localStorage.getItem('tokenExpiration')
@@ -73,12 +72,11 @@ export default {
     }, expiresIn)
 
     if(token && userId){
+      await context.dispatch('fetchMyInfo')
       context.commit('setUser',{
         token: token,
         userId: userId
       })
-
-      context.dispatch('fetchMyInfo')
     }
   },
   
@@ -156,23 +154,11 @@ export default {
 
     try{
       await axios.post(
-        'http://localhost:3000/users/me/avatar', 
+        'http://localhost:3000/avatar', 
         file, 
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
-    }catch(e){
-      console.log(e)
-    }
-  },
-
-  // 아바타 불러오기
-  async fetchAvatar(context,id){
-    try{
-      const {data} = await axios.get(`http://localhost:3000/users/${id}/avatar`,
-        {responseType: 'blob'}
-      )
-      context.commit('setMyAvatar',data)
     }catch(e){
       console.log(e)
     }

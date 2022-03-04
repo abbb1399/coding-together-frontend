@@ -1,7 +1,7 @@
 <template>
   <section class="dropDownMenuWrapper" > 
-    <slot name="content" >
-      <img src="../../assets/avatar.jpg"  height="40" width="40" style="border-radius:20px;"  ref="menu" @click="openClose"/>
+    <slot name="content">
+      <img :src="imgSrc" height="40" width="40" style="border-radius:20px;"  ref="menu" @click="openClose"/>
     </slot>
 
     <section class="dropdownMenu" v-if="isOpen" >
@@ -15,8 +15,13 @@
 export default {
   data(){
     return{
-      isOpen: false
+      isOpen: false,
+      imgSrc:require("../../assets/avatar.jpg")
     }
+  },
+  created(){
+    // console.log(this.$store.getters.getMyInfo)
+    this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.getMyInfo.avatar}`  
   },
   methods:{
     openClose(){
