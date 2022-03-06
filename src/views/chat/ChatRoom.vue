@@ -28,6 +28,11 @@ export default {
   components: {
 		ChatWindow
 	},
+  props:{
+    roomNum:{
+      type:String
+    }
+  },
 	data() {
 		return {
       usernameOptions: {minUsers: 0, currentUser: false},
@@ -64,9 +69,13 @@ export default {
 		}
 	},
   async created(){
+    console.log(this.roomNum)
+    await this.$store.dispatch('fetchMyInfo')
+
     const myInfo  = this.$store.getters.getMyInfo
     this.currentUserId = myInfo._id
     this.currentUserName = myInfo.name
+
 
     const room = '일반방'
     const username = myInfo.name
@@ -75,7 +84,12 @@ export default {
     const userId = myInfo._id
     
     const socket = io("http://localhost:3000")
-    await this.$store.dispatch('chat/fetchRooms')
+
+    // 방정보 불러오기
+    await this.$store.dispatch('chat/fetchChatRoomList')
+    // console.log(this.$store.getters['chat/roomList'])
+
+
 
     // Join 소켓
     socket.emit('join',{username, room, date, email, userId},(error)=>{
@@ -90,7 +104,7 @@ export default {
     socket.on('roomData',()=>{
       // console.log(users)
       // console.log(room)
-      this.rooms =[this.$store.getters['chat/rooms']]
+      this.rooms = this.$store.getters['chat/roomList']
     })
 
     // 메세지 받기 소켓
@@ -122,7 +136,7 @@ export default {
 	methods: {
     // 메세지 불러오기
 		async fetchMessages({ options = {} }) {
-			await this.$store.dispatch('chat/fetchMessages')
+			await this.$store.dispatch('chat/fetchMessages',this.roomNum)
       console.log(this.$store.getters['chat/messages'])
 
       setTimeout(() => {
@@ -142,7 +156,8 @@ export default {
       const msgData ={
         content: message.content,
         senderId: this.currentUserId,
-        username: this.currentUserName
+        username: this.currentUserName,
+        owner: this.roomNum
       }
       await this.$store.dispatch('chat/registerMessage', msgData)
       const msg = this.$store.getters['chat/newMessage']

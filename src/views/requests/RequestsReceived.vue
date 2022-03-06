@@ -13,10 +13,12 @@
         <request-item
           v-for="req in receivedRequests"
           :key="req._id"
+          :title="req.title"
           :email="req.email"
           :message="req.message"
-          :name="req.owner.name"
           :img-src="req.owner.avatar"
+          :_id="req.owner._id"
+          :roomId="req.roomId"
         >
         </request-item>
       </ul>

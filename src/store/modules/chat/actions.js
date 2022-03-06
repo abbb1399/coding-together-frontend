@@ -2,48 +2,63 @@ const axios = require('axios')
 
 export default {
   // 채팅방 생성하기
-  async createRoom(){
+  async createRoom(context, roomInfo){
     try{
-      await axios.post(
-        'http://localhost:3000/chatroom'
-
+      const {data} = await axios.post(
+        'http://localhost:3000/chatroom',
+        roomInfo
       )
+
+      context.commit('addRoom', data)
     }catch(e){
       console.log(e)
     }
   },
 
-  // 채팅방 불러오기
-  async fetchRooms(context){
-    const id = '621df5782cc718fc05268417'
+  // 채팅방 입장하기
+  async enterRoom(context, roomId){
+    const token = context.rootGetters.token
+    console.log(token)
+    console.log(roomId)
 
     try{
-      const {data}  = await axios.get(
-        `http://localhost:3000/chatroom/${id}`,
+      await axios.patch(
+        `http://localhost:3000/chatroom`,  
+        {roomId},
+        { headers: { Authorization: `Bearer ${token}` }}
       )
 
-      context.commit('setRooms', data)
     }catch(e){
       console.log(e)
     }
   },
+
+
+  // 채팅방 리스트 불러오기
+  async fetchChatRoomList(context){
+    const token = context.rootGetters.token
+
+    try{
+      const {data} = await axios.get(
+        'http://localhost:3000/roomList',
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+
+      context.commit('setRoomList', data)
+    }catch(e){
+      console.log(e)
+    }
+  },
+
+
 
   // 메세지 생성하기
-  async registerMessage(context, payload){
-    const id = '621df5782cc718fc05268417'
-
-    const messageData = {
-
-      content : payload.content,
-      senderId: payload.senderId,
-      username: payload.username,
-      owner: id
-    }
-
+  async registerMessage(context, msgData){
     try{
       const {data} = await axios.post(
         'http://localhost:3000/chatMessages', 
-        messageData
+        msgData
       )   
 
       context.commit('addMessage', data)
@@ -54,11 +69,9 @@ export default {
   },
 
   // 메세지 불러오기 - 방 아이디 별로
-  async fetchMessages(context){
-    const id = '621df5782cc718fc05268417'
-
+  async fetchMessages(context, roomNum){
     try{
-      const {data} = await axios.get(`http://localhost:3000/chatMessages/${id}`)
+      const {data} = await axios.get(`http://localhost:3000/chatMessages/${roomNum}`)
 
       context.commit('setMessages', data)
     }catch(e){

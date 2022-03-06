@@ -1,10 +1,10 @@
 <template>
   <li class="request" @click="enterChatRoom">
-    <img class="request__img" alt="유저 프로필" :src="imgSrc">
+    <img class="request__img" alt="유저 프로필" :src="img">
     <div class="request__group">
-      <div class="request__title">
-        <h4>{{name}}</h4>
-        <p> {{ email }} </p>
+      <h2>{{title}}</h2>
+      <div class="content__group">
+        <p class="content__email"> {{ email }} </p>
       </div>
       
       <p class="request__content">{{message}}</p>
@@ -15,6 +15,10 @@
 <script>
 export default {
   props:{
+    title:{
+      type:String,
+      required:true
+    },
     email:{
       type:String,
       required:true
@@ -23,33 +27,45 @@ export default {
       type:String,
       required:true
     },
-    name:{
+    _id:{
       type:String,
       required: true
     },
     imgSrc:{
       type:String,
-      default: require('../../assets/avatar.jpg')
+      // default: require('../../assets/avatar.jpg')
+    },
+    roomId:{
+      type:String
     }
   },
   data(){
     return{
-      // imgSrc:require('../../assets/avatar.jpg') 
+
     }
   },
   computed:{
     emailLink(){
       return 'mailto:' + this.email
+    },
+    img(){
+      if(this.imgSrc){
+        return `http://localhost:3000/avatars/${this.imgSrc}`
+      }else{
+        return require('../../assets/avatar.jpg')
+      }
     }
+
   },
   async created(){
-    
-  
+    // console.log(this.roomId)
   },
   methods:{
-    enterChatRoom(){
-      // const roomName = this.email
+    async enterChatRoom(){
+      await this.$store.dispatch('chat/enterRoom', this.roomId)
 
+      
+      this.$router.push({name:'chatRoom',  params: {roomNum: this.roomId }})
     }
   }
 }
@@ -71,21 +87,29 @@ export default {
 
     &__group{
       margin-left: .9rem;
+
+      h3{
+      }
     }
 
-    &__title{
+    .content__group{
       display:inline-flex;
+      margin-bottom: 5px;
 
-      p {
+
+      .content__name{
+        font-weight: 600;
+      }
+
+      .content__email {
         color: $primary-color;
-        text-decoration: none;
         font-weight: bold;
         margin-left: .4rem;
       }
     }
 
     &__content{
-      margin: .8rem 0 0 0;
+      // margin: 5px 0 0 0;
     }
   }
 </style>

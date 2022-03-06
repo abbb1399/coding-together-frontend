@@ -21,6 +21,9 @@ export default {
     title:{
       type:String,
       requird:true
+    },
+    owner:{
+      type:String
     }
   },
   data(){
@@ -43,10 +46,10 @@ export default {
     // }
   },
   created(){
-
+    console.log(this.owner)
   },
   methods:{
-    submitForm(){
+    async submitForm(){
       this.formIsValid = true
       
       if(this.email === '' || !this.email.includes('@') || this.message === ''){
@@ -54,12 +57,40 @@ export default {
         return
       }
 
-      this.$store.dispatch('requests/contactCoach',{
+      await this.$store.dispatch('fetchMyInfo')
+      const myInfo = this.$store.getters.getMyInfo 
+      console.log(myInfo)
+     
+      const roomName = this.title
+      const avatar = myInfo.avatar
+      const users = [
+        {
+          _id: myInfo._id, 
+          username: myInfo.name 
+        }
+      ]
+
+      // 채팅방 생성
+      await this.$store.dispatch('chat/createRoom', {
+        roomName,
+        avatar,
+        users
+      })
+
+      console.log(this.$store.getters['chat/newRoom'])
+      
+      
+      // 요청보내기
+      await this.$store.dispatch('requests/contactCoach',{
         email: this.email,
         message: this.message,
         title:this.title,
-        owner: this.$store.getters.getMyInfo._id,
+        owner: this.owner,
+        roomId:this.$store.getters['chat/newRoom'].roomId
       })
+
+
+      // 채팅으로 이동으로 바꿔
       this.$router.replace('/articles')
     }
   }

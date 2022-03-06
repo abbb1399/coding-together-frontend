@@ -3,9 +3,11 @@ import axios from "axios"
 export default {
   async contactCoach(context, payload){
     const newRequest = {
+      title: payload.title,
       email: payload.email,
       message: payload.message,
-      owner: payload.owner
+      owner: payload.owner,
+      roomId: payload.roomId
     }
     
     try{
@@ -24,12 +26,12 @@ export default {
 
   async fetchRequests(context){
     // 로그인한사람의 유저 아이디
-    const ownerId = context.rootGetters.userId
+    // const userId = context.rootGetters.userId
     const token = context.rootGetters.token
 
     try{
       const {data} = await axios.get(
-        `http://localhost:3000/requests/${ownerId}`,
+        `http://localhost:3000/requests`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 

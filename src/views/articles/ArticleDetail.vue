@@ -23,6 +23,7 @@
         </header>
         <contact-owner
           :title="title"
+          :owner="owner"
         />
         <!-- <router-view></router-view> -->
       </base-card>

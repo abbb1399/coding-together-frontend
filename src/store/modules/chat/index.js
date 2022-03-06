@@ -6,9 +6,10 @@ export default {
   namespaced:true,
   state(){
     return{
-      rooms:[],
+      newRoom: {},
       messages:[],
-      newMessage:{}
+      newMessage:{},
+      roomList:[]
     }
   },
   mutations,

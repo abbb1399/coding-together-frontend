@@ -1,13 +1,24 @@
 import moment from 'moment'
 
 export default {
-  setRooms(state, payload){
-    state.rooms = payload
+  addRoom(state, roomInfo){
+    // const obj ={
+    //   roomId : roomInfo._id,
+    //   roomName : roomInfo.roomName,
+    //   users: roomInfo.users,
+    //   // avatar: roomInfo.avatar
+    // }
+    state.newRoom = roomInfo
+  },
+  setRoomList(state, payload){
+    state.roomList = payload
   },
   setMessages(state,messages){
+    console.log(messages)
+
     messages.forEach(msg => {
       const date = msg.date
-      msg.timestamp = date.substring(11,16)
+      msg.timestamp = moment(date).format('HH:mm')
       msg.date = moment(date).format('YYYY-MM-DD')
     })
 
