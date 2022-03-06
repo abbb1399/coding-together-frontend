@@ -11,8 +11,11 @@
 			:messages="messages"
 			:messages-loaded="messagesLoaded"
       :text-messages="textMessages"
+      :message-actions="messageActions"
 			@send-message="sendMessage"
 			@fetch-messages="fetchMessages"
+      @delete-message="deleteMessage"
+      @edit-message="editMessage"
 		/>
 	</div>
 </template>
@@ -20,6 +23,7 @@
 <script>
 import ChatWindow from 'vue-advanced-chat'
 import 'vue-advanced-chat/dist/vue-advanced-chat.css'
+import chatUtil from '../../utilities/advanced-chat.js'
 const { io } = require("socket.io-client");
 
 
@@ -35,23 +39,7 @@ export default {
   },
 	data() {
 		return {
-      usernameOptions: {minUsers: 0, currentUser: false},
-      messagesLoaded: false,
-      textMessages: {
-        // ROOMS_EMPTY: 'Aucune conversation',
-        // ROOM_EMPTY: 'Aucune conversation sélectionnée',
-        NEW_MESSAGES: '새로운 메세지',
-        MESSAGE_DELETED: '삭제되었습니다.',
-        MESSAGES_EMPTY: '메세지 없음',
-        CONVERSATION_STARTED: '대화 시작일 :',
-        TYPE_MESSAGE: '메세지를 입력하세요.',
-        SEARCH: '검색',
-        // IS_ONLINE: 'est en ligne',
-        // LAST_SEEN: 'dernière connexion ',
-        // IS_TYPING: 'est en train de taper...',
-        // CANCEL_SELECT_MESSAGE: 'Annuler Sélection'
-      },
-
+      ...chatUtil,
 			currentUserId: '',
 			rooms: [
 				// {
@@ -65,7 +53,8 @@ export default {
         // }
 			],
 			messages: [],
-      currentUserName:''
+      currentUserName:'',
+      
 		}
 	},
   async created(){
@@ -82,11 +71,9 @@ export default {
 
     // 방정보 불러오기
     await this.$store.dispatch('chat/fetchChatRoomList')
-    console.log(this.$store.getters['chat/roomList'])
     const roomInfo = [...this.$store.getters['chat/roomList']]
-
+ 
     const enteredRoom = roomInfo.find(room => room.roomId === this.roomId) 
-    console.log(enteredRoom)
     
     const room = enteredRoom.roomName
     const roomId = enteredRoom.roomId
@@ -94,7 +81,7 @@ export default {
     const username = myInfo.name
   
 
-    // Join 소켓
+    // 소켓 Join
     socket.emit('join',{username, room, userId, roomId},(error)=>{
       if(error){
         alert(error)
@@ -119,18 +106,24 @@ export default {
           senderId: message.senderId,
           username: message.username,
           date: this.$moment(message.date).format('YYYY-MM-DD'),
-          timestamp: message.timestamp
+          timestamp: message.timestamp,
+          deleted: message.deleted
         }
       ]
       this.messages = [...this.messages, ...array]
     })
-    
+
+    // 메세지 삭제
+    socket.on('deleteMessage', (msgId)=>{
+      const messageArray= [...this.messages]
+      const index = messageArray.findIndex((message)=> message._id === msgId)
+      if(index !== -1){
+        this.messages[index].deleted = true
+      }    
+    })
+
 
     this.socket = socket
-  },
-  mounted(){
-    
-
   },
   unmounted(){
     // 소켓 해제
@@ -173,6 +166,31 @@ export default {
         console.log('메세지 전송됨')
       })
 		},		
+    async deleteMessage({message}){
+      await this.$store.dispatch('chat/deleteMessage', message._id)
+
+      // 메세지 보내기 소켓
+      this.socket.emit('deleteMessage', message._id, (error)=>{
+        if(error){
+          return console.log(error)
+        }
+        console.log('메세지 삭제됨')
+      })
+    },
+    editMessage({roomId, messageId, newContent}){
+      console.log(roomId)
+      console.log(messageId)
+      console.log(newContent)
+      console.log(this.messages)
+
+      const newMessage = { edited: new Date() }
+			newMessage.content = newContent
+
+      console.log(newMessage)
+
+    
+    
+    }
 	}
 }
 </script>

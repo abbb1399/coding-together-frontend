@@ -10,8 +10,9 @@ export default {
     // }
     state.newRoom = roomInfo
   },
-  setRoomList(state, payload){
-    state.roomList = payload
+  setRoomList(state, chatRoomInfo){
+    const room = chatRoomInfo.filter(rm=>  rm.avatar = `http://localhost:3000/images/${rm.avatar}`)
+    state.roomList = room
   },
   setMessages(state,messages){
     messages.forEach(msg => {

@@ -66,6 +66,16 @@ export default {
     } 
   },
 
+  // 메세지 삭제하기
+  deleteMessage(_, msgId){
+    try{
+      axios.patch(`http://localhost:3000/chatMessages/${msgId}`)
+
+    }catch(e){
+      console.log(e)
+    }
+  },
+
   // 메세지 불러오기 - 방 아이디 별로
   async fetchMessages(context, roomNum){
     try{

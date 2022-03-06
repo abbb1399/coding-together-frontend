@@ -127,9 +127,6 @@ export default {
   #viewer{
     margin-top: 1.56rem;
   }
-
-
-
   
   .meta{
     display: flex;

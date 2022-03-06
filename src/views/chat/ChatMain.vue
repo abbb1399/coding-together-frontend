@@ -3,7 +3,7 @@
     <h2 class="chat__caption">채팅 목록</h2>
     <div v-if="roomList.length">
       <li class="chat__list" @click="enterChatRoom(room)" v-for="room in roomList" :key="room.roomId">
-        <img class="chat__img" alt="유저 프로필" :src="imgSrc(room.avatar)">
+        <img class="chat__img" alt="유저 프로필" :src="room.avatar ? room.avatar : noImg">
         <div class="chat__group">
           <h2>{{room.roomName}}</h2>
           <div class="content__group">
@@ -22,7 +22,7 @@
 export default {
   data(){
     return{
-    
+      noImg: require('../../assets/avatar.jpg')
     }
   },
   computed:{
@@ -34,13 +34,6 @@ export default {
     await this.$store.dispatch('chat/fetchChatRoomList')
   },
   methods:{
-    imgSrc(avatar){
-      if(avatar){
-        return `http://localhost:3000/avatars/${avatar}` 
-      }else{
-        return require('../../assets/avatar.jpg')
-      }
-    },
     enterChatRoom(roomInfo){
       this.$router.push({name:'chatRoom',  params: {roomId: roomInfo.roomId }})
     }
