@@ -1,4 +1,4 @@
-# project1
+# Coding Together
 
 ## Project setup
 ```
