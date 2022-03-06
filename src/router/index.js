@@ -41,7 +41,7 @@ const routes = [
   {path:'/schedule', component: () => import('../views/schedule/Schedule.vue'), meta:{ requiresAuth: true, hideFooter:true}},
   {path:'/chat', component:()=> import('../views/chat/ChatMain.vue'), meta:{ requiresAuth: true}},
   {
-    path:'/chat/:roomNum', 
+    path:'/chat/:roomId', 
     name:"chatRoom",
     component: () => import('../views/chat/ChatRoom.vue'), 
     props:true,

@@ -29,7 +29,7 @@ export default {
 		ChatWindow
 	},
   props:{
-    roomNum:{
+    roomId:{
       type:String
     }
   },
@@ -69,30 +69,33 @@ export default {
 		}
 	},
   async created(){
-    console.log(this.roomNum)
     await this.$store.dispatch('fetchMyInfo')
 
     const myInfo  = this.$store.getters.getMyInfo
+
     this.currentUserId = myInfo._id
     this.currentUserName = myInfo.name
 
 
-    const room = '일반방'
-    const username = myInfo.name
-    const date = myInfo.createdAt
-    const email = myInfo.email
-    const userId = myInfo._id
     
     const socket = io("http://localhost:3000")
 
     // 방정보 불러오기
     await this.$store.dispatch('chat/fetchChatRoomList')
-    // console.log(this.$store.getters['chat/roomList'])
+    console.log(this.$store.getters['chat/roomList'])
+    const roomInfo = [...this.$store.getters['chat/roomList']]
 
-
+    const enteredRoom = roomInfo.find(room => room.roomId === this.roomId) 
+    console.log(enteredRoom)
+    
+    const room = enteredRoom.roomName
+    const roomId = enteredRoom.roomId
+    const userId = myInfo._id
+    const username = myInfo.name
+  
 
     // Join 소켓
-    socket.emit('join',{username, room, date, email, userId},(error)=>{
+    socket.emit('join',{username, room, userId, roomId},(error)=>{
       if(error){
         alert(error)
         // location.href='/'
@@ -104,7 +107,7 @@ export default {
     socket.on('roomData',()=>{
       // console.log(users)
       // console.log(room)
-      this.rooms = this.$store.getters['chat/roomList']
+      this.rooms = roomInfo
     })
 
     // 메세지 받기 소켓
@@ -136,8 +139,8 @@ export default {
 	methods: {
     // 메세지 불러오기
 		async fetchMessages({ options = {} }) {
-			await this.$store.dispatch('chat/fetchMessages',this.roomNum)
-      console.log(this.$store.getters['chat/messages'])
+			await this.$store.dispatch('chat/fetchMessages',this.roomId)
+      // console.log(this.$store.getters['chat/messages'])
 
       setTimeout(() => {
         // 방이 처음 열렸을때 reset:true
@@ -157,7 +160,7 @@ export default {
         content: message.content,
         senderId: this.currentUserId,
         username: this.currentUserName,
-        owner: this.roomNum
+        owner: this.roomId
       }
       await this.$store.dispatch('chat/registerMessage', msgData)
       const msg = this.$store.getters['chat/newMessage']

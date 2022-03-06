@@ -24,6 +24,9 @@ export default {
     },
     owner:{
       type:String
+    },
+    imgSrc:{
+      type:String
     }
   },
   data(){
@@ -46,7 +49,7 @@ export default {
     // }
   },
   created(){
-    console.log(this.owner)
+    console.log(this.$store.getters.getMyInfo )
   },
   methods:{
     async submitForm(){
@@ -62,7 +65,7 @@ export default {
       console.log(myInfo)
      
       const roomName = this.title
-      const avatar = myInfo.avatar
+      const avatar = this.imgSrc
       const users = [
         {
           _id: myInfo._id, 
@@ -77,12 +80,13 @@ export default {
         users
       })
 
-      console.log(this.$store.getters['chat/newRoom'])
+      // console.log(this.$store.getters['chat/newRoom'])
       
       
       // 요청보내기
       await this.$store.dispatch('requests/contactCoach',{
-        email: this.email,
+        userId: myInfo._id, 
+        // email: this.email,
         message: this.message,
         title:this.title,
         owner: this.owner,

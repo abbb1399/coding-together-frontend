@@ -4,7 +4,8 @@
     <div class="request__group">
       <h2>{{title}}</h2>
       <div class="content__group">
-        <p class="content__email"> {{ email }} </p>
+        <p class="content__name">{{fromName}}</p> 
+        <p class="content__email"> {{fromEmail }} </p>
       </div>
       
       <p class="request__content">{{message}}</p>
@@ -15,11 +16,10 @@
 <script>
 export default {
   props:{
-    title:{
-      type:String,
-      required:true
+    roomId:{
+      type:String
     },
-    email:{
+    title:{
       type:String,
       required:true
     },
@@ -27,16 +27,17 @@ export default {
       type:String,
       required:true
     },
-    _id:{
+    fromName:{
       type:String,
-      required: true
+      required:true
     },
-    imgSrc:{
+    fromEmail:{
       type:String,
-      // default: require('../../assets/avatar.jpg')
+      required:true
     },
-    roomId:{
-      type:String
+    fromImgSrc:{
+      type:String,
+      required:true
     }
   },
   data(){
@@ -49,23 +50,21 @@ export default {
       return 'mailto:' + this.email
     },
     img(){
-      if(this.imgSrc){
-        return `http://localhost:3000/avatars/${this.imgSrc}`
+      if(this.fromImgSrc){
+        return `http://localhost:3000/avatars/${this.fromImgSrc}`
       }else{
         return require('../../assets/avatar.jpg')
       }
     }
-
   },
-  async created(){
-    // console.log(this.roomId)
+  created(){
+  
   },
   methods:{
     async enterChatRoom(){
       await this.$store.dispatch('chat/enterRoom', this.roomId)
-
       
-      this.$router.push({name:'chatRoom',  params: {roomNum: this.roomId }})
+      this.$router.push({name:'chatRoom',  params: {roomId: this.roomId }})
     }
   }
 }
@@ -93,9 +92,9 @@ export default {
     }
 
     .content__group{
-      display:inline-flex;
+      display:flex;
+      align-items: center;
       margin-bottom: 5px;
-
 
       .content__name{
         font-weight: 600;

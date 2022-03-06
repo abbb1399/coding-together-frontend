@@ -14,8 +14,6 @@ export default {
     state.roomList = payload
   },
   setMessages(state,messages){
-    console.log(messages)
-
     messages.forEach(msg => {
       const date = msg.date
       msg.timestamp = moment(date).format('HH:mm')

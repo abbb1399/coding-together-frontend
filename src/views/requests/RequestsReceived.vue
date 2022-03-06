@@ -13,16 +13,16 @@
         <request-item
           v-for="req in receivedRequests"
           :key="req._id"
+          :room-id="req.roomId"
           :title="req.title"
-          :email="req.email"
           :message="req.message"
-          :img-src="req.owner.avatar"
-          :_id="req.owner._id"
-          :roomId="req.roomId"
+          :from-name="req.userId.name"
+          :from-email="req.userId.email"
+          :from-img-src="req.userId.avatar"
         >
         </request-item>
       </ul>
-      <h3 class="request__no-request" v-else>받은 요청이 없습니다.</h3>
+      <h3 class="requests__no-request" v-else>받은 요청이 없습니다.</h3>
     </section>
 
   </div>
@@ -52,15 +52,15 @@ export default {
   },
   created(){
     this.loadRequests()
-    
 
   },
   methods:{
     async loadRequests(){
       this.isLoading = true
+      // requests 불러오기
       await this.$store.dispatch('requests/fetchRequests')
       console.log(this.$store.getters['requests/requests'])
-
+  
       this.isLoading= false
     },
     handleError(){
@@ -73,6 +73,8 @@ export default {
 
 <style lang="scss" scoped>
   .requests{
+    margin-top: 1rem;
+
     &__header{
       text-align: center;
     }
@@ -83,9 +85,10 @@ export default {
       padding: 0;
       max-width: 50rem;
     }
-  }
 
-  h3{
-    text-align: center;
+    &__no-request{
+      margin-top: 1rem;
+      text-align: center;
+    }
   }
 </style>

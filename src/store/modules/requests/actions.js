@@ -4,10 +4,11 @@ export default {
   async contactCoach(context, payload){
     const newRequest = {
       title: payload.title,
-      email: payload.email,
+      userId: payload.userId,
+      // email: payload.email,
       message: payload.message,
       owner: payload.owner,
-      roomId: payload.roomId
+      roomId: payload.roomId,
     }
     
     try{

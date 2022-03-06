@@ -24,6 +24,7 @@
         <contact-owner
           :title="title"
           :owner="owner"
+          :img-src="imgSrc"
         />
         <!-- <router-view></router-view> -->
       </base-card>
