@@ -28,6 +28,11 @@ export default {
   },
   setNewlyAddedMessage(state, newMsg){ 
     state.newMessage = newMsg
-  }
+  },
+  setCurrentRoom(state, currentRoomInfo){
+    currentRoomInfo.avatar = `http://localhost:3000/images/${currentRoomInfo.avatar}`
+
+    state.currentRoom = currentRoomInfo
+  } 
 
 }

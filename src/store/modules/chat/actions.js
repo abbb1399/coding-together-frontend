@@ -49,7 +49,19 @@ export default {
     }
   },
 
+  // 입장한 방 정보 불러오기
+  async fetchCurrentRoom(context,roomId){
+    try{
+      const {data} = await axios.get(
+        `http://localhost:3000/chatroom/${roomId}`
+      )
 
+
+      context.commit('setCurrentRoom', data)
+    }catch(e){
+      console.log(e)
+    }
+  },
 
   // 메세지 생성하기
   async registerMessage(context, msgData){

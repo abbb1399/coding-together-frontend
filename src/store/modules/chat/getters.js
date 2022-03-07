@@ -10,5 +10,8 @@ export default {
   },
   roomList(state){
     return state.roomList
+  },
+  currentRoom(state){
+    return state.currentRoom
   }
 }

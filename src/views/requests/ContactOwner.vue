@@ -25,7 +25,7 @@ export default {
     owner:{
       type:String
     },
-    imgSrc:{
+    thumbnail:{
       type:String
     }
   },
@@ -65,7 +65,7 @@ export default {
       console.log(myInfo)
      
       const roomName = this.title
-      const avatar = this.imgSrc
+      const avatar = this.thumbnail
       const users = [
         {
           _id: myInfo._id, 

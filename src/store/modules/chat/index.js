@@ -9,7 +9,8 @@ export default {
       newRoom: {},
       messages:[],
       newMessage:{},
-      roomList:[]
+      roomList:[],
+      currentRoom:{}
     }
   },
   mutations,

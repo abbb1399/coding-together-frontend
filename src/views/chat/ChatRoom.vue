@@ -1,23 +1,31 @@
 <template>
-	<div>
+  <div>
 		<chat-window
+      id="chat-room"
 			height="calc(100vh - 5rem)"
 			:current-user-id="currentUserId"
 			:rooms="rooms"
 			:rooms-loaded="true"
       :show-audio="false"
       :show-files="false"
+      :single-room="true"
+      :show-reaction-emojis="false"
+      :room-id="roomId"
       :username-options="usernameOptions"
 			:messages="messages"
 			:messages-loaded="messagesLoaded"
       :text-messages="textMessages"
-      :message-actions="messageActions"
+      :menu-actions="menuActions"
 			@send-message="sendMessage"
 			@fetch-messages="fetchMessages"
       @delete-message="deleteMessage"
       @edit-message="editMessage"
-		/>
-	</div>
+		>
+      <template #room-options>
+        <font-awesome-icon icon="arrow-left-long" id="back-space" @click="backSpace"/>
+      </template>
+    </chat-window>
+  </div>
 </template>
 
 <script>
@@ -59,28 +67,22 @@ export default {
 	},
   async created(){
     await this.$store.dispatch('fetchMyInfo')
-
     const myInfo  = this.$store.getters.getMyInfo
 
     this.currentUserId = myInfo._id
     this.currentUserName = myInfo.name
 
-
-    
     const socket = io("http://localhost:3000")
 
     // 방정보 불러오기
-    await this.$store.dispatch('chat/fetchChatRoomList')
-    const roomInfo = [...this.$store.getters['chat/roomList']]
- 
-    const enteredRoom = roomInfo.find(room => room.roomId === this.roomId) 
+    await this.$store.dispatch('chat/fetchCurrentRoom', this.roomId)
+    const enteredRoom = this.$store.getters['chat/currentRoom']
     
     const room = enteredRoom.roomName
     const roomId = enteredRoom.roomId
     const userId = myInfo._id
     const username = myInfo.name
   
-
     // 소켓 Join
     socket.emit('join',{username, room, userId, roomId},(error)=>{
       if(error){
@@ -94,7 +96,7 @@ export default {
     socket.on('roomData',()=>{
       // console.log(users)
       // console.log(room)
-      this.rooms = roomInfo
+      this.rooms = [enteredRoom]
     })
 
     // 메세지 받기 소켓
@@ -131,8 +133,6 @@ export default {
         this.messages[index].edited = new Date()
       }  
     })
-
-
 
     this.socket = socket
   },
@@ -188,14 +188,9 @@ export default {
         console.log('메세지 삭제됨')
       })
     },
-    editMessage({roomId, messageId, newContent}){
-      console.log(roomId)
-      console.log(messageId)
-      console.log(newContent)
-
-      // const newMessage = { edited: new Date() }
-			// newMessage.content = newContent
-
+    editMessage({messageId, newContent, replyMessage}){
+      console.log(replyMessage)
+      
       const msgData = {
         content : newContent,
         msgId: messageId,
@@ -211,7 +206,30 @@ export default {
         }
         console.log('메세지 수정됨')
       })
+    },
+    backSpace(){
+      this.$router.replace({name:'chatMain'})
     }
+
 	}
 }
 </script>
+
+<style lang="scss" scoped>
+  #chat-room{
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  #back-space{
+    cursor: pointer;
+    font-size: 1.4rem;
+    padding: .5rem;
+    border-radius: 50%;
+
+    &:hover,
+    &:active{
+       background-color: $color-grey-light;
+    }
+  }
+</style>

@@ -24,7 +24,7 @@
         <contact-owner
           :title="title"
           :owner="owner"
-          :img-src="imgSrc"
+          :thumbnail="thumbnail"
         />
         <!-- <router-view></router-view> -->
       </base-card>
@@ -67,7 +67,8 @@ export default {
       updatedAt:'',
       description:'',
       cardWidth:'large-card',
-      imgSrc: require('../../assets/ent1.jpg')
+      imgSrc: require('../../assets/ent1.jpg'),
+      thumbnail: require('../../assets/ent1.jpg')
     }
   },
   async created(){
@@ -83,6 +84,7 @@ export default {
 
     if(info.thumbnail){
       this.imgSrc =  `http://localhost:3000/images/${info.thumbnail}`
+      this.thumbnail = info.thumbnail
     }
 
     new Viewer({

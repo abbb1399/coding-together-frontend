@@ -1,20 +1,23 @@
 <template>
-  <section class="chat">
-    <h2 class="chat__caption">채팅 목록</h2>
-    <div v-if="roomList.length">
-      <li class="chat__list" @click="enterChatRoom(room)" v-for="room in roomList" :key="room.roomId">
-        <img class="chat__img" alt="유저 프로필" :src="room.avatar ? room.avatar : noImg">
-        <div class="chat__group">
-          <h2>{{room.roomName}}</h2>
-          <div class="content__group">
-            <p class="content__name" v-for="user in room.users" :key="user._id">
-              {{user.username}}
-            </p>
+  <section>
+    <div class="chat">
+      <h2 class="chat__caption">채팅 목록</h2>
+      <div v-if="roomList.length">
+        <li class="chat__list" @click="enterChatRoom(room)" v-for="room in roomList" :key="room.roomId">
+          <img class="chat__img" alt="유저 프로필" :src="room.avatar ? room.avatar : noImg">
+          <div class="chat__group">
+            <h2>{{room.roomName}}</h2>
+            <div class="content__group">
+              <p class="content__name" v-for="user in room.users" :key="user._id">
+                {{user.username}}
+              </p>
+              <span>님의 채팅방</span>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
+      </div>
+      <h3 v-else>채팅 방 목록이 없습니다.</h3>
     </div>
-    <h3 v-else>채팅 방 목록이 없습니다.</h3>
   </section>
 </template>
 
@@ -43,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
   .chat{
-    max-width: $website-width;
+    max-width: 1000px;
     margin: 0 auto;
 
     &__caption{
@@ -60,7 +63,8 @@ export default {
     }
 
     &__img{
-      width: 8%;
+      width: 85px;
+      height: 85px;
       border-radius: 5px;
     }
     
@@ -74,7 +78,7 @@ export default {
         .content__name{
           font-weight: 600;
         
-            &:not(:first-child){
+          &:not(:first-child){
             margin-left: .3rem;
           }
         }
@@ -83,6 +87,10 @@ export default {
           color: $primary-color;
           font-weight: bold;
           margin-left: .4rem;
+        }
+
+        span{
+          margin-left: 5px;
         }
       }
     }
