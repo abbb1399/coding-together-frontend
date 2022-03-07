@@ -67,9 +67,22 @@ export default {
   },
 
   // 메세지 삭제하기
-  deleteMessage(_, msgId){
+  async deleteMessage(_, msgId){
     try{
-      axios.patch(`http://localhost:3000/chatMessages/${msgId}`)
+      await axios.patch(`http://localhost:3000/deleteMessage/${msgId}`)
+
+    }catch(e){
+      console.log(e)
+    }
+  },
+
+  // 메세지 수정하기
+  async updateMessage(_, msgData){
+    // const {msgId, content} = msgData
+
+    try{
+      await axios.patch(`http://localhost:3000/updateMessage`,msgData)
+
 
     }catch(e){
       console.log(e)

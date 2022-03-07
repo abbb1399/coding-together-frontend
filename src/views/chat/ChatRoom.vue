@@ -98,7 +98,7 @@ export default {
     })
 
     // 메세지 받기 소켓
-    socket.on('message', (message) =>{
+    socket.on('message', (message) => {
       const array = [
         {
           _id: message._id,
@@ -114,13 +114,24 @@ export default {
     })
 
     // 메세지 삭제
-    socket.on('deleteMessage', (msgId)=>{
+    socket.on('deleteMessage', (msgId)=> {
       const messageArray= [...this.messages]
       const index = messageArray.findIndex((message)=> message._id === msgId)
       if(index !== -1){
         this.messages[index].deleted = true
       }    
     })
+
+    // 메세지 수정
+    socket.on('updateMessage', (msgData) => {
+      const messageArray= [...this.messages]
+      const index = messageArray.findIndex((message)=> message._id === msgData.msgId)
+      if(index !== -1){
+        this.messages[index].content = msgData.content
+        this.messages[index].edited = new Date()
+      }  
+    })
+
 
 
     this.socket = socket
@@ -169,7 +180,7 @@ export default {
     async deleteMessage({message}){
       await this.$store.dispatch('chat/deleteMessage', message._id)
 
-      // 메세지 보내기 소켓
+      // 메세지 삭제 소켓
       this.socket.emit('deleteMessage', message._id, (error)=>{
         if(error){
           return console.log(error)
@@ -181,15 +192,25 @@ export default {
       console.log(roomId)
       console.log(messageId)
       console.log(newContent)
-      console.log(this.messages)
 
-      const newMessage = { edited: new Date() }
-			newMessage.content = newContent
+      // const newMessage = { edited: new Date() }
+			// newMessage.content = newContent
 
-      console.log(newMessage)
+      const msgData = {
+        content : newContent,
+        msgId: messageId,
+        edited: new Date()
+      }
 
-    
-    
+      this.$store.dispatch('chat/updateMessage', msgData)
+
+      // 메세지 수정 소켓
+      this.socket.emit('updateMessage', msgData, (error)=>{
+        if(error){
+          return console.log(error)
+        }
+        console.log('메세지 수정됨')
+      })
     }
 	}
 }
