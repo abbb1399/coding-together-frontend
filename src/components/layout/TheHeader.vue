@@ -5,6 +5,9 @@
         <router-link to="/">Coding Together</router-link>
       </h1>
       <ul class="navbar-menu">
+         <li>
+          <router-link to="/kanban">칸반</router-link>
+        </li>
         <li>
           <router-link to="/chat">채팅</router-link>
         </li>

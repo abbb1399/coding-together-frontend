@@ -15,7 +15,7 @@
 			:messages="messages"
 			:messages-loaded="messagesLoaded"
       :text-messages="textMessages"
-      :menu-actions="menuActions"
+      :message-actions="messageActions"
 			@send-message="sendMessage"
 			@fetch-messages="fetchMessages"
       @delete-message="deleteMessage"

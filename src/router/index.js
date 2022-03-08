@@ -47,6 +47,7 @@ const routes = [
     props:true,
     meta:{ requiresAuth: true, hideFooter: true}
   },
+  {path:'/kanban', component:() => import('../views/kanban/Kanban.vue'), meta:{hideFooter: true} },
   {path:'/test', component: Test},
   {path:'/:notFound(.*)*', component: () => import('../views/NotFound.vue'), meta:{hideFooter:true}}
 ]
