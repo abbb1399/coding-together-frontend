@@ -1,5 +1,5 @@
 <template>
-  <li @click="toDetail" >
+  <li @click.once="toDetail" >
     <img id="list-img" :src="imgSrc" alt="">
     <div>
       <h3>{{ name }} by {{ownerName}}</h3>

@@ -1,65 +1,91 @@
 <template>
-  <div class="boards-container">
-    <div class="boards-container__board" v-for="(board, index) in boardList" :key="index">
-      <div class="boards-container__board__header">
-        <h1>{{board.title}}</h1>
-        <div class="header__control">
-          <p><font-awesome-icon icon="tag"/>&nbsp;{{board.list.length}}</p>
-          <button class="boards-container__btn" @click="openInput(board, index)">
-            <font-awesome-icon icon="plus" />
-          </button>
-        </div>     
-      </div>
-      <div class="boards-container__board__input" v-if="inputStatus && currIndex === index">
-        <p>제목</p>
-        <input type="text" v-model="inputValue" @keydown.enter="addTask(board,index)"/>
-        <div class="btn__group">
-          <button 
-            class="boards-container__btn" 
-            @click="addTask(board,index)"
-            :disabled="inputValue.length === 0"
-          >
-            생성
-          </button>
-          <button class="boards-container__btn" @click="cancleAdding(index)">취소</button>
-        </div>
-      </div>
+  <section>
+    <div class="boards-container">
+      <div class="boards-container__board" v-for="(board, index) in boardList" :key="index">
+        <draggable  
+          v-model="board.list" 
+          item-key="id" 
+          group="people" 
+          :animation="90"
+          :multiDrag="true" 
+          @start="dragStart"
+          @end="dragEnd"
+          class="test2"
 
-      <draggable  
-        v-model="board.list" 
-        item-key="id" 
-        group="people" 
-        :animation="90"
-        :forceFallback="true"
-        :multiDrag="true" 
-        @start="dragStart"
-        @end="dragEnd"
-        style="height:87vh;"
+          ghostClass= "ghost"
+          chosenClass= "chosen"
+          dragClass="drag"
 
-        ghostClass= "ghost"
-        chosenClass= "chosen"
-        dragClass="drag"
+          :forceFallback="true"
+          :fallbackTolerance="3"
+        >
+          <template #header>
+            <div class="boards-container__board__header">
+              <h1>{{board.title}}</h1>
+              <div class="header__control">
+                <p><font-awesome-icon icon="tag"/>&nbsp;{{board.list.length}}</p>
+                <button class="boards-container__btn" @click="openInput(board, index)">
+                  <font-awesome-icon icon="plus" />
+                </button>
+              </div>     
+            </div>
 
-        :touchStartThreshold="0"
-        :fallbackTolerance="0"
-      >
-        <template #item="{ element }" >
-          <div class="boards-container__board__card">{{ element.name }}</div>
-        </template>
-      </draggable>
+            <div class="boards-container__board__input" v-if="inputStatus && currIndex === index">
+              <p>제목</p>
+              <input type="text" v-model="inputValue" @keydown.enter="addTask(board,index)"/>
+              <div class="btn__group">
+                <button 
+                  class="boards-container__btn" 
+                  @click="addTask(board,index)"
+                  :disabled="inputValue.length === 0"
+                >
+                  생성
+                </button>
+                <button class="boards-container__btn" @click="cancleAdding(index)">취소</button>
+              </div>
+            </div>
+          </template>
+
+
+          <template #item="{ element }">
+            <div class="boards-container__board__card" @click="clickTask(element, board)">{{ element.name }}</div>
+          </template>
+        </draggable>
+       </div>
     </div>
-  </div>
+
+    <!-- 사이드바 -->
+    <kanban-sidebar 
+      :sidebar="sidebar"
+      :task-name="taskName"
+      :task-id="taskId"
+      @close-sidebar="closeSideBar"
+      @update-name="updateName"
+    />
+
+  </section>
 </template>
 
 <script>
 import draggable from "vuedraggable";
+import KanbanSidebar from '../../components/kanban/KanbanSidebar.vue'
 
 export default {
   components: {
-    draggable
+    draggable,
+    KanbanSidebar
+  },
+  computed:{
+    addStstus(){
+      console.log(this.inputStatus)
+      return this.inputStatus
+    }
   },
   data(){
     return{
+      taskId:null,
+      taskName:'',
+      sidebar: false,
       inputValue:'',
       currIndex:null,
       inputStatus: false,
@@ -101,6 +127,9 @@ export default {
     }
   },
   methods: {
+    closeSideBar(){
+      this.sidebar = false
+    },
     log(evt) {
       console.log(evt);
     },
@@ -133,9 +162,18 @@ export default {
       console.log(board,index)
       board.list.push({name:this.inputValue})
       this.inputValue = ''
+    },
+    clickTask(element,board){
+      console.log(element)
+      console.log(board)
+
+      this.sidebar = true
+      this.taskName = element.name
+      this.taskId = element.id
+    },
+    updateName(dd){
+      console.log(dd)
     }
-
-
   }
 }
 </script>
@@ -143,6 +181,13 @@ export default {
 
 
 <style lang="scss" scoped>
+  .test2{
+    // background: red;
+    height: 84vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   .grabbing * {
     cursor: move !important; /* fallback: no `url()` support or images disabled */
     cursor: -webkit-grabbing !important; /* Chrome 1-21, Safari 4+ */
@@ -150,33 +195,28 @@ export default {
     cursor:         grabbing !important; /* W3C standards syntax, should come least */
   }
 
-  // .flip-list-move {
-  //   transition: transform .5s;
-  // }
-  // .no-move {
-  //   transition: transform 0s;
-  // }
   .ghost {
     opacity: 0.5;
-    background: #c8ebfb;
+    // background: #c8ebfb !important;;
   }
 
   .chosen{
-    background: red;
+      // color: #fff;
+    background-color: #c8ebfb !important;
   }
 
   .drag{
-    background: yellow;
+    // background: yellow !important;
   }
 
   .boards-container {
     display: grid;
     grid-auto-columns: 272px;
     grid-auto-flow: column;
-    // grid-gap: 8px;
     grid-gap: 10px;
-    height: 88vh;
-    overflow: auto;
+    height: 100%;
+    height: calc(100vh - 5rem);
+    // overflow: auto;
     padding: .5rem;
 
     -ms-user-select: none;
@@ -206,7 +246,8 @@ export default {
       grid-auto-rows: max-content;
       grid-gap: 10px;
       padding: .625rem;
-    
+      height: 100% !important;
+
       &__header{
         display: flex;
         justify-content: space-between;
