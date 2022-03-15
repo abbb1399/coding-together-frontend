@@ -5,6 +5,7 @@ import requestsModule from './modules/requests/index.js'
 import articlesModule from './modules/articles/index.js'
 import scheduleMoudle from './modules/schedules/index.js'
 import chatModule from './modules/chat/index.js'
+import kanbanModule from './modules/kanbans/index.js'
 
 const store =  createStore({
   modules: {
@@ -12,7 +13,8 @@ const store =  createStore({
     requests: requestsModule,
     auth: authModule,
     schedules: scheduleMoudle,
-    chat: chatModule
+    chat: chatModule,
+    kanbans: kanbanModule
   }
 })
 

@@ -31,17 +31,20 @@
             </div>
 
             <div class="boards-container__board__input" v-if="inputStatus && currIndex === index">
-              <p>제목</p>
-              <input type="text" v-model="inputValue" @keydown.enter="addTask(board,index)"/>
-              <div class="btn__group">
-                <button 
-                  class="boards-container__btn" 
-                  @click="addTask(board,index)"
-                  :disabled="inputValue.length === 0"
-                >
-                  생성
-                </button>
-                <button class="boards-container__btn" @click="cancleAdding(index)">취소</button>
+              <base-spinner2 v-if="spinnerStatus" />
+              <div v-else>
+                <p>제목</p>
+                <input type="text" v-model="inputValue" @keydown.enter="addTask(board,index)"/>
+                <div class="btn__group">
+                  <button 
+                    class="boards-container__btn" 
+                    @click="addTask(board,index)"
+                    :disabled="inputValue.length === 0"
+                  >
+                    생성
+                  </button>
+                  <button class="boards-container__btn" @click="cancleAdding(index)">취소</button>
+                </div>
               </div>
             </div>
           </template>
@@ -75,56 +78,64 @@ export default {
     draggable,
     KanbanSidebar
   },
-  computed:{
-    addStstus(){
-      console.log(this.inputStatus)
-      return this.inputStatus
-    }
-  },
   data(){
     return{
+      spinnerStatus: false,
       taskId:null,
       taskName:'',
       sidebar: false,
       inputValue:'',
       currIndex:null,
       inputStatus: false,
-      boardList:[
-        {
-          title: 'Board One', 
-          list: [
-            { name: "Card #1", id: 1 },
-            { name: "Card #2", id: 2 },
-            { name: "Card #3", id: 3 },
-            { name: "Card #4", id: 4 }
-          ],
-        },
-        {
-          title: 'Board Two',
-          list: [
-            { name: "Card #5", id: 5 },
-            { name: "Card #6", id: 6 },
-            { name: "Card #7", id: 7 }
-          ]
-        },
-        {
-          title: 'Board Three',
-          list: [
-            { name: "Card #8", id: 8 },
-            { name: "Card #9", id: 9 },
-            { name: "Card #10", id: 10 }
-          ]
-        },
-        {
-          title: 'Board Four',
-          list: [
-            { name: "Card #11", id: 11 },
-            { name: "Card #12", id: 12 },
-            { name: "Card #13", id: 13 }
-          ]  
-        }
-      ],
+      // boardList:[
+        // {
+        //   title: 'Board One', 
+        //   list: [
+        //     { name: "Card #1", id: 1 },
+        //     { name: "Card #2", id: 2 },
+        //     { name: "Card #3", id: 3 },
+        //     { name: "Card #4", id: 4 }
+        //   ],
+        // },
+        // {
+        //   title: 'Board Two',
+        //   list: [
+        //     { name: "Card #5", id: 5 },
+        //     { name: "Card #6", id: 6 },
+        //     { name: "Card #7", id: 7 }
+        //   ]
+        // },
+        // {
+        //   title: 'Board Three',
+        //   list: [
+        //     { name: "Card #8", id: 8 },
+        //     { name: "Card #9", id: 9 },
+        //     { name: "Card #10", id: 10 }
+        //   ]
+        // },
+        // {
+        //   title: 'Board Four',
+        //   list: [
+        //     { name: "Card #11", id: 11 },
+        //     { name: "Card #12", id: 12 },
+        //     { name: "Card #13", id: 13 }
+        //   ]  
+        // }
+      // ],
     }
+  },
+  computed:{
+    addStstus(){
+      console.log(this.inputStatus)
+      return this.inputStatus
+    },
+    boardList(){
+      return this.$store.getters['kanbans/kanbans']
+    }
+  },
+  async created(){
+    await this.$store.dispatch('kanbans/fetchKanbans')
+    console.log(this.$store.getters['kanbans/kanbans'])
   },
   methods: {
     closeSideBar(){
@@ -158,10 +169,22 @@ export default {
     },
     addTask(board,index){
       if(this.inputValue.length === 0) return
+      this.spinnerStatus = true
 
       console.log(board,index)
-      board.list.push({name:this.inputValue})
-      this.inputValue = ''
+      setTimeout(() => {
+        const data = {
+          id:Date.now().toString(36) + Math.random().toString(36).substr(2),
+          name:this.inputValue
+        }
+
+        board.list.push(data)
+        this.$store.dispatch('kanbans/registerTask', {...data, boardId: board._id})
+        
+        // 초기화
+        this.inputValue = ''
+        this.spinnerStatus = false
+      }, 1000);
     },
     clickTask(element,board){
       console.log(element)
@@ -299,6 +322,12 @@ export default {
         }
       }
     }   
+
+    &__spinner-box{
+      width:100%; 
+      display:flex; 
+      justify-content:center;
+    }
   }
 
 </style>

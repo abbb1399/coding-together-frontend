@@ -1,50 +1,35 @@
 <template>
- <div>
-   <br>
-   <br>
-   <br>
-   <br>
-
-    <!-- actual upload which is hidden -->
-    <input type="file" id="actual-btn" hidden @change="test"/>
-
-    <!-- our custom upload button -->
-    <label for="actual-btn">Choose File</label>
-
-    <!-- name of file chosen -->
-    <span id="file-chosen">{{chosenFileName}}</span>
- </div>
+  <div class="wrapper">
+    <div class="circonf-wrapper">
+      <div class="circonf circonf-1"></div>
+    </div>
+  </div>
 </template>
 
-<script>
-export default {
-  data(){
-    return{
-      chosenFileName: '파일 첨부'
-    }
-  },
+<style lang="scss" scoped>
+.circonf-wrapper{
+ text-align:center;
+}
+.circonf {
+  margin: 1em;
+  display:inline-block;
+  width: 2em;
+  height: 2em;
+  border-radius:50%;
+  border:4px solid silver;
+  animation: circ-anim .7s linear infinite;
+}
+.circonf-1 {
+  border-bottom-color: grey;
+}
 
-  methods:{
-    test(e){
-      this.chosenFileName = e.target.files[0].name
-    }
+
+@keyframes circ-anim {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
-</script>
-
-<style lang="scss" scoped>
-  label {
-    background-color: indigo;
-    color: white;
-    padding: 0.5rem;
-    font-family: sans-serif;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
-
-  #file-chosen{
-    margin-left: 0.3rem;
-    font-family: sans-serif;
-  }
 </style>

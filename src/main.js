@@ -12,8 +12,9 @@ import BaseSpinner from './components/ui/BaseSpinner.vue'
 import FontAwesomeIcon from "./utilities/font-awesome";
 
 
-// dialog는 필요할때만 import
-const BaseDialog = defineAsyncComponent(()=> import('./components/ui/BaseDialog.vue'))
+// defineAsyncComponent - 필요할때만 import
+const BaseDialog = defineAsyncComponent(() => import('./components/ui/BaseDialog.vue'))
+const BaseSpiiner2 = defineAsyncComponent(() => import('./components/ui/BaseSpinner2.vue'))
 
 const app = createApp(App)
 
@@ -26,6 +27,7 @@ app.component('base-card',BaseCard)
 app.component('base-button',BaseButton)
 app.component('base-badge',BaseBadge)
 app.component('base-spinner',BaseSpinner)
+app.component('base-spinner2', BaseSpiiner2)
 app.component('base-dialog',BaseDialog)
 
 // 폰트어썸
