@@ -13,6 +13,10 @@
 </template>
 
 <script>
+import { computed, watch} from 'vue'
+import { useStore } from "vuex"
+import { useRouter } from "vue-router"
+
 import TheHeader from './components/layout/TheHeader.vue'
 import TheFooter from './components/layout/TheFooter.vue'
 
@@ -21,26 +25,23 @@ export default {
     TheHeader,
     TheFooter
   },
-  computed:{
-    didAutoLogout(){
-      return this.$store.getters.didAutoLogout
-    }
-  },
-  watch:{
-    didAutoLogout(curValue, oldValue){
+  setup(){
+    const store = useStore()
+    const router = useRouter()
+    
+    store.dispatch('tryLogin')
+
+    const didAutoLogout = computed(() => {
+      return store.getters.didAutoLogout
+    })
+
+    watch(didAutoLogout, (curValue, oldValue) => {
       // curval이 true고(autologout 한거고) 값이 변한거면
       if(curValue && curValue !== oldValue){
-        this.$router.replace('/articles')
+        router.replace('/articles')
       }
-    } 
+    })
   },
-  async created(){
-    // try login
-    await this.$store.dispatch('tryLogin')
-  },
-  methods:{
-  
-  }
 }
 </script>
 
