@@ -2,16 +2,18 @@
   <teleport to="body">
     <div v-if="show" @click="tryClose" class="backdrop"></div>
     <transition name="dialog">
-      <dialog open v-if="show">
-        <header>
+      <dialog open v-if="show" class="base-dialog">
+        <header class="base-dialog__header">
           <slot name="header">
             <h2>{{title}}</h2>
           </slot>
         </header>
-        <section>
+
+        <section class="base-dialog__section">
           <slot></slot>
         </section>
-        <menu v-if="!fixed">
+        
+        <menu v-if="!fixed" class="base-dialog__menu">
           <slot name="actions">
             <base-button @click="tryClose">닫기</base-button>
           </slot>
@@ -22,6 +24,8 @@
 </template>
 
 <script>
+import { toRefs } from 'vue'
+
 export default {
   props:{
     show:{
@@ -39,12 +43,17 @@ export default {
     }
   },
   emits:['close'],
-  methods:{
-    tryClose(){
-      if(this.fixed){
+  setup(props, context){
+    const {fixed} = toRefs(props)
+
+    const tryClose = () => {
+      if(fixed){
         return
       }
-      this.$emit('close')
+      context.emit('close')
+    }
+    return{
+      tryClose
     }
   }
 }
@@ -61,7 +70,7 @@ export default {
     z-index: 10;
   }
 
-  dialog{
+  .base-dialog{
     position: fixed;
     top: 20vh;
     left: 10%;
@@ -74,28 +83,29 @@ export default {
     margin: 0;
     overflow: hidden;
     background-color: white;
-  }
 
-  header {
-    background-color: $primary-color;
-    color: white;
-    width: 100%;
-    padding: 1rem;
 
-    h2{
+    &__header{
+      background-color: $primary-color;
+      color: white;
+      width: 100%;
+      padding: 1rem;
+
+       h2{
+        margin: 0;
+      }
+    }
+
+    &__section{
+      padding: 1rem;
+    }
+
+    &__menu{
+      padding: 1rem;
+      display: flex;
+      justify-content: flex-end;
       margin: 0;
     }
-  }
-
-  section {
-    padding: 1rem;
-  }
-
-  menu {
-    padding: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    margin: 0;
   }
 
   .dialog-enter-from,
@@ -119,7 +129,7 @@ export default {
   }
 
   @media(min-width: 768px){
-    dialog{
+    .base-dialog{
       left: calc(50% - 20rem);
       width: 40rem;
     }
