@@ -106,12 +106,13 @@ export default {
       
       setTimeout(async () => {
         const nameData = {
+          status:'NAME',
           boardId : this.boardId,
           taskId: this.taskId,
           taskName: this.nameInputValue,
         }
-        this.$emit('update-name',nameData)
-        await this.$store.dispatch('kanbans/changeTaskName', nameData)
+        this.$emit('update-task',nameData)
+        await this.$store.dispatch('kanbans/updateTask', nameData)
        
         this.spinner = false
         this.nameEditStatus = false
@@ -125,12 +126,13 @@ export default {
     },
     async changeDate(e){
       const dateData = {
+        status:'DATE',
         boardId : this.boardId,
         taskId: this.taskId,
         taskDate: e.target.value
       }
-      this.$emit('update-date',dateData)
-      await this.$store.dispatch('kanbans/changeTaskDate', dateData)
+      this.$emit('update-task',dateData)
+      await this.$store.dispatch('kanbans/updateTask', dateData)
 
       this.dateEditStatus = false
     },

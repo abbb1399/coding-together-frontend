@@ -54,24 +54,14 @@ export default {
     }
   },
 
-  // Task 이름 변경
-  changeTaskName(_,taskData){
+  // Task 업데이트
+  updateTask(_,taskData){
     try{
-      axios.patch('http://localhost:3000/change-task-name',taskData)
+      axios.patch('http://localhost:3000/update-task', taskData)
     }catch(e){
       console.log(e)
     }
   },
-
-  // Task 기한 변경
-  changeTaskDate(_,taskDate){
-    try{
-      axios.patch('http://localhost:3000/change-task-date',taskDate)
-    }catch(e){
-      console.log(e)
-    }
-  },
-
   // Task 순서 변경
   changeTaskOrder(_,data){
     try{

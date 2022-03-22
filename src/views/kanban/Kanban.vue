@@ -72,8 +72,7 @@
       :task-id="taskId"
       :due-date="dueDate"
       @close-sidebar="closeSideBar"
-      @update-name="updateName"
-      @update-date="updateDate"
+      @update-task="updateTask"
       @delete-task="deleteTask"
     />
 
@@ -115,9 +114,6 @@ export default {
     await this.$store.dispatch('kanbans/fetchKanbans')
   },
   methods: {
-    sort(e){
-      console.log(e)
-    },
     closeSideBar(){
       this.sidebar = false
     },
@@ -197,20 +193,17 @@ export default {
         this.dueDate = element.date
       }
     },
-    updateName(taskData){
-      const selectedTask = this.findData(taskData)
-      selectedTask.name=taskData.taskName
-      this.taskName = taskData.taskName
-    },
-    updateDate(dateData){
-      const selectedTask = this.findData(dateData)
-      selectedTask.date = dateData.taskDate
-      this.dueDate = dateData.taskDate
-    },
-    findData(kanbanData){
-      const selectedBoard = this.boardList.find(board => board._id === kanbanData.boardId)
-      const selectedTask = selectedBoard.list.find(data => data.id === kanbanData.taskId )
-      return selectedTask
+    updateTask(taskData){
+      const selectedBoard = this.boardList.find(board => board._id === taskData.boardId)
+      const selectedTask = selectedBoard.list.find(data => data.id === taskData.taskId )
+
+      if(taskData.status === 'NAME'){
+        selectedTask.name=  taskData.taskName
+        this.taskName = taskData.taskName
+      }else if(taskData.status === 'DATE'){
+        selectedTask.date = taskData.taskDate
+        this.dueDate = taskData.taskDate
+      }
     },
     deleteTask(){
       console.log('ddd')
