@@ -49,7 +49,6 @@ export default {
     const {fromImgSrc, roomId} = toRefs(props) 
 
     const img = computed(()=>{
-      console.log(fromImgSrc)
        if(fromImgSrc.value){
         return `http://localhost:3000/avatars/${fromImgSrc.value}`
       }else{

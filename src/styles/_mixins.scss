@@ -5,3 +5,42 @@
   padding: .625rem;    
   margin-bottom: 8px;
 }
+
+
+// 미디어쿼리 메니져
+/*
+  0 - 600px:  스마트폰
+  600 - 900px: 테블릿 세로(portrait)
+  900 - 1200px: 테블릿 가로(landscape)
+  [1200 - 1800] 
+  1800px + : 큰 모니터
+
+  $breakpoint 변수 :
+  - phone
+  - tab-port
+  - tab-land
+  - big-screen
+
+  ORDER: base + typogrphy > general layout + grid > page layout > components 
+
+  1em = 16px
+*/
+
+// mediaquery에서는 오로지 브라우저 폰트사이즈만 받음(기본값 16px)
+// 우리가 _base에서 폰트사이즈를 설정하더라도 먹지 않음.
+// rem은 몇몇 브라우저에서 먹히지 않기 때문에 em을 씀
+
+@mixin respond($breakpoint){
+  @if $breakpoint == phone{
+    @media screen and (max-width: 37.5em){@content};   //600px
+  }
+  @if $breakpoint == tab-port{
+    @media screen and (max-width: 56.25em){@content};  //900px
+  }
+  @if $breakpoint == tab-land{
+    @media screen and (max-width: 75em){@content};     //1200px
+  }
+  @if $breakpoint == big-screen{
+    @media screen and (min-width: 112.5em){@content};  //1800px
+  }
+}

@@ -1,206 +1,123 @@
 <template>
-  <div>
-    <section id="list">
-      <!-- 에러 Dialog -->
-      <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
-        <p>{{ error }}</p>
-      </base-dialog>
-      
-      <header class="page-heading">
-        <h1>동료 찾기 </h1>
-        <div class="filter">
-          <div>
-            <select v-model="selectType" @change="changeType">
-              <option v-for=" (data,i) in selectArray" :value="data.value" :key="i">
-                {{data.label}}
-              </option>
-            </select>
-            <!-- <base-button id="refresh-btn" mode="secondary" @click="loadArticles(true)">
-              <font-awesome-icon icon="rotate-right"/>
-            </base-button> -->
-          </div>
+  <section class="article">
+    <!-- 에러 Dialog -->
+    <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
 
-          <div>
-            <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">로그인/공고 등록</base-button>
-            <base-button v-if="isLoggedIn && !isLoading" link to="/register">공고 등록</base-button>
-          </div>
-        </div>
-      </header>
+    <article-header :is-loading="isLoading" @change-type="changeType" />
 
-      <div v-if="isLoading">
-        <base-spinner></base-spinner>
-      </div>
-      
-      <!-- <ul v-else-if="hasArticles"> -->
-      <ul v-else>
-        <article-item
-          v-for="coach in list"
-          :key="coach.id"
-          :name="coach.name"
-          :areas="coach.areas"
-          :owner="coach.owner"
-          :thumbnail="coach.thumbnail"
-        >
-        </article-item>
-      </ul>
-      <!-- <h3 v-else>목록이 없습니다.</h3> -->
-      <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
-        <template #no-more>모든 데이터를 불러왔습니다.</template>
-        <template #no-results>결과가 없습니다.</template>
-      </infinite-loading>
-    </section>
-  </div>
+    <div v-if="isLoading">
+      <base-spinner />
+    </div>
+
+    <ul class="article__list" v-else>
+      <article-item
+        v-for="coach in list"
+        :key="coach.id"
+        :name="coach.name"
+        :areas="coach.areas"
+        :owner="coach.owner"
+        :thumbnail="coach.thumbnail"
+      />
+    </ul>
+
+    <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId">
+      <template #no-more>모든 데이터를 불러왔습니다.</template>
+      <template #no-results>결과가 없습니다.</template>
+    </infinite-loading>
+  </section>
 </template>
 
 <script>
-import ArticleItem from '../../components/articles/ArticleItem.vue'
-// import CoachFilter from '../../components/articles/CoachFilter.vue'
-import InfiniteLoading from 'vue-infinite-loading'
+import {ref} from 'vue'
+import {useStore} from 'vuex'
+
+import ArticleItem from "../../components/articles/ArticleItem.vue"
+import ArticleHeader from "../../components/articles/ArticleHeader.vue"
+import InfiniteLoading from "vue-infinite-loading"
 
 export default {
-   components:{
-      ArticleItem,
-      // CoachFilter,
-      InfiniteLoading
-   },
-   data(){
-     return{
-      isLoading:false,
-      error:null,
-      list:[],
-      page:0,
-      selectType: 'all',
-      selectArray: [
-        {label: '전체', value: 'all'},
-        {label: '프론트엔드', value: 'frontend'},
-        {label: '백엔드',value: 'backend'},
-        {label: '퍼블리셔', value: 'publisher'},
-      ],
-      infiniteId: +new Date(),
-    }
+  components: {
+    ArticleItem,
+    ArticleHeader,
+    InfiniteLoading,
   },
-  computed:{
-    isLoggedIn(){
-      return this.$store.getters.isAuthenticated
-    },
-    isArticle(){
-      // console.log(this.$store.getters['articles/isArticle'])
-      console.log(this.list)
-      return this.$store.getters['articles/isArticle']
-    },
- 
-    hasArticles(){
-      return !this.isLoading && this.$store.getters['articles/hasArticles']
-    }
-  },
-  created(){
-    this.loadArticles()
-  },
-  methods:{
-    setFilters(updatedFilters){
-      const array = []      
-      Object.keys(updatedFilters).forEach(key => {
-        let value = updatedFilters[key]
-        if(key && value){
-          array.push(key)
-        }
-      })
-      console.log(array)
+  setup(){
+    const store = useStore()
 
-      // const payload = {
-      //   pageNum:0,
-      //   filter: array
-      // }
+    const isLoading = ref(false)
+    const error = ref(null)
+    const list = ref([])
+    const page= ref(0)
+    const selectedType = ref('all')
+    const infiniteId = ref(new Date().getTime())
 
-      // this.$store.dispatch('articles/moreLoadCoaches', payload)
-      // console.log(this.$store.getters['coaches/coaches'])
-    },
-    async loadArticles(refresh = false) { //default value
-      this.isLoading = true
+    const loadArticles = async (refresh = false) =>{
+      isLoading.value = true
       try{
-        await this.$store.dispatch('articles/loadArticles', { forceRefresh : refresh})
+        await store.dispatch("articles/loadArticles", {
+          forceRefresh: refresh,
+        })
       }catch(error){
-        this.error = error.message || '에러 발생!'
+        error.value = error.message || '에러 발생!'
       }
-      this.isLoading = false
-    },
-    handleError(){
-      this.error = null
-    },
-    async infiniteHandler($state){
-      const payload = {
-        pageNum:this.page,
-        filter: this.selectType
+      isLoading.value = false
+    }
+
+    const handleError = () =>{
+      error.value = null
+    }
+
+    const infiniteHandler = async ($state) =>{
+      const payload ={
+        pageNum: page.value,
+        filter: selectedType.value
       }
+      await store.dispatch("articles/moreLoadArticles", payload)
+      const listArray = store.getters["articles/articles"]
 
-      await this.$store.dispatch('articles/moreLoadArticles', payload)
-      
-      const listArray = this.$store.getters['articles/articles']
-
-      if(listArray.length){
-        this.page += 4
-        this.list.push(...listArray)
+       if (listArray.length) {
+        page.value += 4
+        list.value.push(...listArray)
         $state.loaded()
-      }else{
+      } else {
         $state.complete()
       }
-    },
-    changeType(){
-      this.page = 0;
-      this.list = [];
-      this.infiniteId += 1;
     }
-  },
+
+    const changeType = (selectType) => {
+      selectedType.value = selectType
+      page.value = 0
+      list.value = []
+      infiniteId.value += 1
+    }
+
+    loadArticles()
+    
+    return{
+      isLoading,
+      error,
+      list,
+      infiniteId,
+      handleError,
+      infiniteHandler,
+      changeType
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  #list{
-    max-width: 1100px;
+  .article{
+    max-width: $website-width;
     margin: auto;
+
+    &__list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.6rem;
+    }
   }
-
-  select{
-    border-radius: 5px;
-    width: 130px;
-    margin-right: 15px;
-    font-weight: 700;
-  }
-
-  ul{
-    list-style: none;;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.6rem;
-  }
-
-  .filter {
-    display: flex;
-    margin-top:0;
-    /* justify-content: space-between; */
-  }
-
-  .page-heading{
-    padding: 48px 0 20px 0;
-  }
-
-  .page-heading h1{
-    font-size: 34px;
-  }
-
-  .filter{
-    display: flex;
-
-    justify-content: flex-end;
-    margin-top: 1rem;
-  }
-
-  .filter > div:first-child{
-    display: flex;
-  }
-
-  h1{
-    text-align: center;
-  }
-
 </style>
