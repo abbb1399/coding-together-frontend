@@ -9,44 +9,65 @@
           <button class="kanban-btn" @click="editName">수정</button>
         </div>
         <div v-else class="sidebar__input">
-          <input type="text" v-model="nameValue" ref="editInput"/>
-          <div class="btn-group">
-            <button @click="confirmEdit" :disabled="nameValue.length===0">수정</button>
-            <button @click="cancleEdit">취소</button>
+          <base-spinner2 v-if="spinner"/>
+          <div v-else>
+            <input type="text" v-model="nameInputValue" ref="editInput"/>
+            <div class="btn-group">
+              <button class="kanban-btn" @click="confrimEditName" :disabled="nameInputValue.length===0">수정</button>
+              <button class="kanban-btn" @click="cancleEditName">취소</button>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="sidebar__group">
         <div class="sidebar__content">
-          <p>dueDate</p>
-          <button class="kanban-btn">수정{{taskId}}</button>
+          <p>기한</p>
+          <button class="kanban-btn" @click="editDate">수정</button>
+        </div>
+        <div class="sidebar__input">
+          <p v-if="!dateEditStatus" class="date-paragraph">{{test}}</p>
+          <input v-else @change="changeDate" type="date" :value="dueDate" class="date-input">
         </div>
       </div>
+
+      <div class="sidebar__group">
+        <button class="kanban-btn" @click="deleteTask">업무 삭제</button>
+      </div>
+
     </div>
    </transition>
 </template>
 
 <script>
 export default {
-  emit:['close-sidebar', 'update-name'],
+  emit:['close-sidebar', 'update-name','delete-task','update-date'],
   props:{
     sidebar:{
       type: Boolean,
       default:false
     },
+    boardId:{
+      type:String,
+      required:true
+    }, 
     taskName:{
       type:String,
       required:true
     },
     taskId:{
-      type:Number,
+      type:String,
+    },
+    dueDate:{
+      type:String
     }
   },
   data(){
     return{
       nameEditStatus: false,
-      nameValue:''
+      nameInputValue:'',
+      spinner: false,
+      dateEditStatus:false,
     }
   },
   watch:{
@@ -54,27 +75,67 @@ export default {
       this.nameEditStatus = false
     }
   },
+  computed:{
+    loadingStatus(){
+      return this.spinner
+    },
+    test(){
+      return this.dueDate
+    }
+
+  },
   methods:{
     close(){
       this.$emit('close-sidebar')
     },
     editName(){
-      setTimeout(() => {
-        this.$refs.editInput.focus()
-      }, 100);
-
-      this.nameValue = this.taskName
+      this.nameInputValue = this.taskName
       this.nameEditStatus = true
+      
+      this.$nextTick(()=>{
+        this.$refs.editInput.focus()
+      })
     },
-    confirmEdit(){
-      const nameData = {
-        id: this.taskId,
-        name: this.nameValue
+    confrimEditName(){
+      // 같은이름 수정일시
+      if(this.taskName === this.nameInputValue){
+        return this.nameEditStatus = false
       }
-      this.$emit('update-name',nameData)
+
+      this.spinner= true
+      
+      setTimeout(async () => {
+        const nameData = {
+          boardId : this.boardId,
+          taskId: this.taskId,
+          taskName: this.nameInputValue,
+        }
+        this.$emit('update-name',nameData)
+        await this.$store.dispatch('kanbans/changeTaskName', nameData)
+       
+        this.spinner = false
+        this.nameEditStatus = false
+      }, 1000);
     },
-    cancleEdit(){
+    cancleEditName(){
       this.nameEditStatus = false
+    },
+    editDate(){
+      this.dateEditStatus = !this.dateEditStatus
+    },
+    async changeDate(e){
+      const dateData = {
+        boardId : this.boardId,
+        taskId: this.taskId,
+        taskDate: e.target.value
+      }
+      this.$emit('update-date',dateData)
+      await this.$store.dispatch('kanbans/changeTaskDate', dateData)
+
+      this.dateEditStatus = false
+    },
+    deleteTask(){
+      this.$emit('delete-task')
     }
   }
 }
@@ -83,7 +144,7 @@ export default {
 <style lang="scss" scoped>
   .sidebar {
     height: 100%;
-    width: 21vw;
+    width: 23vw;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -104,6 +165,10 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      p{
+        font-weight: 600;
+      }
     }
 
     &__input{
@@ -120,6 +185,14 @@ export default {
         justify-content: space-between;
         margin-top: .5rem;
       }
+
+      .date-paragraph{
+        margin-top: .7rem;
+      }
+
+      .date-input{
+        margin-top: .7rem;
+      }
     }
 
     .closebtn {
@@ -132,7 +205,7 @@ export default {
     }
   }
 
-  button{
+  .kanban-btn{
     background: #fff;
     border-radius: 5px;
     border: 1px solid gray;
@@ -146,7 +219,6 @@ export default {
       background: darken(#fff, 5%)
     }
   }
-
 
   // Vue Transition css
   .side-leave-to{

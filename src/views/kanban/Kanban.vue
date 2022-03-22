@@ -8,8 +8,11 @@
           group="people" 
           :animation="90"
           :multiDrag="true" 
+          
+          @change="moveTask($event,board._id)"
           @start="dragStart"
           @end="dragEnd"
+    
           class="test2"
 
           ghostClass= "ghost"
@@ -24,12 +27,11 @@
               <h1>{{board.title}}</h1>
               <div class="header__control">
                 <p><font-awesome-icon icon="tag"/>&nbsp;{{board.list.length}}</p>
-                <button class="boards-container__btn" @click="openInput(board, index)">
+                <button class="boards-container__btn" @click="openAddInput(board, index)">
                   <font-awesome-icon icon="plus" />
                 </button>
               </div>     
             </div>
-
             <div class="boards-container__board__input" v-if="inputStatus && currIndex === index">
               <base-spinner2 v-if="spinnerStatus" />
               <div v-else>
@@ -49,9 +51,14 @@
             </div>
           </template>
 
-
           <template #item="{ element }">
-            <div class="boards-container__board__card" @click="clickTask(element, board)">{{ element.name }}</div>
+            <div 
+              class="boards-container__board__card" 
+              :class="{'selected-task': element.id === selectedTask}"
+              @click="clickTaskOpenSideBar(element, board._id)"
+            >
+              {{ element.name }} {{element.date}}
+            </div>
           </template>
         </draggable>
        </div>
@@ -60,10 +67,14 @@
     <!-- 사이드바 -->
     <kanban-sidebar 
       :sidebar="sidebar"
+      :board-id="boardId"
       :task-name="taskName"
       :task-id="taskId"
+      :due-date="dueDate"
       @close-sidebar="closeSideBar"
       @update-name="updateName"
+      @update-date="updateDate"
+      @delete-task="deleteTask"
     />
 
   </section>
@@ -87,46 +98,13 @@ export default {
       inputValue:'',
       currIndex:null,
       inputStatus: false,
-      // boardList:[
-        // {
-        //   title: 'Board One', 
-        //   list: [
-        //     { name: "Card #1", id: 1 },
-        //     { name: "Card #2", id: 2 },
-        //     { name: "Card #3", id: 3 },
-        //     { name: "Card #4", id: 4 }
-        //   ],
-        // },
-        // {
-        //   title: 'Board Two',
-        //   list: [
-        //     { name: "Card #5", id: 5 },
-        //     { name: "Card #6", id: 6 },
-        //     { name: "Card #7", id: 7 }
-        //   ]
-        // },
-        // {
-        //   title: 'Board Three',
-        //   list: [
-        //     { name: "Card #8", id: 8 },
-        //     { name: "Card #9", id: 9 },
-        //     { name: "Card #10", id: 10 }
-        //   ]
-        // },
-        // {
-        //   title: 'Board Four',
-        //   list: [
-        //     { name: "Card #11", id: 11 },
-        //     { name: "Card #12", id: 12 },
-        //     { name: "Card #13", id: 13 }
-        //   ]  
-        // }
-      // ],
+      boardId:'',
+      selectedTask:'',
+      dueDate: '없음'
     }
   },
   computed:{
     addStstus(){
-      console.log(this.inputStatus)
       return this.inputStatus
     },
     boardList(){
@@ -135,14 +113,34 @@ export default {
   },
   async created(){
     await this.$store.dispatch('kanbans/fetchKanbans')
-    console.log(this.$store.getters['kanbans/kanbans'])
   },
   methods: {
+    sort(e){
+      console.log(e)
+    },
     closeSideBar(){
       this.sidebar = false
     },
-    log(evt) {
-      console.log(evt);
+    moveTask({added,removed,moved}, boardId) {
+      if(added){
+        this.$store.dispatch('kanbans/moveTask',{
+          status: 'added',
+          boardId : boardId,
+          task: added.element
+        })
+      }else if(removed){
+        this.$store.dispatch('kanbans/moveTask',{
+           status:'removed',
+           boardId: boardId,
+           task: removed.element
+         })
+      }else if(moved){
+        console.log(moved)
+        this.$store.dispatch('kanbans/changeTaskOrder',{
+         ...moved,
+         boardId: boardId
+        })
+      }
     },
     dragStart(){
       this.setDragCursor(true)
@@ -154,27 +152,25 @@ export default {
       const html = document.getElementsByTagName('html').item(0)
       html.classList.toggle('grabbing', value)
     },
-    openInput(board, index){
+    openAddInput(board, index){
       if(this.inputStatus && this.currIndex === index){
         this.inputStatus = false
       }else{
+        this.inputValue = ''
         this.inputStatus = true
       }
-      
       this.currIndex = index
     },
-    cancleAdding(index){
-      console.log(index)
+    cancleAdding(){
       this.inputStatus = false
     },
-    addTask(board,index){
+    addTask(board){
       if(this.inputValue.length === 0) return
       this.spinnerStatus = true
 
-      console.log(board,index)
       setTimeout(() => {
         const data = {
-          id:Date.now().toString(36) + Math.random().toString(36).substr(2),
+          id:'TA' + Date.now().toString(36) + Math.random().toString(36).substr(2),
           name:this.inputValue
         }
 
@@ -186,16 +182,38 @@ export default {
         this.spinnerStatus = false
       }, 1000);
     },
-    clickTask(element,board){
-      console.log(element)
-      console.log(board)
+    clickTaskOpenSideBar(element,boardId){
+      this.dueDate= '없음'
+
+      // 업무 클릭시 옅은파랑으로
+      this.selectedTask = element.id
 
       this.sidebar = true
+      this.boardId = boardId
       this.taskName = element.name
       this.taskId = element.id
+      
+      if(element.date){
+        this.dueDate = element.date
+      }
     },
-    updateName(dd){
-      console.log(dd)
+    updateName(taskData){
+      const selectedTask = this.findData(taskData)
+      selectedTask.name=taskData.taskName
+      this.taskName = taskData.taskName
+    },
+    updateDate(dateData){
+      const selectedTask = this.findData(dateData)
+      selectedTask.date = dateData.taskDate
+      this.dueDate = dateData.taskDate
+    },
+    findData(kanbanData){
+      const selectedBoard = this.boardList.find(board => board._id === kanbanData.boardId)
+      const selectedTask = selectedBoard.list.find(data => data.id === kanbanData.taskId )
+      return selectedTask
+    },
+    deleteTask(){
+      console.log('ddd')
     }
   }
 }
@@ -220,17 +238,20 @@ export default {
 
   .ghost {
     opacity: 0.5;
-    // background: #c8ebfb !important;;
   }
 
   .chosen{
-      // color: #fff;
-    background-color: #c8ebfb !important;
+    // color: #fff;
+    /* background-color: #c8ebfb !important; */
   }
 
   .drag{
-    // background: yellow !important;
+     transform: rotate(3deg);
+    -moz-transform: rotate(3deg);
+    -webkit-transform: rotate(3deg);
   }
+
+
 
   .boards-container {
     display: grid;
@@ -293,6 +314,10 @@ export default {
       &__card{
         @include card;
         cursor: grab;
+      
+        &.selected-task{
+          background : #e9f3fc;
+        }
       }
 
       &__input{
