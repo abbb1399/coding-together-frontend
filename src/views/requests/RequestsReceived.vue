@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <section>
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{error}}</p>
     </base-dialog>
     
-    <section class="requests">
+    <div class="requests">
       <header class="requests__header">
         <h2>받은 요청들</h2>
       </header>
@@ -23,48 +23,52 @@
         </request-item>
       </ul>
       <h3 class="requests__no-request" v-else>받은 요청이 없습니다.</h3>
-    </section>
-
-  </div>
+    </div>
+  </section>
 </template>
 
-
 <script>
+import { ref,computed } from "vue"
+import { useStore } from "vuex"
 import RequestItem from '../../components/requests/RequestItem.vue'
 
 export default {
   components: { 
     RequestItem
   },
-  data(){
-    return{
-      isLoading:false,
-      error:null,
-    }
-  },
-  computed:{
-    receivedRequests(){
-      return this.$store.getters['requests/requests']
-    },
-    hasRequests(){
-      return this.$store.getters['requests/hasRequests']
-    }
-  },
-  created(){
-    this.loadRequests()
+  setup(){
+    const store = useStore()
+    const isLoading = ref(false)
+    const error = ref(null)
+      
+    const receivedRequests = computed(()=>{
+      return store.getters['requests/requests']
+    })
 
-  },
-  methods:{
-    async loadRequests(){
-      this.isLoading = true
+    const hasRequests= computed(()=>{
+      return store.getters['requests/hasRequests']
+    })
+
+    const loadRequests = async() =>{
+      isLoading.value = true
       // requests 불러오기
-      await this.$store.dispatch('requests/fetchRequests')
-      console.log(this.$store.getters['requests/requests'])
+      await store.dispatch('requests/fetchRequests')
   
-      this.isLoading= false
-    },
-    handleError(){
-      this.error = null
+      isLoading.value= false
+    }
+
+    const handleError = () =>{
+      error.value = null
+    }
+    
+    loadRequests()
+
+    return{
+      isLoading,
+      error,
+      receivedRequests,
+      hasRequests,
+      handleError
     }
   }
 }

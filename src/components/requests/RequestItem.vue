@@ -14,6 +14,10 @@
 </template>
 
 <script>
+import {toRefs, computed} from 'vue'
+import { useStore } from "vuex"
+import { useRouter } from "vue-router"
+
 export default {
   props:{
     roomId:{
@@ -37,34 +41,30 @@ export default {
     },
     fromImgSrc:{
       type:String,
-      required:true
     }
   },
-  data(){
-    return{
+  setup(props){
+    const store = useStore()
+    const router = useRouter()
+    const {fromImgSrc, roomId} = toRefs(props) 
 
-    }
-  },
-  computed:{
-    emailLink(){
-      return 'mailto:' + this.email
-    },
-    img(){
-      if(this.fromImgSrc){
-        return `http://localhost:3000/avatars/${this.fromImgSrc}`
+    const img = computed(()=>{
+      console.log(fromImgSrc)
+       if(fromImgSrc.value){
+        return `http://localhost:3000/avatars/${fromImgSrc.value}`
       }else{
         return require('../../assets/avatar.jpg')
       }
+    })
+
+    const enterChatRoom = async () =>{
+      await store.dispatch('chat/enterRoom', roomId)
+      router.push({name:'chatRoom',  params: {roomId: roomId }})
     }
-  },
-  created(){
-  
-  },
-  methods:{
-    async enterChatRoom(){
-      await this.$store.dispatch('chat/enterRoom', this.roomId)
-      
-      this.$router.push({name:'chatRoom',  params: {roomId: this.roomId }})
+
+    return{
+      img,
+      enterChatRoom
     }
   }
 }
