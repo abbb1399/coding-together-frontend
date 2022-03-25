@@ -62,9 +62,9 @@ export default {
           $state.loaded()
           page.value += 4
           articleList.value = [...articleList.value, ...listArray]
+        }else{
+          $state.complete()
         } 
-
-        $state.complete()
       }catch(e){
         error.value = e.message || '에러 발생!'
       }

@@ -36,7 +36,6 @@ export default {
     store.dispatch("chat/fetchChatRoomList")
 
     const roomList = computed(() => {
-      console.log( store.getters["chat/roomList"])
       return store.getters["chat/roomList"]
     })
     

@@ -123,6 +123,7 @@ export default {
        'http://localhost:3000/images',
        file
       )
+     
       context.commit('setUploadFileName', data)
     }catch(e){
       console.log(e)

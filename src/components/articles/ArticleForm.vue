@@ -86,9 +86,16 @@ export default {
         initialEditType: "wysiwyg",
         previewStyle: "vertical",
         language: 'ko-KR',
-        autofocus:false
+        autofocus:false,
+        linkAttribute: {
+          target: '_blank',
+          contenteditable: 'false',
+          rel: 'noopener noreferrer'
+        }, 
+        hooks: {
+          addImageBlobHook: addImageBlobHook
+        }
       })
-
       // mypage에서 변경시
       if(route.path ==='/mypage/list'){
         const myInfo = store.getters['articles/getMyPageList']
@@ -113,7 +120,6 @@ export default {
       }else if(input === 'areas'){
         areas.isValid = true
       }else if(input === 'file'){
-        console.log('파일블러')
         file.isValid = true
       }
     }
@@ -199,6 +205,8 @@ export default {
       }
     }
 
+    
+
     const focusEditor = () =>{
       tuiEditor.value.focus()
     }
@@ -220,6 +228,14 @@ export default {
         confirmButtonText: '네',
         cancelButtonText: '아니오'
       })
+    }
+
+    const addImageBlobHook = async(blob, callbacks) =>{
+      const fd = new FormData()
+      fd.append('images', blob)
+
+      await store.dispatch('articles/uploadImage',fd)
+      callbacks(`http://localhost:3000/images/${store.getters['articles/getUploadFileName']}`)
     }
 
     return{
