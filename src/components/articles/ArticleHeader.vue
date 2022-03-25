@@ -18,7 +18,7 @@
         <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">
           로그인/공고 등록
         </base-button>
-        <base-button v-if="isLoggedIn && !isLoading" link to="/register">
+        <base-button v-if="isLoggedIn" link to="/register">
           공고 등록
         </base-button>
       </div>
@@ -32,12 +32,6 @@ import { useStore } from "vuex"
 
 export default {
   emits: ["change-type"],
-  props: {
-    isLoading: {
-      type: Boolean,
-      required:true
-    },
-  },
   setup(_, context) {
     const store = useStore()
 

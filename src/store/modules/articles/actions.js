@@ -30,55 +30,18 @@ export default {
     } 
   },
 
-  // 글 불러오기 1
-  async loadArticles(context){
-    // console.log(payload.forceRefresh)
-    // console.log(context.getters.shouldUpdate)
-
-    // if(!payload.forceRefresh && !context.getters.shouldUpdate){
-    //   console.log('여기임??')
-    //   return
-    // }
-  
+  // 글 리스트 불러오기
+  async loadArticles(context, payload){  
     try{
-      const { data } = await axios.get('http://localhost:3000/article-list')
-
-      const articles = []
-
-      data.forEach(element => {
-        const dataObj = {
-          id: element._id,
-          name: element.name,
-          description: element.description,
-          areas: element.areas,
-          owner: element.owner,
-          thumbnail: element.thumbnail,
-          updatedAt: element.updatedAt
-        }
-        articles.push(dataObj)
-      });  
-      
-      context.commit('setArticles', articles)
-      // context.commit('setFetchTimestamp')  
-    }catch(e) {
-      console.log(e)
-    }
-  },
-
-  // 글 불러오기 2
-  async moreLoadArticles(context, payload){  
-    // console.log(payload.filter)
-    try{
-      const { data } = await axios.get(`http://localhost:3000/more-article-list/${payload.pageNum}`,{
+      const { data } = await axios.get(
+        `http://localhost:3000/articles/${payload.pageNum}`,{
         params: {
           filter: payload.filter
         }
       })
 
-      const articles = []
-
-      data.forEach(element => {
-        const dataObj = {
+      const articles = data.map(element => {
+        return {
           id: element._id,
           name: element.name,
           description: element.description,
@@ -87,16 +50,24 @@ export default {
           thumbnail: element.thumbnail,
           updatedAt: element.updatedAt
         }
-        articles.push(dataObj)
       });  
       
       context.commit('setArticles', articles)
-      // context.commit('setFetchTimestamp')
     }catch(e) {
-      console.log(e)
+      return Promise.reject({message: '서버에서 불러오는데 실패 했습니다.'})
     }
   },
 
+  // 글 내용 불러오기
+  async loadArticleDetail(context,id){
+    try{
+      const {data} = await axios.get(`http://localhost:3000/article/${id}`)
+    
+      context.commit('setArticle',data)
+    }catch(e){
+      return Promise.reject({message: '없는 글입니다.'})
+    }
+  },
   // 내가 쓴 글 불러오기
   async fetchMyArticle(context){
     try{
@@ -156,17 +127,5 @@ export default {
     }catch(e){
       console.log(e)
     }
-  },
-
-  // 이미지 불러오기
-  async fetchArticleImage(context, filename){
-    try{
-      await axios.get(
-        `http://localhost:3000/images/${filename}`
-      )
-    }catch(e){
-      console.log(e)
-    }
   }
-
 }

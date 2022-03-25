@@ -1,6 +1,9 @@
 export default {
-  userId(state){
-    return state.userId
+  // userId(state){
+  //   return state.userId
+  // },
+  myInfo(state){
+    return state.myInfo
   },
   token(state){
     return state.token
@@ -11,12 +14,8 @@ export default {
   didAutoLogout(state){
     return state.didAutoLogout
   },
-  // 모든 유저 정보 가져오기
-  getUsersInfo(state){
-    return state.usersInfo
-  },
   // 내 정보 가져오기
-  getMyInfo(state){
-    return state.myInfo
-  }
+  // getMyInfo(state){
+  //   return state.myInfo
+  // }
 }

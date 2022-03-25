@@ -9,7 +9,7 @@
           <router-link to="/kanban">칸반</router-link>
         </li>
         <li>
-          <router-link to="/chat">채팅</router-link>
+          <router-link to="/chat">채팅 목록</router-link>
         </li>
         <li>
           <router-link to="/schedule">나의 일정</router-link>

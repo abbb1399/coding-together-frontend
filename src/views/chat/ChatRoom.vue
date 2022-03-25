@@ -66,10 +66,11 @@ export default {
 		}
 	},
   async created(){
-    await this.$store.dispatch('fetchMyInfo')
-    const myInfo  = this.$store.getters.getMyInfo
+    // await this.$store.dispatch('fetchMyInfo')
+    const myInfo = this.$store.getters.myInfo
+  
 
-    this.currentUserId = myInfo._id
+    this.currentUserId = myInfo.id
     this.currentUserName = myInfo.name
 
     const socket = io("http://localhost:3000")
@@ -77,10 +78,10 @@ export default {
     // 방정보 불러오기
     await this.$store.dispatch('chat/fetchCurrentRoom', this.roomId)
     const enteredRoom = this.$store.getters['chat/currentRoom']
-    
+
     const room = enteredRoom.roomName
     const roomId = enteredRoom.roomId
-    const userId = myInfo._id
+    const userId = myInfo.id
     const username = myInfo.name
   
     // 소켓 Join

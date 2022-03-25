@@ -5,8 +5,8 @@ export default {
   setArticles(state, payload){
     state.articles = payload
   },
-  setFetchTimestamp(state){
-    state.lastFetch = new Date().getTime()
+  setArticle(state,payload){
+    state.article = payload
   },
   setUploadFileName(state, fileName){
     state.fileName = fileName
@@ -14,5 +14,4 @@ export default {
   setMyArticle(state, myList){
     state.myList = myList
   }
-
 }

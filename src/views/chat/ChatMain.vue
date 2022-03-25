@@ -4,7 +4,7 @@
       <h2 class="chat__caption">채팅 목록</h2>
       <div v-if="roomList.length">
         <li class="chat__list" @click="enterChatRoom(room)" v-for="room in roomList" :key="room.roomId">
-          <img class="chat__img" alt="유저 프로필" :src="room.avatar ? room.avatar : noImg"/>
+          <img class="chat__img" alt="유저 프로필" :src="`http://localhost:3000/images/${room.avatar}`"/>
           <div class="chat__group">
             <h2>{{ room.roomName }}</h2>
             <div class="content__group">
@@ -36,6 +36,7 @@ export default {
     store.dispatch("chat/fetchChatRoomList")
 
     const roomList = computed(() => {
+      console.log( store.getters["chat/roomList"])
       return store.getters["chat/roomList"]
     })
     

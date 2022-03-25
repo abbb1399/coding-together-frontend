@@ -1,146 +1,206 @@
 <template>
-  <div class="article">
-    <section>
-      <img class="article__thumbnail" :src="imgSrc" alt="썸내일">
-      <h1 class="l-heading">{{title}}</h1> 
-      <div class="meta">
-        <small>
-          <i class="fas fa-user"></i> Written By {{getOwnerName}} {{updatedAt}}
-        </small>
-        <div>
-          <base-badge class="bagde" v-for="area in areas" :key="area" :type="area" :title="area"/>
-        </div>
-      </div>
+  <section class="article">
+    <img
+      class="article__thumbnail"
+      :src="`http://localhost:3000/images/${thumbnail}`"
+      alt="썸내일"
+    />
+    <h1 class="article__title">{{ title }}</h1>
+    <div class="article__meta">
+      <small>Written By {{ owner.name }} {{ updatedAt }}</small>
+      <base-badge
+        class="bagde"
+        v-for="area in areas"
+        :key="area"
+        :type="area"
+        :title="area"
+      />
+    </div>
 
-      <div id="viewer"/>
-    </section>
+    <!-- TUI Viewer -->
+    <div id="viewer" />
 
-    <section>
-      <base-card :card-width="cardWidth">
-        <header>
-          <h2>관심있나요? 지금 신청하세요!</h2>
-          <!-- <base-button link :to="contactLink">연락하기</base-button> -->
-        </header>
-        <contact-owner
-          :title="title"
-          :owner="owner"
-          :thumbnail="thumbnail"
-        />
-        <!-- <router-view></router-view> -->
-      </base-card>
-    </section>
-   
-  </div>
+    <div class="article__btn-container">
+      <base-button @click="sendRequest">같이 코딩하기</base-button>
+    </div>
+  </section>
 </template>
 
 <script>
-import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
-import '@toast-ui/editor/dist/toastui-editor-viewer.css';
-// import '@toast-ui/editor/dist/toastui-editor.css'
-import ContactOwner from '../requests/ContactOwner.vue'
+import { ref, reactive, inject } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { useStore } from "vuex"
+
+import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
+import "@toast-ui/editor/dist/toastui-editor-viewer.css"
+
 
 export default {
-  components:{
-    ContactOwner
-  },
-  // router로 props 넘김
-  props:{
-    owner:{
-      type:String
-    }
-  },
-  inject:['$moment'],
-  computed:{
-    getOwnerName(){
-      return this.$store.getters.getUsersInfo.name
+  props: {
+    // router로 props(id) 넘김
+    id: {
+      type: String,
+      required:true
     },
-    contactLink(){
-      return this.$route.path + '/' + this.owner + '/contact'
-      // return this.$route.path + '/contact'
-    }
   },
-  data(){
-    return{
-      selectedCoach:null,
-      title:'',
-      areas:[],
-      updatedAt:'',
-      description:'',
-      cardWidth:'large-card',
-      imgSrc: require('../../assets/ent1.jpg'),
-      thumbnail: require('../../assets/ent1.jpg')
-    }
-  },
-  async created(){
-    await this.loadArticles()
-    await this.$store.dispatch('fetchAllUsersInfo', this.owner)
-    
-    const info = this.$store.getters['articles/articles'].find(coach => coach.owner === this.owner)
+  setup() {
+    const store = useStore()
+    const $moment = inject("$moment")
+    const $swal = inject("$swal")
+    const route = useRoute()
+    const router = useRouter()
 
-    this.title = info.name
-    this.areas = info.areas
-    this.description = info.description
-    this.updatedAt = this.$moment(info.updatedAt).format('YYYY-MM-DD')
+    const articleId = route.params.id
+    const title = ref("")
+    const areas = ref([])
+    const updatedAt = ref("")
+    const owner = reactive({ id: "", name: "" })
+    const thumbnail = ref(null)
 
-    if(info.thumbnail){
-      this.imgSrc =  `http://localhost:3000/images/${info.thumbnail}`
-      this.thumbnail = info.thumbnail
-    }
+    store.dispatch("articles/loadArticleDetail", articleId).then(() => {
+      const article = store.getters["articles/article"]
 
-    new Viewer({
-      el: document.querySelector('#viewer'),
-      // 표시하고자 하는 내용은 여기에 들어간다.
-      initialValue: this.description
-    });
+      title.value = article.name
+      areas.value = article.areas
+      updatedAt.value = $moment(article.updatedAt).format("YYYY-MM-DD")
+      owner.name = article.owner.name
+      owner.id = article.owner._id
+      thumbnail.value = article.thumbnail
 
+      new Viewer({
+        el: document.querySelector("#viewer"),
+        initialValue: article.description,
+      })
+    }).catch(error=>{
+      router.replace('/notfound')
+      $swal.fire({
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 2000,
+      })
+    })
 
-  },
-  methods:{
-    async loadArticles(refresh = false) {
-      this.isLoading = true
-      try{
-        await this.$store.dispatch('articles/loadArticles', { forceRefresh : refresh})
-      }catch(error){
-        this.error = error.message || '에러 발생!'
+    const sendRequest = async () => {
+      if (!store.getters.isAuthenticated) {
+        router.push("/auth")
+
+        return $swal.fire({
+          icon: "info",
+          title: `같이 코딩하기 위하여 로그인을 먼저하여 주세요.`,
+          showConfirmButton: false,
+          timer: 2000,
+        })
       }
-      this.isLoading = false
-    },
-  }
+
+      if (store.getters.myInfo.id === owner.id) {
+        return $swal.fire({
+          icon: "info",
+          title: `내가 작성한 공고 입니다.`,
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
+
+      const result = await $swal.fire({
+        title: '같이 코딩 하시겠습니까?',
+        text: '해당 채팅방으로 이동합니다.',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#34c38f',
+        cancelButtonColor: '#f46a6a',
+        confirmButtonText: '네',
+        cancelButtonText: '아니오'
+      })
+
+      if(result.value){
+        // 채팅방 생성 혹은 이동
+        await store.dispatch("chat/createOrEnterRoom", {
+          roomId: articleId,
+          roomName: title.value,
+          avatar: thumbnail.value,
+          users: [
+            {
+              _id: store.getters.myInfo.id,
+              username: store.getters.myInfo.name,
+            },
+          ],
+        })
+
+        // 방이 이미 생성되었을 경우 - 상대방에게 요청도 생성
+        if (store.getters["chat/isRoomCreated"]) {
+          await store.dispatch("requests/contactCoach", {
+            userId: store.getters.myInfo.id,
+            title: title.value,
+            owner: owner.id,
+            roomId: articleId,
+          })
+        }
+
+        router.push({ name: "chatRoom", params: { roomId: articleId } })
+      }
+    }
+
+    return {
+      title,
+      areas,
+      updatedAt,
+      thumbnail,
+      owner,
+      sendRequest,
+    }
+  },
 }
 </script>
 
-
 <style lang="scss" scoped>
-  :deep(.toastui-editor-contents){
-    font: inherit;
-  }
-  
-  .article{
-    max-width: $website-width;
-    margin: 1rem auto;
+:deep(.toastui-editor-contents) {
+  font: inherit;
+}
 
-    &__thumbnail{
-      height: 32rem;
-      width:100%;
-      border-radius: 5px;
-    }
+.article {
+  max-width: $website-width;
+  margin: 1rem auto;
+
+  &__title {
+    font-size: 3rem;
+    margin: 1rem 0 1rem 0;
   }
 
-  #viewer{
-    margin-top: 1.56rem;
+  &__thumbnail {
+    height: 32rem;
+    width: 100%;
+    border-radius: 5px;
   }
-  
-  .meta{
+
+  &__meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: #eee;
     padding: 0.5rem;
 
-    .badge{
+    .badge {
       text-align: center;
       font-size: 12px;
       width: 5.5rem;
     }
   }
+
+  &__btn-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 2rem 0;
+
+    & > *:first-child {
+      font-size: 1.3rem;
+      width: 13rem;
+    }
+  }
+
+  #viewer {
+    margin-top: 1.56rem;
+    min-height: 10rem;
+  }
+}
 </style>

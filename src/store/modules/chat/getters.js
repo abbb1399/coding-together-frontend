@@ -1,6 +1,6 @@
 export default {
-  newRoom(state){
-    return state.newRoom
+  isRoomCreated(state){
+    return state.isRoomCreated
   },
   messages(state){
     return state.messages

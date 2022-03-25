@@ -95,7 +95,6 @@ export default {
         // 회원가입
           await this.$store.dispatch('signup', userInfo)
         }
-        await this.$store.dispatch('fetchMyInfo')
         
         const redirectUrl = '/' + (this.$route.query.redirect || 'articles')
         this.$router.replace(redirectUrl)

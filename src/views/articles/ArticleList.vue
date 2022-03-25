@@ -1,24 +1,21 @@
 <template>
-  <section class="article">
+  <section class="articles">
     <!-- 에러 Dialog -->
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
 
-    <article-header :is-loading="isLoading" @change-type="changeType" />
-
-    <div v-if="isLoading">
-      <base-spinner />
-    </div>
-
-    <ul class="article__list" v-else>
+    <article-header @change-type="changeType" />
+    
+    <ul class="articles__list">
       <article-item
-        v-for="coach in list"
-        :key="coach.id"
-        :name="coach.name"
-        :areas="coach.areas"
-        :owner="coach.owner"
-        :thumbnail="coach.thumbnail"
+        v-for="article in articleList"
+        :key="article.id"
+        :id="article.id"
+        :name="article.name"
+        :areas="article.areas"
+        :owner="article.owner"
+        :thumbnail="article.thumbnail"
       />
     </ul>
 
@@ -46,59 +43,47 @@ export default {
   setup(){
     const store = useStore()
 
-    const isLoading = ref(false)
     const error = ref(null)
-    const list = ref([])
+    const articleList = ref([])
     const page= ref(0)
     const selectedType = ref('all')
     const infiniteId = ref(new Date().getTime())
 
-    const loadArticles = async (refresh = false) =>{
-      isLoading.value = true
-      try{
-        await store.dispatch("articles/loadArticles", {
-          forceRefresh: refresh,
-        })
-      }catch(error){
-        error.value = error.message || '에러 발생!'
-      }
-      isLoading.value = false
-    }
-
-    const handleError = () =>{
-      error.value = null
-    }
-
     const infiniteHandler = async ($state) =>{
-      const payload ={
+      const payload = {
         pageNum: page.value,
-        filter: selectedType.value
+        filter: selectedType.value,
       }
-      await store.dispatch("articles/moreLoadArticles", payload)
-      const listArray = store.getters["articles/articles"]
+      try{
+        await store.dispatch("articles/loadArticles", payload)
+        const listArray = store.getters["articles/articles"]
+        
+        if (listArray.length) {
+          $state.loaded()
+          page.value += 4
+          articleList.value = [...articleList.value, ...listArray]
+        } 
 
-       if (listArray.length) {
-        page.value += 4
-        list.value.push(...listArray)
-        $state.loaded()
-      } else {
         $state.complete()
+      }catch(e){
+        error.value = e.message || '에러 발생!'
       }
     }
 
     const changeType = (selectType) => {
       selectedType.value = selectType
       page.value = 0
-      list.value = []
+      articleList.value = []
       infiniteId.value += 1
     }
 
-    loadArticles()
-    
+    const handleError = () =>{
+      error.value = null
+    }
+
     return{
-      isLoading,
       error,
-      list,
+      articleList,
       infiniteId,
       handleError,
       infiniteHandler,
@@ -109,15 +94,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .article{
+  .articles{
     max-width: $website-width;
     margin: auto;
+    
+    @include respond(tab-port){
+      margin: 0 8rem 0 8rem;
+    }
 
     &__list {
       list-style: none;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.6rem;
+
+      @include respond(tab-port){
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include respond(phone){
+        grid-template-columns: repeat(1, 1fr);
+      }
     }
   }
 </style>

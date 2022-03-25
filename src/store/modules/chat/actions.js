@@ -2,14 +2,22 @@ const axios = require('axios')
 
 export default {
   // 채팅방 생성하기
-  async createRoom(context, roomInfo){
+  async createOrEnterRoom(context, roomInfo){
+    
     try{
-      const {data} = await axios.post(
-        'http://localhost:3000/chatroom',
-        roomInfo
-      )
-
-      context.commit('addRoom', data)
+      const {data} = await axios.get(`http://localhost:3000/checkroom/${roomInfo.roomId}`)
+      
+      if(data.length === 0){
+        // 처음 만들때
+        await axios.post(
+          'http://localhost:3000/chatroom',
+          roomInfo
+        )
+        context.commit('setIsRoomCreated', true)
+      }else{
+        // 방이 이미 있을때
+        context.commit('setIsRoomCreated', false)
+      }
     }catch(e){
       console.log(e)
     }
@@ -18,6 +26,8 @@ export default {
   // 채팅방 입장하기
   async enterRoom(context, roomId){
     const token = context.rootGetters.token
+    console.log(roomId)
+    console.log(token)
 
     try{
       await axios.patch(

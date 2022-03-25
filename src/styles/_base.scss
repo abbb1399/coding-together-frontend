@@ -22,7 +22,7 @@ html{
     font-size: 80%;             //  13px
   }
 
-  @include respond(big-screen){  // width> 1800px
+  @include respond(big-screen){  // width > 1800px
     font-size: 120%;            //  19px 
   }
 }

@@ -14,9 +14,8 @@
         </section>
         
         <menu v-if="!fixed" class="base-dialog__menu">
-          <slot name="actions">
-            <base-button @click="tryClose">닫기</base-button>
-          </slot>
+          <base-button @click="tryClose">닫기</base-button>
+          <slot name="actions"></slot>
         </menu>
       </dialog>
     </transition>
@@ -47,7 +46,7 @@ export default {
     const {fixed} = toRefs(props)
 
     const tryClose = () => {
-      if(fixed){
+      if(fixed.value){
         return
       }
       context.emit('close')
@@ -72,7 +71,7 @@ export default {
 
   .base-dialog{
     position: fixed;
-    top: 20vh;
+    top: 15vh;
     left: 10%;
     width: 80%;
     z-index: 100;

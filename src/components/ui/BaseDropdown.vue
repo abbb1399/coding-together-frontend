@@ -20,11 +20,9 @@ export default {
     }
   },
   created(){
-    setTimeout(() => {
-      if(this.$store.getters.getMyInfo.avatar){
-        this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.getMyInfo.avatar}`  
-      }
-    }, 500);
+    if(this.$store.getters.myInfo.avatar){
+      this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.myInfo.avatar}`  
+    }
   },
   methods:{
     openClose(){

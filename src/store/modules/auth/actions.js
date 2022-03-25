@@ -32,7 +32,7 @@ export default {
 
     try{
       const {data} = await axios.post(url, payload)
-      
+     
       // 로그인 유지 기간
       const expiresIn = 10000000
       const expirationDate = new Date().getTime() + expiresIn
@@ -42,13 +42,20 @@ export default {
         context.dispatch('autoLogout')
       }, expiresIn)
 
+    
+      const myInfo = {
+        id: data.user._id,
+        name: data.user.name,
+        email: data.user.email,
+        avatar: data.user.avatar
+      }
+
       localStorage.setItem('token', data.token)
-      localStorage.setItem('userId',data.user._id)
+      localStorage.setItem('myInfo', JSON.stringify(myInfo))
       
       context.commit('setUser',{
         token: data.token,
-        userId: data.user._id,
-        email: data.user.email
+        myInfo
       })
     }catch(error){
       return Promise.reject(error.data)
@@ -57,7 +64,7 @@ export default {
   
   async tryLogin(context){
     const token = localStorage.getItem('token')
-    const userId = localStorage.getItem('userId')
+    const myInfo = JSON.parse(localStorage.getItem('myInfo'))
     const tokenExpiration = localStorage.getItem('tokenExpiration')
 
     const expiresIn = +tokenExpiration - new Date().getTime()
@@ -70,12 +77,11 @@ export default {
       context.dispatch('autoLogout')
     }, expiresIn)
 
-    if(token && userId){
+    if(token && myInfo.id){
       context.commit('setUser',{
         token: token,
-        userId: userId
+        myInfo
       })
-      await context.dispatch('fetchMyInfo')
     }
   },
   
@@ -90,14 +96,19 @@ export default {
       )
       
       localStorage.removeItem('token')
-      localStorage.removeItem('userId')
+      localStorage.removeItem('myInfo')
       localStorage.removeItem('tokenExpiration')
       
       clearTimeout(timer)
   
       context.commit('setUser',{
         token:null,
-        userId:null
+        myInfo:{
+          id:'',
+          name:'',
+          email:'',
+          avatar:''
+        },
       })
       
     }catch(error){
@@ -110,31 +121,19 @@ export default {
     context.commit('setAutoLogout')
   },
 
-  // 모든 유저 정보 가져오기
-  async fetchAllUsersInfo(context,payload){
-    try{
-      const {data} = await axios.get(`http://localhost:3000/users/usersList`)
-      const [matchedOwner]= data.filter((info) => info._id === payload)
-      
-      context.commit('setUsersInfo', matchedOwner)
-    }catch(e){
-      console.log(e)
-    }
-  },
-
   // 내 정보 보기
-  async fetchMyInfo(context){
-    const token = localStorage.getItem('token')
-    try{
-      const {data} = await axios.get(`http://localhost:3000/users/me`,
-        { headers: { Authorization: `Bearer ${token}` }}
-      )
+  // async fetchMyInfo(context){
+  //   const token = localStorage.getItem('token')
+  //   try{
+  //     const {data} = await axios.get(`http://localhost:3000/users/me`,
+  //       { headers: { Authorization: `Bearer ${token}` }}
+  //     )
 
-      context.commit('setMyInfo',data)
-    }catch(e){
-      console.log(e)
-    }
-  },
+  //     context.commit('setMyInfo',data)
+  //   }catch(e){
+  //     console.log(e)
+  //   }
+  // },
 
   // 회원탈퇴하기
   async deleteAccount(){

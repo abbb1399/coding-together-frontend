@@ -1,16 +1,15 @@
 export default {
-  setUser(state,payload){
-    state.token = payload.token
-    state.userId = payload.userId
-    state.email = payload.email
+  setUser(state, {token, myInfo}){
+    state.token = token
+    state.myInfo.id = myInfo.id
+    state.myInfo.email = myInfo.email
+    state.myInfo.name = myInfo.name
+    state.myInfo.avatar = myInfo.avatar
+
     state.didAutoLogout = false
   },
   setAutoLogout(state){
     state.didAutoLogout = true
-  },
-  // 모든 유저 정보 가져오기
-  setUsersInfo(state, payload){
-    state.usersInfo = payload
   },
   // 내 정보 보기
   setMyInfo(state, payload){

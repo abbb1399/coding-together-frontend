@@ -1,16 +1,23 @@
 <template>
-  <li @click.once="toDetail" >
-    <img id="list-img" :src="imgSrc" alt="">
+  <li class="article-list" @click.once="toDetail" >
+    <img :src="getListImage" alt="리스트 썸내일">
     <div>
-      <h3>{{ name }} by {{ownerName}}</h3>
+      <h3>{{ name }} by {{owner.name}} </h3>
       <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
   </li>
 </template>
 
 <script>
+import {toRefs, computed} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+
 export default {
   props:{
+    id:{
+      type:String,
+      required:true
+    },
     name:{
       type:String,
       required:true
@@ -20,49 +27,36 @@ export default {
       required:true
     },
     owner:{
-      type:String,
+      type:Object,
     },
     thumbnail:{
       type:String,
     },
   },
-  data(){
-    return{
-      ownerName:'',
-      imgSrc:null
+  setup(props){
+    const route = useRoute()
+    const router = useRouter()
+
+    const {id,thumbnail} = toRefs(props)
+
+    const getListImage = computed(() => {
+      return `http://localhost:3000/images/${thumbnail.value}`
+    })
+
+    const toDetail = () =>{
+      router.push(route.path + '/' + id.value)
     }
-  },
-  computed:{
-    articleContactLink(){ 
-      return this.$route.path + '/' + this.owner + '/contact'
-    },
-    articleDetailsLink(){
-      return this.$route.path + '/' + this.owner
-    },
-  },
-  async created(){
-    await this.getOnwerName()
-    this.getListImage()
-  },
-  methods:{
-    async getOnwerName(){
-      await this.$store.dispatch('fetchAllUsersInfo', this.owner)
-      this.ownerName = this.$store.getters.getUsersInfo.name
-    },
-    async getListImage(){
-      await this.$store.dispatch('articles/fetchArticleImage',this.thumbnail)
-      this.imgSrc = `http://localhost:3000/images/${this.thumbnail}`
-      
-    },
-    toDetail(){
-      this.$router.push(this.$route.path + '/' + this.owner)
+ 
+    return{
+      getListImage,
+      toDetail
     }
   }
 }
 </script>
 
-<style scoped>
-  li{
+<style lang="scss" scoped>
+  .article-list{
     display: flex;
     flex-direction: column;
 
@@ -70,17 +64,17 @@ export default {
     cursor:pointer;
 
     margin-bottom: 1rem;
-  }
 
-  h3{
-    font-size: 1rem;
-    margin: 0.625rem 0;
-    line-height: 1.3;
-  }
+    h3{
+      font-size: 1rem;
+      margin: 0.625rem 0;
+      line-height: 1.3;
+    }
 
-  img{
-    width: 100%;
-    border-radius: 5px;
-    height: 10.6rem;
+    img{
+      width: 100%;
+      border-radius: 5px;
+      height: 10.6rem;
+    }
   }
 </style>

@@ -6,10 +6,10 @@ export default {
   namespaced:true,
   state(){
     return{
-      lastFetch: null,
       articles: [],
       fileName:'',
-      myList: null
+      myList: null,
+      article:null
     }
   },
   mutations,

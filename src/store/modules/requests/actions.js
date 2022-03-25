@@ -1,25 +1,16 @@
 import axios from "axios"
 
 export default {
-  async contactCoach(context, payload){
-    const newRequest = {
-      title: payload.title,
-      userId: payload.userId,
-      // email: payload.email,
-      message: payload.message,
-      owner: payload.owner,
-      roomId: payload.roomId,
-    }
-    
+  async contactCoach(context, request){
     try{
       const response = await axios.post(
         'http://localhost:3000/requests', 
-        newRequest,
+        request,
       )
-      newRequest.id = response._id
+      request.id = response._id
       // newRequest.coachId = payload.coachId
 
-      context.commit('addRequest', newRequest)
+      context.commit('addRequest', request)
     }catch(e){
       console.log(e)
     }

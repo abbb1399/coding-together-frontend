@@ -1,18 +1,8 @@
 import moment from 'moment'
 
 export default {
-  addRoom(state, roomInfo){
-    // const obj ={
-    //   roomId : roomInfo._id,
-    //   roomName : roomInfo.roomName,
-    //   users: roomInfo.users,
-    //   // avatar: roomInfo.avatar
-    // }
-    state.newRoom = roomInfo
-  },
   setRoomList(state, chatRoomInfo){
-    const room = chatRoomInfo.filter(rm=>  rm.avatar = `http://localhost:3000/images/${rm.avatar}`)
-    state.roomList = room
+    state.roomList = chatRoomInfo
   },
   setMessages(state,messages){
     messages.forEach(msg => {
@@ -33,6 +23,8 @@ export default {
     currentRoomInfo.avatar = `http://localhost:3000/images/${currentRoomInfo.avatar}`
 
     state.currentRoom = currentRoomInfo
-  } 
-
+  },
+  setIsRoomCreated(state, isCreated){
+    state.isRoomCreated = isCreated
+  }
 }

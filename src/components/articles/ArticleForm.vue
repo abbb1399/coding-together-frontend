@@ -1,182 +1,192 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div class="form-control" :class="{invalid: !name.isValid}">
-      <label for="name" class="caption">제목</label>
-      <input type="text" id="name" class="form-input" v-model.trim="name.val" maxlength="30" 
-        v-focus required @blur="clearValidity('name')" @keydown.tab="useTab"
-      > 
-      <p v-if="!name.isValid">이름은 반드시 입력되야 합니다.</p>
+  <form @submit.prevent="submitForm" class="form">
+    <div class="form__control" :class="{invalid: !name.isValid}">
+      <label for="name" class="form__caption">제목</label>
+      <input type="text" id="name" class="form__input" v-model.trim="name.val" maxlength="30" 
+        v-focus @blur="clearValidity('name')" @keydown.tab="focusEditor"> 
     </div>
     
-    <div class="form-control" :class="{invalid: !description.isValid}">
-      <label for="description" class="caption">설명</label>
-      <div id="editor" ref="tuiEditor" ></div>
-      <!-- <textarea id="description" rows="5" v-model.trim="description.val" @blur="clearValidity('description')"></textarea>  -->
-      <!-- <p v-if="!description.isValid">설명은 반드시 입력되야 합니다..</p> -->
+    <div class="form__control" :class="{invalid: !description.isValid}">
+      <label class="form__caption" @click="focusEditor">설명</label>
+      <div id="editor" ref="tuiEditor"></div>
     </div>
     
-    <div class="form-control" :class="{invalid: !areas.isValid}"> 
-      <label for="frontend" class="caption">분야</label>
+    <div class="form__control" :class="{invalid: !areas.isValid}"> 
+      <label for="frontend" class="form__caption">분야</label>
       <div>
-        <input type="checkbox" id="frontend" value="frontend" class="form-input" v-model="areas.val" @blur="clearValidity('areas')"> 
-        <label for="frontend" class="caption">프론트엔드 개발자</label>
+        <input type="checkbox" id="frontend" value="frontend" class="form__input" v-model="areas.val" @blur="clearValidity('areas')"> 
+        <label for="frontend" class="form__caption">프론트엔드 개발자</label>
       </div>
       <div>
-        <input type="checkbox" id="backend" value="backend" class="form-input" v-model="areas.val" @blur="clearValidity('areas')"> 
-        <label for="backend" class="caption">백엔드 개발자</label>
+        <input type="checkbox" id="backend" value="backend" class="form__input" v-model="areas.val" @blur="clearValidity('areas')"> 
+        <label for="backend" class="form__caption">백엔드 개발자</label>
       </div>
       <div>
-        <input type="checkbox" id="publisher" value="publisher" class="form-input" v-model="areas.val" @blur="clearValidity('areas')"> 
-        <label for="publisher" class="caption">퍼블리셔</label>
+        <input type="checkbox" id="publisher" value="publisher" class="form__input" v-model="areas.val" @blur="clearValidity('areas')"> 
+        <label for="publisher" class="form__caption">퍼블리셔</label>
       </div>
-      <p v-if="!areas.isValid">최소한 하나는 선택 되어야 합니다.</p>
     </div>
 
-    <div class="form-control">
-      <label for="file" class="caption">썸내일</label>
-      <div class="my-1">
-        <input type="file" id="actual-btn" hidden @change="selectFile"/>
-        <label id='file-label' for="actual-btn">파일 첨부</label>
-        <span id="file-chosen">{{chosenFileName}}</span>
+    <div class="form__control" :class="{invalid: !file.isValid}">
+      <label for="file" class="form__caption">썸내일</label>
+      <div class="file-container my-1">
+        <label class='file-label' for="file">파일 첨부</label>
+        <input type="file" id="file" hidden accept="image/png, image/jpeg" @change="selectFile"/>
+        <label class="file-chosen" for="file">{{chosenFileName}}</label>
       </div>
     </div>
-    <!-- <input id="file" type="file" accept="image/png, image/jpeg" @change="uploadFile"> -->
 
-    <p v-if="!formIsValid">제대로 입력 하신 후, 다시 등록해주세요.</p>
-    
-    <div id="btn-container">
+    <div class="form__btn-container">
       <base-button>등록</base-button>
     </div>
-
   </form>
 </template>
 
 <script>
+import {ref,reactive,inject,onMounted} from 'vue'
+import {useStore} from 'vuex'
+import {useRoute, useRouter} from 'vue-router'
+
 import Editor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import '@toast-ui/editor/dist/i18n/ko-kr'
 
 export default {
-  inject:['$swal'],
   emits:['save-data'],
-  data(){ 
-    return{
-      name:{
-        val:'',
-        isValid:true
-      },
-      description: {
-        val:'',
-        isValid:true
-      },
-      areas:{
-        val:[],
-        isValid:true
-      },
-      formIsValid:true,
-      file:null,
-      listId:'',
-      chosenFileName:'파일을 선택하세요.'
-    }
-  },
-  created(){
-    
-
-  },
-  mounted() {
-    const editor = new Editor({
-      el: document.querySelector("#editor"),
-      initialEditType: "wysiwyg",
-      previewStyle: "vertical",
-      language: 'ko-KR',
-      autofocus:false
+  setup(_, context){
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    const $swal = inject('$swal')
+    const name = reactive({
+      val:'',
+      isValid:true
     })
-    // tuiEditor 바인딩
-    this.tuiEditor = editor
+    const description = reactive({
+      val:'',
+      isValid:true
+    })
+    const areas = reactive({
+      val:[],
+      isValid:true
+    })
+    const file = reactive({
+      val:null,
+      isValid:true
+    })
 
-    // mypage에서 변경시
-    if(this.$route.path ==='/mypage/list'){
-      const myInfo = this.$store.getters['articles/getMyPageList']
-      this.name.val = myInfo.name
-      const desc = myInfo.description
-      this.description.val = desc
-      editor.setMarkdown(desc,false)
-      this.areas.val= [...myInfo.areas]
-      this.chosenFileName = myInfo.thumbnail
-      this.listId = myInfo._id
+    const formIsValid = ref(true)
+    const listId = ref('')
+    const chosenFileName = ref('파일을 선택하세요.')
+    const tuiEditor = ref()
 
-      console.log(this.file)
-    }
-  },
-  methods:{
+    onMounted(()=>{
+      tuiEditor.value= new Editor({
+        el: document.querySelector("#editor"),
+        initialEditType: "wysiwyg",
+        previewStyle: "vertical",
+        language: 'ko-KR',
+        autofocus:false
+      })
+
+      // mypage에서 변경시
+      if(route.path ==='/mypage/list'){
+        const myInfo = store.getters['articles/getMyPageList']
+        
+        name.val = myInfo.name
+        const desc = myInfo.description
+        description.val = desc
+        tuiEditor.value.setMarkdown(desc,false)
+        
+        areas.val= [...myInfo.areas]
+        chosenFileName.value = myInfo.thumbnail
+        listId.value = myInfo._id
+      }
+    })
+
     // input이 blur될때마다 에러표시 지워주기
-    clearValidity(input){
-      // this.name ....
-      this[input].isValid = true
-    },
-    validateForm(){
-      this.formIsValid = true
+    const clearValidity = (input) =>{
+      if(input === 'name'){
+        name.isValid = true
+      }else if(input === 'description'){
+        description.isValid = true
+      }else if(input === 'areas'){
+        areas.isValid = true
+      }else if(input === 'file'){
+        console.log('파일블러')
+        file.isValid = true
+      }
+    }
+
+    const validateForm = () =>{
+      formIsValid.value = true
   
-      if(this.name.val === ''){
-        this.name.isValid = false
-        this.formIsValid = false
+      if(name.val === ''){
+        name.isValid = false
+        formIsValid.value = false
       }
-      if(this.description.val === ''){
-        this.description.isValid = false
-        this.formIsValid = false
+      if(description.val === ''){
+        description.isValid = false
+        formIsValid.value = false
       }
-      if(this.areas.val.length === 0){
-        this.areas.isValid = false
-        this.formIsValid = false
+      if(areas.val.length === 0){
+        areas.isValid = false
+        formIsValid.value = false
       }
-      if(!this.file && !this.$route.path ==='/mypage/list'){
-        this.formIsValid = false
+      if(!file.val){
+        file.isValid = false
+        formIsValid.value = false
       }
-    },
-    async submitForm(){
-      console.log(this.$route.path)
-      const result = await this.swalAlert(this.$route.path ==='/mypage/list' ? '수정' :' 삭제')
+    }
+
+    const submitForm = async ()=>{
+      const result = await swalAlert(route.path ==='/mypage/list' ? '수정' :' 등록')
       if(result.value){
         // tui 에디터 글내용 받아오기
-        this.description.val = this.tuiEditor.getMarkdown()
+        description.val = tuiEditor.value.getMarkdown()
 
-        this.validateForm()
-
-        if(!this.formIsValid){
-          return
+        if(description.val !== ''){
+          clearValidity('description')
         }
 
+        validateForm()
 
-        if(this.file){
+        if(!formIsValid.value){
+          return $swal.fire({
+            icon: 'error',
+            title: '모든 내용을 기입하여 주세요.',
+            showConfirmButton: false,
+            timer: 2000
+          })
+        }
+
+        if(file.val){
           // 파일업로드 로직
           const data = new FormData()
-          const fileToUpload = this.file
+          const fileToUpload = file.val
           data.append('images', fileToUpload)
 
-          await this.$store.dispatch('articles/uploadImage',data)
-          this.file = this.$store.getters['articles/getUploadFileName']
+          await store.dispatch('articles/uploadImage',data)
+          file.val = store.getters['articles/getUploadFileName']
         }
 
-        
         const formData={
-          _id: this.listId,
-          name: this.name.val,
-          desc: this.description.val,
-          areas:this.areas.val,
-          thumbnail: this.file
+          _id: listId.value,
+          name: name.val,
+          desc: description.val,
+          areas: areas.val,
+          thumbnail: file.val
         }
 
-        if(this.$route.path ==='/mypage/list'){
+        if(route.path ==='/mypage/list'){
           // 마이페이지 경우는 Update
-            console.log(this.file)
-          if(!this.file){
+          if(!file.val){
             delete formData.thumbnail
           }
-          console.log(formData)
 
-          await this.$store.dispatch('articles/updateArticle', formData)
-          this.$router.replace({name:'myProfile'})
-          this.$swal.fire({
+          await store.dispatch('articles/updateArticle', formData)
+          router.replace({name:'myProfile'})
+          $swal.fire({
             icon: 'success',
             title: `글 수정에 성공 하였습니다.`,
             showConfirmButton: false,
@@ -184,20 +194,23 @@ export default {
           })
         }else{
           // 공고등록 경우는 Create
-          this.$emit('save-data', formData)
+          context.emit('save-data', formData)
         }
       }
-    },
-    useTab(){
-      // 버전업 필요 
-      this.tuiEditor.focus()
-    },
-    selectFile(e){
-      this.file = e.target.files[0]
-      this.chosenFileName = e.target.files[0].name
-    },
-    swalAlert(title){
-      return this.$swal.fire({
+    }
+
+    const focusEditor = () =>{
+      tuiEditor.value.focus()
+    }
+
+    const selectFile = (e)=> {
+      file.val = e.target.files[0]
+      chosenFileName.value = e.target.files[0].name
+      clearValidity('file')
+    }
+
+    const swalAlert = (title) => {
+      return $swal.fire({
         title: `${title} 하시겠습니까?`,
         text: `해당 글을 ${title}합니다.`,
         icon: 'info',
@@ -207,6 +220,20 @@ export default {
         confirmButtonText: '네',
         cancelButtonText: '아니오'
       })
+    }
+
+    return{
+      name,
+      description,
+      areas,
+      file,
+      formIsValid,
+      chosenFileName,
+      clearValidity,
+      validateForm,
+      submitForm,
+      focusEditor,
+      selectFile
     }
   }
 }
@@ -218,43 +245,75 @@ export default {
     font:inherit;
   }
 
-  .form-control {
-    margin: 0.5rem 0;
-  }
+  .form{
+    &__control{
+      margin: 1.6rem 0;
 
-  .caption {
-    font-weight: bold;
-    display: block;
-    margin: 1.2rem 0 0.5rem 0;
-  }
+      .file-container{
+        
+        .file-label {
+          background-color: $secondary-color;
+          color: white;
+          padding: 0.5rem;
+          font-family: sans-serif;
+          border-radius: 0.3rem;
+          cursor: pointer;
+        }
 
-  .form-input{
-    display: block;
-    width: 100%;
-    border: 1px solid #ccc;
-    font: inherit;
-  
-    &[type='text']{
-      padding: 5px;
+        .file-chosen{
+          padding: .5rem;
+          font-family: sans-serif;
+          cursor: pointer;
+        }
+      }
     }
 
-    &[type='checkbox'] {
-      display: inline;
-      width: auto;
-      border: none;
+    &__caption{
+      font-weight: bold;
+      display: block;
+      margin: 1.2rem 0 0.5rem 0;
     }
 
-    &[type='checkbox'] + label {
-      font-weight: normal;
-      display: inline;
-      margin: 0 0 0 0.5rem;
+    &__input{
+      display: block;
+      width: 100%;
+      border: 1px solid #ccc;
+      font: inherit;
+      
+      &[type='text']{
+        padding: .5rem;
+        border-radius: 5px;
+      }
+
+      &[type='checkbox'] {
+        display: inline;
+        width: auto;
+        border: none;
+      }
+
+      &[type='checkbox'] + label {
+        font-weight: normal;
+        display: inline;
+        margin: 0 0 0 0.5rem;
+      }
+
+      &:focus{
+        /* background-color: $primary-bg-color; */
+        outline: none;
+        border-color: $color-grey-dark-1;
+      }  
     }
 
-    &:focus{
-      border-color: $primary-color;
-      background-color: $primary-bg-color;
-      outline: none;
-    }  
+    &__btn-container{
+      margin-top: 1.6rem;
+      display: flex;
+      justify-content: flex-end;
+
+      *{
+        font-size: 1rem;
+        width: 7rem;
+      }
+    }
   }
 
   .invalid{
@@ -264,32 +323,6 @@ export default {
     input{
       border: 1px solid red;
     }
-  }
-
-  #btn-container{
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-
-    *{
-      font-size: 1rem;
-      width: 7rem;
-    }
-  }
-
-  #file-label {
-    background-color: indigo;
-    color: white;
-    padding: 0.5rem;
-    font-family: sans-serif;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
-
-  #file-chosen{
-    margin-left: 0.3rem;
-    font-family: sans-serif;
   }
 </style>      
 

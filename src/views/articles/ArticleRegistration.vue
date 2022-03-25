@@ -2,22 +2,39 @@
   <section>
     <base-card>
       <h2>동료를 모아 보세요!</h2>
-      <coach-form @save-data="saveData"></coach-form>
+      <article-form @save-data="saveData"></article-form>
     </base-card>
   </section>
 </template>
 
 <script>    
-import CoachForm from '../../components/articles/ArticleForm.vue'
+import {inject} from 'vue'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
+import ArticleForm from '../../components/articles/ArticleForm.vue'
 
 export default {
   components:{
-    CoachForm
+    ArticleForm
   },
-  methods:{
-    async saveData(data){
-      await this.$store.dispatch('articles/registerArticle',data)
-      this.$router.replace('/articles')
+  setup(){
+    const store = useStore()
+    const router = useRouter()
+    const $swal = inject('$swal')
+
+    const saveData = async (data) =>{
+      await store.dispatch('articles/registerArticle',data)
+      router.replace('/articles')
+      $swal.fire({
+        icon: "success",
+        title: '글이 성공적으로 등록 되었습니다.',
+        showConfirmButton: false,
+        timer: 2000,
+      })
+    }
+
+    return{
+      saveData
     }
   }
 }

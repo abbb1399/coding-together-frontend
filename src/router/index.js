@@ -18,7 +18,7 @@ const routes = [
   { path:'/', redirect: '/articles' },
   { path: '/articles', component: ArticleList },
   {
-    path:'/articles/:owner',
+    path:'/articles/:id',
     component: () => import('../views/articles/ArticleDetail.vue'),
     props:true,
     // children:[
