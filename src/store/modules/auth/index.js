@@ -9,7 +9,8 @@ export default {
         id:'',
         name:'',
         email:'',
-        avatar:''
+        avatar:'',
+        createdAt:null
       },
       token: null,
       didAutoLogout:false,

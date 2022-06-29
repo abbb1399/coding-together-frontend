@@ -41,13 +41,13 @@ export default {
       timer = setTimeout(() => {
         context.dispatch('autoLogout')
       }, expiresIn)
-
-    
+  
       const myInfo = {
         id: data.user._id,
         name: data.user.name,
         email: data.user.email,
-        avatar: data.user.avatar
+        avatar: data.user.avatar,
+        createdAt: data.user.createdAt
       }
 
       localStorage.setItem('token', data.token)
@@ -107,7 +107,8 @@ export default {
           id:'',
           name:'',
           email:'',
-          avatar:''
+          avatar:'',
+          createdAt:null
         },
       })
       

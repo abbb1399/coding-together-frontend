@@ -1,45 +1,37 @@
 <template>
-  <div>
-    <img @click="imageUpload" id="myImage" alt="내 이미지" :src="imgSrc">
-    <p><strong>이름 : </strong>{{name}}</p>
-    <p><strong>이메일 : </strong>{{email}}</p>
-    <p><strong>가입일 : </strong>{{createdAt}}</p>
-  </div>
+  <section>
+    <img
+      @click="imageUpload"
+      id="myImage"
+      alt="내 이미지"
+      :src="getMyInfo.avatar ? `http://localhost:3000/avatars/${getMyInfo.avatar}` : defaultImg"
+    />
+    <p><strong>이름 : </strong>{{ getMyInfo.name }}</p>
+    <p><strong>이메일 : </strong>{{ getMyInfo.email }}</p>
+    <p><strong>가입일 : </strong>{{ getMyInfo.createdAt}}</p>
+  </section>
 </template>
 
 <script>
-export default {
-  inject:['$moment'],
-  data(){
-    return{
-      email:'',
-      name:'',
-      createdAt:'',
-      myId:'',
-      myAvatar:null,
-      imgSrc:require('../../../assets/avatar.jpg') 
-    }
-  },
-  async created(){
-    // 내 정보 불러오기
-    await this.getMyInfo()  
- 
-  },
-  methods:{
-    async getMyInfo(){
-      // await this.$store.dispatch('fetchMyInfo')
-      const myInfo = {...this.$store.getters.getMyInfo}
+import { ref, computed, inject } from "vue"
+import { useStore } from "vuex"
 
-      this.email = myInfo.email
-      this.name = myInfo.name
-      this.createdAt = this.$moment(myInfo.createdAt).format('YYYY-MM-DD'),
-      this.myId = myInfo._id
-      this.imgSrc = `http://localhost:3000/avatars/${myInfo.avatar}`
-    },
-    imageUpload(){
-      const upload = document.createElement('input')
-      upload.type = 'file'
-      upload.accept="image/png, image/jpeg"
+export default {
+  setup() {
+    const store = useStore()
+    const $moment = inject('$moment')
+    const defaultImg = ref(require("../../../assets/avatar.jpg"))
+
+    const getMyInfo = computed(() => {
+      const myInfo = {...store.getters.myInfo}
+      myInfo.createdAt = $moment(myInfo.createdAt).format('YYYY-MM-DD')
+      return myInfo
+    })
+
+    const imageUpload = () => {
+      const upload = document.createElement("input")
+      upload.type = "file"
+      upload.accept = "image/png, image/jpeg"
 
       upload.onchange = async (e) => {
         if (!upload.files) return
@@ -47,29 +39,34 @@ export default {
         const data = new FormData()
         const files = e.target.files
         const fileToUpload = files[0]
-        data.append('avatar', fileToUpload)
+        data.append("avatar", fileToUpload)
 
         // 서버 로직
-        await this.$store.dispatch('uploadAvatar',data)
-        this.getMyInfo()
-       
+        await store.dispatch("uploadAvatar", data)
       }
       upload.click()
-    },
-    async deleteAccount(){
-      await this.$store.dispatch('deleteAccount')
-      this.$router.push('/')
     }
-  }
+
+    // const deleteAccount = async ()=>{
+    //   await this.$store.dispatch('deleteAccount')
+    //   this.$router.push('/')
+    // }
+
+    return {
+      defaultImg,
+      getMyInfo,
+      imageUpload,
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  p{
-    margin: .8rem 0;
+  p {
+    margin: 0.8rem 0;
   }
 
-  #myImage{
+  #myImage {
     display: block;
     height: 150px;
     border-radius: 50%;

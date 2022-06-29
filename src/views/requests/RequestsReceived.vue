@@ -1,9 +1,9 @@
 <template>
   <section>
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
-      <p>{{error}}</p>
+      <p>{{ error }}</p>
     </base-dialog>
-    
+
     <div class="requests">
       <header class="requests__header">
         <h2>받은 요청들</h2>
@@ -28,71 +28,70 @@
 </template>
 
 <script>
-import { ref,computed } from "vue"
+import { ref, computed } from "vue"
 import { useStore } from "vuex"
-import RequestItem from '../../components/requests/RequestItem.vue'
+import RequestItem from "../../components/requests/RequestItem.vue"
 
 export default {
-  components: { 
-    RequestItem
+  components: {
+    RequestItem,
   },
-  setup(){
+  setup() {
     const store = useStore()
     const isLoading = ref(false)
     const error = ref(null)
-      
-    const receivedRequests = computed(()=>{
-      return store.getters['requests/requests']
+
+    const receivedRequests = computed(() => {
+      return store.getters["requests/requests"]
     })
 
-    const hasRequests= computed(()=>{
-      return store.getters['requests/hasRequests']
+    const hasRequests = computed(() => {
+      return store.getters["requests/hasRequests"]
     })
 
-    const loadRequests = async() =>{
+    const loadRequests = async () => {
       isLoading.value = true
       // requests 불러오기
-      await store.dispatch('requests/fetchRequests')
-  
-      isLoading.value= false
+      await store.dispatch("requests/fetchRequests")
+
+      isLoading.value = false
     }
 
-    const handleError = () =>{
+    const handleError = () => {
       error.value = null
     }
-    
+
     loadRequests()
 
-    return{
+    return {
       isLoading,
       error,
       receivedRequests,
       hasRequests,
-      handleError
+      handleError,
     }
-  }
+  },
 }
 </script>
 
-
 <style lang="scss" scoped>
-  .requests{
-    margin-top: 1rem;
+.requests {
+  margin-top: 1rem;
 
-    &__header{
-      text-align: center;
-    }
-
-    &__list{
-      list-style: none;
-      margin: 2rem auto;
-      padding: 0;
-      max-width: 50rem;
-    }
-
-    &__no-request{
-      margin-top: 1rem;
-      text-align: center;
-    }
+  &__header {
+    text-align: center;
   }
+
+  &__list {
+    list-style: none;
+    margin: 2rem auto;
+    padding: 0;
+    max-width: 50rem;
+  }
+
+  &__no-request {
+    margin-top: 1rem;
+    text-align: center;
+  }
+}
 </style>

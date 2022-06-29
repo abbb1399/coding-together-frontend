@@ -5,6 +5,7 @@ export default {
     state.myInfo.email = myInfo.email
     state.myInfo.name = myInfo.name
     state.myInfo.avatar = myInfo.avatar
+    state.myInfo.createdAt = myInfo.createdAt
 
     state.didAutoLogout = false
   },

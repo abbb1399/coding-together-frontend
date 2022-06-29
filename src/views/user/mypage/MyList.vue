@@ -100,9 +100,6 @@ export default {
     editArticle(){
       this.editMode = true
       // vuex로 article form에 데이터 전달
-      
-
-
     },
   }
 }

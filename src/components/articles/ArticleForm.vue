@@ -205,8 +205,6 @@ export default {
       }
     }
 
-    
-
     const focusEditor = () =>{
       tuiEditor.value.focus()
     }
