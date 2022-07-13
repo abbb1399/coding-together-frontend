@@ -7,7 +7,7 @@
     />
     <h1 class="article__title">{{ title }}</h1>
     <div class="article__meta">
-      <small>Written By {{ owner.name }} {{ updatedAt }}</small>
+      <small class="description">Written By {{ owner.name }} {{ updatedAt }}</small>
       <base-badge
         class="bagde"
         v-for="area in areas"
@@ -175,10 +175,13 @@ export default {
 
   &__meta {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background: #eee;
     padding: 0.5rem;
+
+    .description{
+      margin-right: auto;
+    }
 
     .badge {
       text-align: center;

@@ -22,5 +22,8 @@ export default {
   },
   getMyPageList(state){
     return state.myList
+  },
+  getMyListDetail(state){
+    return state.myListDetail
   }
 }

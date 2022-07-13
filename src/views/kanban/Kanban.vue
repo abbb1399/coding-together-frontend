@@ -83,6 +83,8 @@
 import draggable from "vuedraggable";
 import KanbanSidebar from '../../components/kanban/KanbanSidebar.vue'
 
+
+
 export default {
   components: {
     draggable,

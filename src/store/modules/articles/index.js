@@ -8,8 +8,9 @@ export default {
     return{
       articles: [],
       fileName:'',
-      myList: null,
-      article:null
+      myList: [],
+      myListDeatil:{},
+      article:null,
     }
   },
   mutations,

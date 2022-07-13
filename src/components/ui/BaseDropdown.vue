@@ -1,7 +1,7 @@
 <template>
   <section class="dropDownMenuWrapper" > 
     <slot name="content">
-      <img :src="imgSrc" height="40" width="40" style="border-radius:20px;"  ref="menu" @click="openClose"/>
+      <img :src="imgSrc" height="40" width="40" style="border-radius:20px;" ref="menu" @click="openClose"/>
     </slot>
 
     <section class="dropdownMenu" v-if="isOpen" >
@@ -12,39 +12,83 @@
 </template>
 
 <script>
+import { ref } from "vue"
+import { useStore } from "vuex"
+
 export default {
-  data(){
-    return{
-      isOpen: false,
-      imgSrc:require("../../assets/avatar.jpg")
-    }
-  },
-  created(){
-    if(this.$store.getters.myInfo.avatar){
-      this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.myInfo.avatar}`  
-    }
-  },
-  methods:{
-    openClose(){
+  setup(){
+    const store = useStore()
+
+    const isOpen = ref(false)
+    const imgSrc = ref(require("../../assets/avatar.jpg"))
+    const menu = ref()
+
+    const openClose = () => {
       const closeListerner = (e) => {
-        if ( this.catchOutsideClick(e, this.$refs.menu ))
-        window.removeEventListener('click', closeListerner) , this.isOpen = false
+        if (catchOutsideClick(e, menu.value))
+        window.removeEventListener('click', closeListerner) , isOpen.value = false
       }
 
       window.addEventListener('click', closeListerner)
 
-      this.isOpen = !this.isOpen
-    },
-    catchOutsideClick(event, dropdown)  {
+      isOpen.value = !isOpen.value
+    }
+
+    const catchOutsideClick = (event, dropdown) => {
       // 메뉴를 클릭할시는 아무일도 안생기게
       if( dropdown === event.target )
         return false
 
       // 메뉴 바깥을 눌렀을때 메뉴가 닫히게
-      if( this.isOpen && dropdown !== event.target )
+      if( isOpen.value && dropdown !== event.target )
         return true
     }
-  },
+
+    if(store.getters.myInfo.avatar){
+      imgSrc.value = `http://localhost:3000/avatars/${store.getters.myInfo.avatar}`  
+    }
+
+    return{
+      isOpen,
+      imgSrc,
+      menu,
+      openClose,
+      catchOutsideClick,
+    }
+  }
+
+  // data(){
+  //   return{
+  //     isOpen: false,
+  //     imgSrc:require("../../assets/avatar.jpg")
+  //   }
+  // },
+  // created(){
+  //   if(this.$store.getters.myInfo.avatar){
+  //     this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.myInfo.avatar}`  
+  //   }
+  // },
+  // methods:{
+  //   openClose(){
+  //     const closeListerner = (e) => {
+  //       if ( this.catchOutsideClick(e, this.$refs.menu ))
+  //       window.removeEventListener('click', closeListerner) , this.isOpen = false
+  //     }
+
+  //     window.addEventListener('click', closeListerner)
+
+  //     this.isOpen = !this.isOpen
+  //   },
+  //   catchOutsideClick(event, dropdown)  {
+  //     // 메뉴를 클릭할시는 아무일도 안생기게
+  //     if( dropdown === event.target )
+  //       return false
+
+  //     // 메뉴 바깥을 눌렀을때 메뉴가 닫히게
+  //     if( this.isOpen && dropdown !== event.target )
+  //       return true
+  //   }
+  // },
 }
 </script>
 

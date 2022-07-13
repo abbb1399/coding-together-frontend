@@ -42,31 +42,61 @@
 
 <script>
 import DropDown from '../../components/ui/BaseDropdown.vue'
+import { computed } from "vue"
+import { useRouter } from "vue-router"
+import { useStore } from "vuex"
 
 export default {
   components:{
     DropDown
   },
-  computed:{
-    isLoggedIn(){
-      return this.$store.getters.isAuthenticated
+  setup(){
+    const router = useRouter()
+    const store = useStore()
+
+    const isLoggedIn = computed(() => {
+      return store.getters.isAuthenticated
+    })
+
+    const logout = () => {
+      store.dispatch('logout')
+      router.replace('/articles')
     }
-  },
-  async created(){
-  },
-  methods:{ 
-    logout(){
-      this.$store.dispatch('logout')
-      this.$router.replace('/articles')
-    },
-    openMenu(){
+
+    const openMenu = () =>{
       const menu = document.querySelector('ul');
       menu.classList.toggle('active');
-    },
-    toUserInfo(){
-      this.$router.push({name:'myProfile'})
+    }
+
+    const toUserInfo = () => {
+      router.push({name:'myProfile'})
+    }
+
+    return{
+      isLoggedIn,
+      logout,
+      openMenu,
+      toUserInfo
     }
   }
+  // computed:{
+  //   isLoggedIn(){
+  //     return this.$store.getters.isAuthenticated
+  //   }
+  // },
+  // methods:{ 
+  //   logout(){
+  //     this.$store.dispatch('logout')
+  //     this.$router.replace('/articles')
+  //   },
+  //   openMenu(){
+  //     const menu = document.querySelector('ul');
+  //     menu.classList.toggle('active');
+  //   },
+  //   toUserInfo(){
+  //     this.$router.push({name:'myProfile'})
+  //   }
+  // }
 }
 </script>
 

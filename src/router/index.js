@@ -13,6 +13,7 @@ import Test from '../views/Test.vue'
 
 import MyProfile from '../views/user/mypage/MyProfile.vue'
 import MyList from '../views/user/mypage/MyList.vue'
+import MyListDetail from '../views/user/mypage/MyListDetail'
 
 const routes = [
   { path:'/', redirect: '/articles' },
@@ -36,6 +37,7 @@ const routes = [
     children:[
       {path:'profile', name:"myProfile", component: MyProfile},
       {path:'list', name:"myList", component: MyList},
+      {path:'list/:id', name:'myListDetail', component: MyListDetail, props:true,  meta:{ requiresAuth: true}}
     ]
   },
   {path:'/schedule', component: () => import('../views/schedule/Schedule.vue'), meta:{ requiresAuth: true, hideFooter:true}},

@@ -67,82 +67,180 @@
 </template>
 
 <script>
+import { ref, computed } from "vue"
+import { useRouter, useRoute } from "vue-router"
+import { useStore } from "vuex"
+
 export default {
-  data() {
-    return {
-      name: "",
-      email: "",
-      password: "",
-      formIsValid: true,
-      mode: "login",
-      isLoading: false,
-      error: null,
-    }
-  },
-  computed: {
-    submitButtonCaption() {
-      if (this.mode === "login") {
+  setup() {
+    const store = useStore()
+    const router = useRouter()
+    const route = useRoute()
+
+    const name = ref("")
+    const email = ref("")
+    const password = ref("")
+    const formIsValid = ref(true)
+    const mode = ref("login")
+    const isLoading = ref(false)
+    const error = ref(null)
+
+    const submitButtonCaption = computed(() => {
+      if (mode.value === "login") {
         return "로그인"
       } else {
         return "회원가입"
       }
-    },
-    switchModeButtonCaption() {
-      if (this.mode === "login") {
+    })
+
+    const switchModeButtonCaption = computed(() => {
+      if (mode.value === "login") {
         return "회원가입하러 가기"
       } else {
         return "로그인하러 가기"
       }
-    },
-  },
-  methods: {
-    async submitForm() {
-      this.formIsValid = true
+    })
+
+    const submitForm = async () => {
+      formIsValid.value = true
       if (
-        this.email === "" ||
-        !this.email.includes("@") ||
-        this.password.length < 6
+        email.value === "" ||
+        !email.value.includes("@") ||
+        password.value.length < 6
       ) {
-        this.formIsValid = false
+        formIsValid.value = false
         return
       }
 
-      this.isLoading = true
+      isLoading.value = true
 
       const userInfo = {
-        name: this.name,
-        email: this.email,
-        password: this.password,
+        name: name.value,
+        email: email.value,
+        password: password.value,
       }
 
       try {
-        if (this.mode === "login") {
+        if (mode.value === "login") {
           // 로그인
-          await this.$store.dispatch("login", userInfo)
+          await store.dispatch("login", userInfo)
         } else {
           // 회원가입
-          await this.$store.dispatch("signup", userInfo)
+          await store.dispatch("signup", userInfo)
         }
 
-        const redirectUrl = "/" + (this.$route.query.redirect || "articles")
-        this.$router.replace(redirectUrl)
+        const redirectUrl = "/" + (route.query.redirect || "articles")
+        router.replace(redirectUrl)
       } catch (err) {
-        this.error = err || "인증실패, 다시 시도하세요."
+        error.value = err || "인증실패, 다시 시도하세요."
       }
 
-      this.isLoading = false
-    },
-    switchAuthMode() {
-      if (this.mode === "login") {
-        this.mode = "signup"
+      isLoading.value = false
+    }
+
+    const switchAuthMode = () => {
+      if (mode.value === "login") {
+        mode.value = "signup"
       } else {
-        this.mode = "login"
+        mode.value = "login"
       }
-    },
-    handleError() {
-      this.error = null
-    },
+    }
+
+    const handleError = () => {
+      mode.value = null
+    }
+
+    return {
+      error,
+      isLoading,
+      mode,
+      email,
+      password,
+      formIsValid,
+      submitButtonCaption,
+      switchModeButtonCaption,
+      switchAuthMode,
+      handleError,
+      submitForm,
+      
+    }
   },
+
+  // data() {
+  //   return {
+  //     name: "",
+  //     email: "",
+  //     password: "",
+  //     formIsValid: true,
+  //     mode: "login",
+  //     isLoading: false,
+  //     error: null,
+  //   }
+  // },
+  // computed: {
+  //   submitButtonCaption() {
+  //     if (this.mode === "login") {
+  //       return "로그인"
+  //     } else {
+  //       return "회원가입"
+  //     }
+  //   },
+  //   switchModeButtonCaption() {
+  //     if (this.mode === "login") {
+  //       return "회원가입하러 가기"
+  //     } else {
+  //       return "로그인하러 가기"
+  //     }
+  //   },
+  // },
+  // methods: {
+  //   async submitForm() {
+  //     this.formIsValid = true
+  //     if (
+  //       this.email === "" ||
+  //       !this.email.includes("@") ||
+  //       this.password.length < 6
+  //     ) {
+  //       this.formIsValid = false
+  //       return
+  //     }
+
+  //     this.isLoading = true
+
+  //     const userInfo = {
+  //       name: this.name,
+  //       email: this.email,
+  //       password: this.password,
+  //     }
+
+  //     try {
+  //       if (this.mode === "login") {
+  //         // 로그인
+  //         await this.$store.dispatch("login", userInfo)
+  //       } else {
+  //         // 회원가입
+  //         await this.$store.dispatch("signup", userInfo)
+  //       }
+
+  //       const redirectUrl = "/" + (this.$route.query.redirect || "articles")
+  //       this.$router.replace(redirectUrl)
+  //     } catch (err) {
+  //       this.error = err || "인증실패, 다시 시도하세요."
+  //     }
+
+  //     this.isLoading = false
+  //   },
+  //   switchAuthMode() {
+  //     if (this.mode === "login") {
+  //       this.mode = "signup"
+  //     } else {
+  //       this.mode = "login"
+  //     }
+  //   },
+  //   handleError() {
+  //     this.error = null
+  //   },
+  // },
 }
 </script>
 

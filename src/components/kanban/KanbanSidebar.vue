@@ -5,15 +5,21 @@
 
       <div class="sidebar__group">
         <div v-if="!nameEditStatus" class="sidebar__content">
-          <p>{{taskName}}</p>
+          <p>{{ taskName }}</p>
           <button class="kanban-btn" @click="editName">수정</button>
         </div>
         <div v-else class="sidebar__input">
-          <base-spinner2 v-if="spinner"/>
+          <base-spinner2 v-if="spinner" />
           <div v-else>
-            <input type="text" v-model="nameInputValue" ref="editInput"/>
+            <input type="text" v-model="nameInputValue" ref="editInput" />
             <div class="btn-group">
-              <button class="kanban-btn" @click="confrimEditName" :disabled="nameInputValue.length===0">수정</button>
+              <button
+                class="kanban-btn"
+                @click="confrimEditName"
+                :disabled="nameInputValue.length === 0"
+              >
+                수정
+              </button>
               <button class="kanban-btn" @click="cancleEditName">취소</button>
             </div>
           </div>
@@ -26,215 +32,323 @@
           <button class="kanban-btn" @click="editDate">수정</button>
         </div>
         <div class="sidebar__input">
-          <p v-if="!dateEditStatus" class="date-paragraph">{{test}}</p>
-          <input v-else @change="changeDate" type="date" :value="dueDate" class="date-input">
+          <p v-if="!dateEditStatus" class="date-paragraph">{{ test }}</p>
+          <input
+            v-else
+            @change="changeDate"
+            type="date"
+            :value="dueDate"
+            class="date-input"
+          />
         </div>
       </div>
 
       <div class="sidebar__group">
         <button class="kanban-btn" @click="deleteTask">업무 삭제</button>
       </div>
-
     </div>
-   </transition>
+  </transition>
 </template>
 
 <script>
+// import { ref, toRefs, computed, watch, nextTick } from "vue"
+// import { useStore } from "vuex"
+
 export default {
-  emit:['close-sidebar', 'update-name','delete-task','update-date'],
-  props:{
-    sidebar:{
+  emit: ["close-sidebar", "update-name", "delete-task", "update-date"],
+  props: {
+    sidebar: {
       type: Boolean,
-      default:false
+      default: false,
     },
-    boardId:{
-      type:String,
-      required:true
-    }, 
-    taskName:{
-      type:String,
-      required:true
+    boardId: {
+      type: String,
+      required: true,
     },
-    taskId:{
-      type:String,
+    taskName: {
+      type: String,
+      required: true,
     },
-    dueDate:{
-      type:String
-    }
+    taskId: {
+      type: String,
+    },
+    dueDate: {
+      type: String,
+    },
   },
-  data(){
-    return{
+  data() {
+    return {
       nameEditStatus: false,
-      nameInputValue:'',
+      nameInputValue: "",
       spinner: false,
-      dateEditStatus:false,
+      dateEditStatus: false,
     }
   },
-  watch:{
-    taskName(){
+  watch: {
+    taskName() {
       this.nameEditStatus = false
-    }
+    },
   },
-  computed:{
-    loadingStatus(){
+  computed: {
+    loadingStatus() {
       return this.spinner
     },
-    test(){
+    test() {
       return this.dueDate
-    }
-
-  },
-  methods:{
-    close(){
-      this.$emit('close-sidebar')
     },
-    editName(){
+  },
+  methods: {
+    close() {
+      this.$emit("close-sidebar")
+    },
+    editName() {
       this.nameInputValue = this.taskName
       this.nameEditStatus = true
-      
-      this.$nextTick(()=>{
+
+      this.$nextTick(() => {
         this.$refs.editInput.focus()
       })
     },
-    confrimEditName(){
+    confrimEditName() {
       // 같은이름 수정일시
-      if(this.taskName === this.nameInputValue){
-        return this.nameEditStatus = false
+      if (this.taskName === this.nameInputValue) {
+        return (this.nameEditStatus = false)
       }
 
-      this.spinner= true
-      
+      this.spinner = true
+
       setTimeout(async () => {
         const nameData = {
-          status:'NAME',
-          boardId : this.boardId,
+          status: "NAME",
+          boardId: this.boardId,
           taskId: this.taskId,
           taskName: this.nameInputValue,
         }
-        this.$emit('update-task',nameData)
-        await this.$store.dispatch('kanbans/updateTask', nameData)
-       
+        this.$emit("update-task", nameData)
+        await this.$store.dispatch("kanbans/updateTask", nameData)
+
         this.spinner = false
         this.nameEditStatus = false
-      }, 1000);
+      }, 1000)
     },
-    cancleEditName(){
+    cancleEditName() {
       this.nameEditStatus = false
     },
-    editDate(){
+    editDate() {
       this.dateEditStatus = !this.dateEditStatus
     },
-    async changeDate(e){
+    async changeDate(e) {
       const dateData = {
-        status:'DATE',
-        boardId : this.boardId,
+        status: "DATE",
+        boardId: this.boardId,
         taskId: this.taskId,
-        taskDate: e.target.value
+        taskDate: e.target.value,
       }
-      this.$emit('update-task',dateData)
-      await this.$store.dispatch('kanbans/updateTask', dateData)
+      this.$emit("update-task", dateData)
+      await this.$store.dispatch("kanbans/updateTask", dateData)
 
       this.dateEditStatus = false
     },
-    deleteTask(){
-      this.$emit('delete-task')
-    }
-  }
+    deleteTask() {
+      this.$emit("delete-task")
+    },
+  },
+
+  //   setup(props, context) {
+  //   const store = useStore()
+
+  //   const nameEditStatus = ref(false)
+  //   const nameInputValue = ref("")
+  //   const spinner = ref(false)
+  //   const dateEditStatus = ref(false)
+  //   const editInput = ref()
+
+  //   const { taskName, boardId, taskId } = toRefs(props)
+
+  //   watch(taskName, () => {
+  //     nameEditStatus.value = false
+  //   })
+
+  //   const loadingStatus = computed(() => {
+  //     return spinner.value
+  //   })
+
+  //   const test = computed(() => {
+  //     return this.dueDate
+  //   })
+
+  //   const close = () => {
+  //     context.emit("close-sidebar")
+  //   }
+
+  //   const editName = () => {
+  //     nameInputValue.value = taskName.value
+  //     nameEditStatus.value = true
+
+  //     nextTick(() => {
+  //       editInput.value.focus()
+  //     })
+  //   }
+
+  //   const confrimEditName = () => {
+  //     // 같은이름 수정일시
+  //     if (taskName.value === nameInputValue.value) {
+  //       return (nameEditStatus.value = false)
+  //     }
+
+  //     spinner.value = true
+
+  //     setTimeout(async () => {
+  //       const nameData = {
+  //         status: "NAME",
+  //         boardId: boardId.value,
+  //         taskId: taskId.value,
+  //         taskName: nameInputValue.value,
+  //       }
+  //       context.emit("update-task", nameData)
+  //       await store.dispatch("kanbans/updateTask", nameData)
+
+  //       spinner.value = false
+  //       nameEditStatus.value = false
+  //     }, 1000)
+  //   }
+
+  //   const cancleEditName = () => {
+  //     nameEditStatus.value = false
+  //   }
+
+  //   const editDate = () => {
+  //     dateEditStatus.value = !dateEditStatus.value
+  //   }
+
+  //   const changeDate = async (e) => {
+  //     const dateData = {
+  //       status: "DATE",
+  //       boardId: boardId.value,
+  //       taskId: taskId.value,
+  //       taskDate: e.target.value,
+  //     }
+  //     context.emit("update-task", dateData)
+  //     await store.dispatch("kanbans/updateTask", dateData)
+
+  //     dateEditStatus.value = false
+  //   }
+
+  //   const deleteTask = () => {
+  //     context.emit("delete-task")
+  //   }
+
+  //   return {
+  //     nameEditStatus,
+  //     nameInputValue,
+  //     spinner,
+  //     dateEditStatus,
+  //     loadingStatus,
+  //     test,
+  //     editInput,
+  //     close,
+  //     editName,
+  //     confrimEditName,
+  //     cancleEditName,
+  //     editDate,
+  //     changeDate,
+  //     deleteTask,
+  //   }
+  // },
 }
 </script>
 
 <style lang="scss" scoped>
-  .sidebar {
-    height: 100%;
-    width: 23vw;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background-color: #fafafa;
-    overflow-x: hidden;
-    padding-top: 60px;
-    box-shadow: -4px 0 8px #bfbfbf;
+.sidebar {
+  height: 100%;
+  width: 23vw;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #fafafa;
+  overflow-x: hidden;
+  padding-top: 60px;
+  box-shadow: -4px 0 8px #bfbfbf;
 
-    &__group{
-      width: 90%;
-      margin: 0 auto;
-      padding: 1rem 0 1rem 0;
-      border-bottom: 1px solid #dbdbdb;
+  &__group {
+    width: 90%;
+    margin: 0 auto;
+    padding: 1rem 0 1rem 0;
+    border-bottom: 1px solid #dbdbdb;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      font-weight: 600;
+    }
+  }
+
+  &__input {
+    input {
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid black;
+      padding: 5px;
     }
 
-    &__content{
+    .btn-group {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-
-      p{
-        font-weight: 600;
-      }
+      margin-top: 0.5rem;
     }
 
-    &__input{
-      input{
-        width: 100%;
-        border-radius: 5px;
-        border: 1px solid black;
-        padding: 5px;
-      }
-
-
-      .btn-group{
-        display: flex;
-        justify-content: space-between;
-        margin-top: .5rem;
-      }
-
-      .date-paragraph{
-        margin-top: .7rem;
-      }
-
-      .date-input{
-        margin-top: .7rem;
-      }
+    .date-paragraph {
+      margin-top: 0.7rem;
     }
 
-    .closebtn {
-      position: absolute;
-      top: 0;
-      right: 25px;
-      font-size: 36px;
-      margin-left: 50px;
-      cursor: pointer;
+    .date-input {
+      margin-top: 0.7rem;
     }
   }
 
-  .kanban-btn{
-    background: #fff;
-    border-radius: 5px;
-    border: 1px solid gray;
-    font-size: 10px;
-    padding: 5px;
+  .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
     cursor: pointer;
-    width: 3.5rem;
-
-    &:hover,
-    &:active{
-      background: darken(#fff, 5%)
-    }
   }
+}
 
-  // Vue Transition css
-  .side-leave-to{
-    opacity: 0;
-    transform: translateX(30px);
+.kanban-btn {
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid gray;
+  font-size: 10px;
+  padding: 5px;
+  cursor: pointer;
+  width: 3.5rem;
+
+  &:hover,
+  &:active {
+    background: darken(#fff, 5%);
   }
+}
 
-  .side-leave-active{
-    transition: all 0.2s ease-in;
-  }
+// Vue Transition css
+.side-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
 
-  // .side-enter-to,
-  // .side-leave-from{
-  //   opacity: 1;
-  //   transform: translateX(0);
-  // }
+.side-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+// .side-enter-to,
+// .side-leave-from{
+//   opacity: 1;
+//   transform: translateX(0);
+// }
 </style>

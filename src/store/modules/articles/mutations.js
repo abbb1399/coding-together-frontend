@@ -13,5 +13,8 @@ export default {
   },
   setMyArticle(state, myList){
     state.myList = myList
+  },
+  setMyArticleDetail(state, myListDetail){
+    state.myListDetail = myListDetail
   }
 }

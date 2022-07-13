@@ -68,7 +68,7 @@ export default {
       return Promise.reject({message: '없는 글입니다.'})
     }
   },
-  // 내가 쓴 글 불러오기
+  // 내가 쓴 글 전부 불러오기
   async fetchMyArticle(context){
     try{
       const token = context.rootGetters.token
@@ -81,6 +81,21 @@ export default {
       console.log(e)
     }
   },
+
+  // 내가 쓴 글 하나 불러오기
+  async fetchMyArticleDetail(context,id){
+    try{
+      const token = context.rootGetters.token
+      const { data } = await axios.get(`http://localhost:3000/my-article/${id}`,
+       { headers: { Authorization: `Bearer ${token}` }}
+      )
+
+      context.commit('setMyArticleDetail', data)
+    }catch(e){
+      console.log(e)
+    }
+  },
+
 
   // 내가 쓴 글 삭제
   async deleteMyArticle(context){
