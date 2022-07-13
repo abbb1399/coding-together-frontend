@@ -1,27 +1,27 @@
 <template>
-  <section id="main" v-if="!editMode">
-    <header>
-      <div class="title-section">
+  <section class="detail" v-if="!editMode">
+    <header class="detail-header">
+      <div class="detail-header__title">
         <h2>{{ title }}</h2>
         <span>
           <base-button mode="secondary" @click="editArticle">수정</base-button>
           <base-button mode="primary" @click="deleteArticle">삭제</base-button>
         </span>
       </div>
-
-      <p class="info">
-        {{ createdAt }}
+      
+      <div class="detail-header__description">
+        <p class="date">작성일 : {{ createdAt }}</p>
         <base-badge
           class="badge"
           v-for="area in areas"
           :key="area"
           :type="area"
           :title="area"
-        ></base-badge>
-      </p>
+        />
+      </div>
     </header>
 
-    <img id="list-img" :src="imgSrc" alt="글 이미지" />
+    <img class="detail-image" :src="imgSrc" alt="글 이미지" />
     <div id="viewer" />
   </section>
 
@@ -39,7 +39,7 @@ import ArticleForm from "../../../components/articles/ArticleForm.vue"
 import { ref, inject, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router"
 
 export default {
   components: {
@@ -49,7 +49,7 @@ export default {
     // router로 props(id) 넘김
     id: {
       type: String,
-      required:true
+      required: true,
     },
   },
   setup() {
@@ -66,11 +66,10 @@ export default {
     const imgSrc = ref(null)
     const editMode = ref(false)
 
-
     onMounted(async () => {
       await store.dispatch("articles/fetchMyArticleDetail", route.params.id)
       const myList = store.getters["articles/getMyListDetail"]
-  
+
       title.value = myList.name
       createdAt.value = $moment(myList.createdAt).format("YYYY-MM-DD")
       // this.description = myList.description
@@ -199,43 +198,42 @@ export default {
   font: inherit;
 }
 
-h2 {
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-img {
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.writer {
-  text-decoration: none;
-  color: #1abc9c;
-}
-.writer:hover {
-  text-decoration: underline;
-}
-
-#main {
-  header p {
+.detail-header {
+  &__description{
+    display: flex;
+    align-items: center;
     color: #555;
-    margin: 0 0 1em 0;
+    margin: 0 1rem 1em 0;
     font-size: 1em;
     font-style: italic;
     border-top: 1px solid rgba(144, 144, 144, 0.25);
     border-bottom: 1px solid rgba(144, 144, 144, 0.25);
     padding: 5px 0;
+
+    .date{
+      margin-right: 1rem;
+    }
+  }
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__badge {
+    margin-left: 0.3rem;
+    height: 10px;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    color: #555;
   }
 }
 
-.badge {
-  margin-left: 0.5rem;
-}
-
-.title-section {
-  display: flex;
-  justify-content: space-between;
+.detail-image {
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 #article-form {
