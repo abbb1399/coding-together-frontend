@@ -147,7 +147,7 @@ export default {
     }
 
     const handleError = () => {
-      mode.value = null
+      error.value = null
     }
 
     return {
