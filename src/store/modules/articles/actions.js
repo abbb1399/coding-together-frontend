@@ -98,10 +98,10 @@ export default {
 
 
   // 내가 쓴 글 삭제
-  async deleteMyArticle(context){
+  async deleteMyArticle(context,id){
     try{
       const token = context.rootGetters.token
-      await axios.delete(`http://localhost:3000/article`,
+      await axios.delete(`http://localhost:3000/article/${id}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
     }catch(e){

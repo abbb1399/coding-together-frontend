@@ -36,7 +36,7 @@ import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 import ArticleForm from "../../../components/articles/ArticleForm.vue"
 
-import { ref, inject, onMounted } from "vue"
+import { ref, inject, onMounted, toRefs } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import { useRoute } from "vue-router"
@@ -52,13 +52,14 @@ export default {
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const $moment = inject("$moment")
     const $swal = inject("$swal")
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
 
+    const {id} = toRefs(props)
     const title = ref("")
     const createdAt = ref("")
     const description = ref("")
@@ -95,7 +96,7 @@ export default {
       })
 
       if (result.value) {
-        await store.dispatch("articles/deleteMyArticle")
+        await store.dispatch("articles/deleteMyArticle", id.value)
         router.replace({ name: "myList" })
         $swal.fire({
           icon: "success",

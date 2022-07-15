@@ -7,7 +7,9 @@
     />
     <h1 class="article__title">{{ title }}</h1>
     <div class="article__meta">
-      <small class="description">Written By {{ owner.name }} {{ updatedAt }}</small>
+      <small class="description"
+        >Written By {{ owner.name }} {{ updatedAt }}</small
+      >
       <base-badge
         class="bagde"
         v-for="area in areas"
@@ -34,13 +36,12 @@ import { useStore } from "vuex"
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 
-
 export default {
   props: {
     // router로 props(id) 넘김
     id: {
       type: String,
-      required:true
+      required: true,
     },
   },
   setup() {
@@ -57,29 +58,33 @@ export default {
     const owner = reactive({ id: "", name: "" })
     const thumbnail = ref(null)
 
-    store.dispatch("articles/loadArticleDetail", articleId).then(() => {
-      const article = store.getters["articles/article"]
+    const init = async () => {
+      try {
+        await store.dispatch("articles/loadArticleDetail", articleId)
 
-      title.value = article.name
-      areas.value = article.areas
-      updatedAt.value = $moment(article.updatedAt).format("YYYY-MM-DD")
-      owner.name = article.owner.name
-      owner.id = article.owner._id
-      thumbnail.value = article.thumbnail
+        const article = store.getters["articles/article"]
 
-      new Viewer({
-        el: document.querySelector("#viewer"),
-        initialValue: article.description,
-      })
-    }).catch(error=>{
-      router.replace('/notfound')
-      $swal.fire({
-        icon: "error",
-        title: error.message,
-        showConfirmButton: false,
-        timer: 2000,
-      })
-    })
+        title.value = article.name
+        areas.value = article.areas
+        updatedAt.value = $moment(article.updatedAt).format("YYYY-MM-DD")
+        owner.name = article.owner.name
+        owner.id = article.owner._id
+        thumbnail.value = article.thumbnail
+
+        new Viewer({
+          el: document.querySelector("#viewer"),
+          initialValue: article.description,
+        })
+      } catch (error) {
+        router.replace("/notfound")
+        $swal.fire({
+          icon: "error",
+          title: error.message,
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
+    }
 
     const sendRequest = async () => {
       if (!store.getters.isAuthenticated) {
@@ -103,17 +108,17 @@ export default {
       }
 
       const result = await $swal.fire({
-        title: '같이 코딩 하시겠습니까?',
-        text: '해당 채팅방으로 이동합니다.',
-        icon: 'info',
+        title: "같이 코딩 하시겠습니까?",
+        text: "해당 채팅방으로 이동합니다.",
+        icon: "info",
         showCancelButton: true,
-        confirmButtonColor: '#34c38f',
-        cancelButtonColor: '#f46a6a',
-        confirmButtonText: '네',
-        cancelButtonText: '아니오'
+        confirmButtonColor: "#34c38f",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
       })
 
-      if(result.value){
+      if (result.value) {
         // 채팅방 생성 혹은 이동
         await store.dispatch("chat/createOrEnterRoom", {
           roomId: articleId,
@@ -141,6 +146,8 @@ export default {
       }
     }
 
+    init()
+
     return {
       title,
       areas,
@@ -163,7 +170,7 @@ export default {
   margin: 1rem auto;
 
   &__title {
-    font-size: 3rem;
+    font-size: 2rem;
     margin: 1rem 0 1rem 0;
   }
 
@@ -179,7 +186,7 @@ export default {
     background: #eee;
     padding: 0.5rem;
 
-    .description{
+    .description {
       margin-right: auto;
     }
 
