@@ -8,7 +8,11 @@
           v-model="selectType"
           @change="changeType"
         >
-          <option v-for="(list, index) in selectArray" :value="list.value" :key="index">
+          <option
+            v-for="(list, index) in selectArray"
+            :value="list.value"
+            :key="index"
+          >
             {{ list.label }}
           </option>
         </select>
@@ -36,14 +40,12 @@ export default {
     const store = useStore()
 
     const selectType = ref("all")
-    const selectArray = reactive(
-      [
-        { label: "전체", value: "all" },
-        { label: "프론트엔드", value: "frontend" },
-        { label: "백엔드", value: "backend" },
-        { label: "퍼블리셔", value: "publisher" }
-      ]
-    )
+    const selectArray = reactive([
+      { label: "전체", value: "all" },
+      { label: "프론트엔드", value: "frontend" },
+      { label: "백엔드", value: "backend" },
+      { label: "퍼블리셔", value: "publisher" },
+    ])
 
     const isLoggedIn = computed(() => {
       return store.getters.isAuthenticated
@@ -64,30 +66,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .article-header {
-    padding: 48px 0 20px 0;
-    margin: inherit;
+.article-header {
+  padding: 48px 0 20px 0;
+  margin: inherit;
 
-    h1 {
-      font-size: 34px;
-      text-align: center;
-    }
+  @include respond(tab-port) {
+    padding-top: 2rem;
+  }
 
-    &__filter {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 1rem;
+  h1 {
+    font-size: 34px;
+    text-align: center;
 
-      & > div:first-child {
-        display: flex;
-      }
-    }
-
-    &__select {
-      border-radius: 5px;
-      width: 130px;
-      margin-right: 15px;
-      font-weight: 700;
+    @include respond(tab-port) {
+      font-size: 20px;
     }
   }
+
+  &__filter {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+
+    & > div:first-child {
+      display: flex;
+    }
+  }
+
+  &__select {
+    border-radius: 5px;
+    width: 8.125rem;
+    margin-right: 1rem;
+    font-weight: 700;
+
+    @include respond(tab-port) {
+      font-size: 1rem;
+    }
+  }
+}
 </style>

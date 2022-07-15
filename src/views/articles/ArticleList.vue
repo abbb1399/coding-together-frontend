@@ -97,9 +97,9 @@ export default {
   .articles{
     max-width: $website-width;
     margin: auto;
-    
-    @include respond(tab-port){
-      margin: 0 8rem 0 8rem;
+
+    @include respond(tab-land){
+      margin: 0 1rem;
     }
 
     &__list {
@@ -109,11 +109,11 @@ export default {
       gap: 1.6rem;
 
       @include respond(tab-port){
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
 
       @include respond(phone){
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   }

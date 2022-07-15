@@ -29,8 +29,6 @@ html{
   @include respond(phone){   // width < 600px
     font-size: 70%;
   }
-
- 
 }
 
 ul{

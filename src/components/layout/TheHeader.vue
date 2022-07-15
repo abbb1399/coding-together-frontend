@@ -77,7 +77,6 @@ export default {
     }
 
     const display = () => {
-      console.log("clicked")
       show.value = !show.value
     }
 
@@ -157,7 +156,7 @@ export default {
     display: flex;
     align-items: center;
 
-    > li {
+    & > li {
       padding: 0 0.625rem;
 
       @include respond(tab-port) {

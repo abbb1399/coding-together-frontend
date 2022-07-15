@@ -43,7 +43,7 @@ export default {
 .badge {
   display: inline-block;
   border-radius: 30px;
-  padding: 0.5rem 0.875rem;
+  padding: 0.3rem 0.5rem;
   margin-right: 0.18rem;
   font-size: 0.625rem;
 }
