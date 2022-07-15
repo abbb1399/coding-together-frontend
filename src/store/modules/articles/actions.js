@@ -141,7 +141,7 @@ export default {
      
       context.commit('setUploadFileName', data)
     }catch(e){
-      console.log(e)
+      throw new Error('5mb 미만의 jpg/jpeg/png 를 올려주세요.')
     }
   }
 }

@@ -144,7 +144,7 @@ export default {
       this.areas.val = [...myInfo.areas]
       this.chosenFileName = myInfo.thumbnail
       this.file.val = myInfo.thumbnail
- 
+
       this.listId = myInfo._id
     }
   },
@@ -165,7 +165,7 @@ export default {
 
     validateForm() {
       this.formIsValid = true
-    
+
       if (this.name.val === "") {
         this.name.isValid = false
         this.formIsValid = false
@@ -221,7 +221,6 @@ export default {
           //   delete formData.thumbnail
           // }
 
-
           await this.$store.dispatch("articles/updateArticle", formData)
           this.$router.replace({ name: "myList" })
           this.$swal.fire({
@@ -249,10 +248,21 @@ export default {
       const fileToUpload = e.target.files[0]
       data.append("images", fileToUpload)
 
-      await this.$store.dispatch("articles/uploadImage", data)
-      this.file.val = this.$store.getters["articles/getUploadFileName"]
+      try {
+        await this.$store.dispatch("articles/uploadImage", data)
+        this.file.val = this.$store.getters["articles/getUploadFileName"]
 
-      this.clearValidity("file")
+        this.clearValidity("file")
+      } catch (e) {
+        this.file.isValid = false
+        
+        return this.$swal.fire({
+          icon: "error",
+          title: e.message,
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
     },
 
     swalAlert(title) {
