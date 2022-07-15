@@ -14,6 +14,10 @@ body {
 }
 
 html{
+  @include respond(big-screen){  // width > 1800px
+    font-size: 120%;            //  19px 
+  }
+  
   @include respond(tab-land){   // width < 1200px
     font-size: 90%;             // 14.5px
   }
@@ -22,9 +26,11 @@ html{
     font-size: 80%;             //  13px
   }
 
-  @include respond(big-screen){  // width > 1800px
-    font-size: 120%;            //  19px 
+  @include respond(phone){   // width < 600px
+    font-size: 70%;
   }
+
+ 
 }
 
 ul{
