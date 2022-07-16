@@ -178,6 +178,10 @@ export default {
     height: 32rem;
     width: 100%;
     border-radius: 5px;
+
+    @include respond(phone){
+      border-radius: 0;
+    }
   }
 
   &__meta {
@@ -194,6 +198,11 @@ export default {
       text-align: center;
       font-size: 12px;
       width: 5.5rem;
+
+      @include respond(phone){
+        font-size: 10px;
+        width: 5.5rem;
+      }
     }
   }
 

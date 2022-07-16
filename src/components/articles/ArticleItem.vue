@@ -69,10 +69,9 @@ export default {
   cursor: pointer;
   margin-bottom: 1rem;
 
-  .badge{
+  .badge {
     font-size: 2px;
   }
-
 
   h3 {
     font-size: 1rem;

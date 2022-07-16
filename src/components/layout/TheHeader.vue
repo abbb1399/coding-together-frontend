@@ -173,6 +173,10 @@ export default {
           font-size: 1.1rem;
         }
 
+        @include respond(phone) {
+          font-size: .5rem;
+        }
+
         &:hover {
           border-bottom: 3px solid $medium-color;
         }
