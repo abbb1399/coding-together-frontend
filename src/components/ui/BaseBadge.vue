@@ -49,17 +49,17 @@ export default {
 }
 
 .frontend {
-  background-color: #3d008d;
+  background-color: #00B8A9;
   color: white;
 }
 
 .backend {
-  background-color: #71008d;
+  background-color: #F6416C;
   color: white;
 }
 
 .publisher {
-  background-color: #8d006e;
+  background-color: #FEB139;
   color: white;
 }
 </style>

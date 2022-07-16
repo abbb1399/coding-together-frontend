@@ -57,8 +57,8 @@ export default {
     })
 
     const enterChatRoom = async () =>{
-      await store.dispatch('chat/enterRoom', roomId)
-      router.push({name:'chatRoom',  params: {roomId: roomId }})
+      await store.dispatch('chat/enterRoom', roomId.value)
+      router.push({name:'chatRoom',  params: {roomId: roomId.value }})
     }
 
     return{
