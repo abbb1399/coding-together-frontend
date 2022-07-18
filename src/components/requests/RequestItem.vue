@@ -1,20 +1,23 @@
 <template>
-  <li class="request" @click="enterChatRoom">
+  <li class="request" :class="{read: isRead }" @click="enterChatRoom">
     <img class="request__img" alt="유저 프로필" :src="img">
     <div class="request__group">
-      <h2>{{title}}</h2>
-      <div class="content__group">
-        <p class="content__name">{{fromName}}</p> 
-        <p class="content__email"> {{fromEmail }} </p>
+      <div class="request__content--1">
+        <h2>{{title}}</h2>
+        <p>{{momentCreatedAt}}</p>
       </div>
-      
-      <p class="request__content">{{message}}</p>
+      <div class="request__content--2">
+        <p class="request__content--2-name">{{fromName}}</p> 
+        <p class="request__content--2-email"> {{fromEmail }} </p>
+        <p>&nbsp; 님이 당신과 함께 코딩 하고 싶어합니다.</p>
+      </div>
+      <p class="request__is-read">{{isRead ? '읽음': '읽지 않음'}}</p>
     </div>
   </li>
 </template>
 
 <script>
-import {toRefs, computed} from 'vue'
+import {toRefs, computed, inject} from 'vue'
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
@@ -23,11 +26,10 @@ export default {
     roomId:{
       type:String
     },
-    title:{
-      type:String,
-      required:true
+    requestId:{
+      type:String
     },
-    message:{
+    title:{
       type:String,
       required:true
     },
@@ -41,12 +43,19 @@ export default {
     },
     fromImgSrc:{
       type:String,
+    },
+    createdAt:{
+      type: String
+    },
+    isRead:{
+      type:Boolean
     }
   },
   setup(props){
     const store = useStore()
     const router = useRouter()
-    const {fromImgSrc, roomId} = toRefs(props) 
+    const {fromImgSrc, roomId, createdAt, requestId} = toRefs(props) 
+    const $moment = inject("$moment")
 
     const img = computed(()=>{
        if(fromImgSrc.value){
@@ -56,13 +65,25 @@ export default {
       }
     })
 
+    const momentCreatedAt = computed(()=>{
+      return $moment(createdAt.value).format('YYYY-MM-DD HH:mm:ss')
+    })
+
     const enterChatRoom = async () =>{
+      // 채팅룸 입장
       await store.dispatch('chat/enterRoom', roomId.value)
+      // 요청 읽음 표시
+      if(requestId.value){
+        await store.dispatch('requests/haveRequestRead', requestId.value)
+      }
+
+
       router.push({name:'chatRoom',  params: {roomId: roomId.value }})
     }
 
     return{
       img,
+      momentCreatedAt,
       enterChatRoom
     }
   }
@@ -85,29 +106,38 @@ export default {
 
     &__group{
       margin-left: .9rem;
-
-      h3{
-      }
+      width:100%;
+      line-height: 1.6;
     }
 
-    .content__group{
+    &__content--1{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__content--2{
       display:flex;
       align-items: center;
       margin-bottom: 5px;
 
-      .content__name{
+      &-name{
         font-weight: 600;
       }
 
-      .content__email {
+      &-email {
         color: $primary-color;
         font-weight: bold;
         margin-left: .4rem;
       }
     }
 
-    &__content{
-      // margin: 5px 0 0 0;
+    &__is-read{
+      font-size: .9rem;
     }
+  }
+
+  .read{
+    color: grey;
   }
 </style>

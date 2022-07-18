@@ -6,12 +6,17 @@
         <li class="chat__list" @click="enterChatRoom(room)" v-for="room in roomList" :key="room.roomId">
           <img class="chat__img" alt="유저 프로필" :src="`http://localhost:3000/images/${room.avatar}`"/>
           <div class="chat__group">
-            <h2>{{ room.roomName }}</h2>
-            <div class="content__group">
+            <div class="content__group--1">
+              <h2>{{ room.roomName }} </h2>
+              <p class="writer">작성자: {{room.articleOwner.name}}({{room.articleOwner.email}})</p>
+              <p class="createdat">{{room.updatedAt}}</p>
+            </div>
+            <div class="content__group--2">
               <p class="content__name" v-for="user in room.users" :key="user._id">
                 {{ user.username }}
               </p>
               <span>님의 채팅방</span>
+              <p v-if="roomList.length === 0" class="content__waiting">&nbsp; - 상대방이 들어오길 기다리고 있습니다.</p>
             </div>
           </div>
         </li>
@@ -30,11 +35,9 @@ export default {
   setup() {
     const store = useStore()
     const router = useRouter()
-    
+
     const noImg = ref(require("../../assets/avatar.jpg"))
       
-    store.dispatch("chat/fetchChatRoomList")
-
     const roomList = computed(() => {
       return store.getters["chat/roomList"]
     })
@@ -42,6 +45,12 @@ export default {
     const enterChatRoom = (roomInfo) => {
       router.push({ name: "chatRoom", params: { roomId: roomInfo.roomId } })
     }
+
+    const init = async () =>{
+      await store.dispatch("chat/fetchChatRoomList")
+    }
+
+    init()
     
     return {
       noImg,
@@ -56,6 +65,11 @@ export default {
 .chat {
   max-width: 1000px;
   margin: 0 auto;
+
+  h3{
+    margin-top: 1.5rem;
+    text-align: center;
+  }
 
   &__caption {
     text-align: center;
@@ -78,8 +92,23 @@ export default {
 
   &__group {
     margin-left: 0.9rem;
+    width: 100%;
+    
+    .content__group--1{
+      display: flex;
+      align-items: center;
+      margin-bottom: .6rem;
 
-    .content__group {
+      .writer{
+        font-size: .9rem;
+        font-weight: 600;
+        color: $color-grey-dark-2;
+        margin-left: 10px;
+        margin-right: auto;
+      }
+    }
+
+    .content__group--2 {
       display: inline-flex;
       margin-bottom: 5px;
 
@@ -89,6 +118,10 @@ export default {
         &:not(:first-child) {
           margin-left: 0.3rem;
         }
+      }
+
+      .content__waiting {
+        color: $secondary-color;
       }
 
       .content__email {

@@ -31,5 +31,13 @@ export default {
     }catch(e){
       console.log(e)
     }
+  },
+
+  haveRequestRead(_,id){
+    try{
+      axios.patch(`http://localhost:3000/requests/${id}`)
+    }catch(e){
+      console.log(e)
+    }
   }
 }

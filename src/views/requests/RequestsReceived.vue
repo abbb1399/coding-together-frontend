@@ -14,11 +14,13 @@
           v-for="req in receivedRequests"
           :key="req._id"
           :room-id="req.roomId"
+          :request-id="req._id"
           :title="req.title"
-          :message="req.message"
           :from-name="req.userId.name"
           :from-email="req.userId.email"
           :from-img-src="req.userId.avatar"
+          :created-at="req.createdAt"
+          :is-read="req.isRead"
         >
         </request-item>
       </ul>
@@ -53,7 +55,7 @@ export default {
       isLoading.value = true
       // requests 불러오기
       await store.dispatch("requests/fetchRequests")
-
+    
       isLoading.value = false
     }
 

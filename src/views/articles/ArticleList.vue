@@ -12,9 +12,8 @@
         v-for="article in articleList"
         :key="article.id"
         :id="article.id"
-        :name="article.name"
+        :title="article.name"
         :areas="article.areas"
-        :owner="article.owner"
         :thumbnail="article.thumbnail"
       />
     </ul>
@@ -57,7 +56,7 @@ export default {
       try{
         await store.dispatch("articles/loadArticles", payload)
         const listArray = store.getters["articles/articles"]
-        
+
         if (listArray.length) {
           $state.loaded()
           page.value += 4

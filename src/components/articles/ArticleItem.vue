@@ -1,8 +1,8 @@
 <template>
   <li class="article-list" @click.once="toDetail">
     <img :src="getListImage" alt="리스트 썸내일" />
-    <div>
-      <h3>{{ name }} by {{ owner.name }}</h3>
+    <div class="list-detail">
+      <h3>{{ title }}</h3>
       <base-badge
         class="badge"
         v-for="area in areas"
@@ -24,16 +24,13 @@ export default {
       type: String,
       required: true,
     },
-    name: {
+    title: {
       type: String,
-      required: true,
+      required: true
     },
     areas: {
       type: Array,
       required: true,
-    },
-    owner: {
-      type: Object,
     },
     thumbnail: {
       type: String,
@@ -69,20 +66,18 @@ export default {
   cursor: pointer;
   margin-bottom: 1rem;
 
-  .badge {
-    font-size: 2px;
-  }
-
-  h3 {
-    font-size: 1rem;
-    margin: 0.625rem 0;
-    line-height: 1.3;
-  }
-
   img {
     width: 100%;
     border-radius: 5px;
     height: 10.6rem;
+  }
+
+  .list-detail {
+    line-height: 1.4;
+    
+    .badge {
+      font-size: 2px;
+    }
   }
 }
 </style>

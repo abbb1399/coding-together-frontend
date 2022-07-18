@@ -57,6 +57,7 @@ export default {
     const updatedAt = ref("")
     const owner = reactive({ id: "", name: "" })
     const thumbnail = ref(null)
+    const articleOwner = ref('')
 
     const init = async () => {
       try {
@@ -64,6 +65,7 @@ export default {
 
         const article = store.getters["articles/article"]
 
+        articleOwner.value = article.owner._id
         title.value = article.name
         areas.value = article.areas
         updatedAt.value = $moment(article.updatedAt).format("YYYY-MM-DD")
@@ -124,6 +126,7 @@ export default {
           roomId: articleId,
           roomName: title.value,
           avatar: thumbnail.value,
+          articleOwner: articleOwner.value,
           users: [
             {
               _id: store.getters.myInfo.id,

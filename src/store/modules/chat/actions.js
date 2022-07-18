@@ -26,8 +26,8 @@ export default {
   // 채팅방 입장하기
   async enterRoom(context, roomId){
     const token = context.rootGetters.token
-    console.log(roomId)
-    console.log(token)
+    // console.log(roomId)
+    // console.log(token)
 
     try{
       await axios.patch(
