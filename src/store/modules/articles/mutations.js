@@ -12,7 +12,8 @@ export default {
     state.fileName = fileName
   },
   setMyArticle(state, myList){
-    state.myList = myList
+    state.myList = myList.articles
+    state.total = myList.total
   },
   setMyArticleDetail(state, myListDetail){
     state.myListDetail = myListDetail

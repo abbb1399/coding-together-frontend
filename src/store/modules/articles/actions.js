@@ -68,11 +68,12 @@ export default {
       return Promise.reject({message: '없는 글입니다.'})
     }
   },
+
   // 내가 쓴 글 전부 불러오기
-  async fetchMyArticle(context){
+  async fetchMyArticle(context,pageNum){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`http://localhost:3000/my-article`,
+      const { data } = await axios.get(`http://localhost:3000/my-article/${pageNum}`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 

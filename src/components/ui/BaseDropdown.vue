@@ -134,6 +134,11 @@ export default {
       width: 70px;
       font-size: 10px;
     }
+
+    
+    @include respond(phone){
+      transform: translateX(-3.5rem);
+    }
   }
 }
 </style>

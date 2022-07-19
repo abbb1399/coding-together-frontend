@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="container">
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
@@ -9,7 +9,7 @@
         <h2>내가 쓴 공고</h2>
       </header>
       <base-spinner v-if="isLoading"></base-spinner>
-      <ul class="my-list__list" v-else-if="hasLists && !isLoading">
+      <ul class="my-list__list" v-else-if="total > 0 && !isLoading">
         <my-request-list
           v-for="list in myList"
           :key="list._id"
@@ -24,57 +24,89 @@
       </ul>
       <h3 class="my-list__no-request" v-else>내가 쓴 글이 없습니다.</h3>
     </div>
+
+    <pagination
+      :total-pages="totalPages"
+      :total="total"
+      :per-page="perPage"
+      :current-page="currentPage"
+      @pagechanged="onPageChange"
+    />
   </section>
 </template>
 
 <script>
-import {ref, computed} from 'vue'
+import { ref, computed } from "vue"
 import { useStore } from "vuex"
-import MyRequestList from '../../../components/mypage/MyRequestList.vue'
+import MyRequestList from "../../../components/mypage/MyRequestList.vue"
+import Pagination from "../../../components/ui/Pagination.vue"
 
 export default {
   components: {
     MyRequestList,
+    Pagination,
   },
   setup() {
     const store = useStore()
 
     const isLoading = ref(false)
     const error = ref(null)
-
-    const hasLists = computed(() => {
-      return store.getters["articles/getMyPageList"].length > 0
-    })
+    const currentPage = ref(1)
+    const perPage = ref(5)
 
     const myList = computed(() => {
       return store.getters["articles/getMyPageList"]
     })
 
-    const init = (async () =>{
-      isLoading.value = true
-      await store.dispatch("articles/fetchMyArticle")
-      isLoading.value = false
+    const total = computed(() =>{
+      return store.getters["articles/getTotalMyListCount"]
     })
 
+    const totalPages = computed(() =>{
+      return Math.ceil(store.getters["articles/getTotalMyListCount"]/5)
+    })
+
+    const init = async () => {
+      isLoading.value = true
+      await store.dispatch("articles/fetchMyArticle", currentPage.value)    
+      
+      isLoading.value = false
+    }
 
     const handleError = () => {
       error.value = null
     }
 
+    const onPageChange = (page) => {
+      store.dispatch("articles/fetchMyArticle", page)    
+      currentPage.value = page
+    }
+
     init()
 
-    return{
+    return {
+      perPage,
+      currentPage,
       isLoading,
       error,
-      hasLists,
+      total,
+      totalPages,
       myList,
-      handleError
+      handleError,
+      onPageChange,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+.container {
+  @include respond(phone) {
+    margin-top: -45px;
+    padding: 0;
+  }
+}
+
 .my-list {
   margin-top: 1rem;
 

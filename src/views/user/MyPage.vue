@@ -18,52 +18,56 @@
             <transition name="route" mode="out-in">
               <component :is="slotProps.Component"></component>
             </transition>
-          </router-view>  
+          </router-view>
         </article>
       </div>
     </section>
   </div>
 </template>
 
-
 <style lang="scss" scoped>
-  .my-page{
-    max-width: 1100px;
-    margin: auto;
-    padding: 0 2rem;
-    overflow: hidden;
-  
-    h2{
-      margin-bottom: 1rem;
+.my-page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 2rem;
+  overflow: hidden;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+    margin: 2rem 0;
+    gap: 1.5rem;
+
+    @include respond(phone) {
+      grid-template-rows: 20vh min-content;
+      grid-template-columns: auto;
     }
+  }
 
-    &__grid{
-      display: grid;
-      grid-template-columns: 2fr 5fr;
-      margin: 2rem 0;
-      gap: 1.5rem;
-    }
+  &__card {
+    background: #fff;
+    padding: 1rem;
+  }
 
-    &__card{
-      background: #fff;
-      padding: 1rem;
-    }
+  &__list {
+    li {
+      padding: 0.5rem 0;
+      border-bottom: #555 dotted 1px;
+      width: 90%;
+      list-style: inside;
 
-    &__list{
-      li{
-         padding: .5rem 0;
-        border-bottom:  #555 dotted 1px;
-        width: 90%;
-        list-style: inside;
+      a {
+        color: #333;
 
-        a{
-          color: #333;
-        
-          &.router-link-active {
-            color: $primary-color;
-          }
+        &.router-link-active {
+          color: $primary-color;
         }
       }
     }
   }
+}
 </style>

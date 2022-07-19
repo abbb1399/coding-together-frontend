@@ -188,7 +188,7 @@ export default {
       const result = await this.swalAlert(
         this.$route.path.split("/")[1] === "mypage" ? "수정" : " 등록"
       )
-      if (result) {
+      if (result.value) {
         // tui 에디터 글내용 받아오기
         this.description.val = this.tuiEditor.getMarkdown()
 

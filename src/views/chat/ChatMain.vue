@@ -99,12 +99,22 @@ export default {
       align-items: center;
       margin-bottom: .6rem;
 
+      @include respond(phone){
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       .writer{
         font-size: .9rem;
         font-weight: 600;
         color: $color-grey-dark-2;
         margin-left: 10px;
         margin-right: auto;
+
+        @include respond(phone){
+          margin-top: 4px;
+          margin-left: 0;
+        }
       }
     }
 

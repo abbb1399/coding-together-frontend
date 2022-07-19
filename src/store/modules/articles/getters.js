@@ -25,5 +25,8 @@ export default {
   },
   getMyListDetail(state){
     return state.myListDetail
+  },
+  getTotalMyListCount(state){
+    return state.total
   }
 }

@@ -10,6 +10,7 @@ export default {
       fileName:'',
       myList: [],
       myListDeatil:{},
+      total:null,
       article:null,
     }
   },

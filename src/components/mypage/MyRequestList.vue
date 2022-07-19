@@ -3,9 +3,9 @@
     <img class="my-list__img" alt="유저 프로필" :src="img">
     <div class="my-list__group">
       <h2 class="group__title">{{title}}</h2>
-      <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
+      <base-badge class="group__badge" v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
-    <p class="my-list__completed">{{listCompleted}}</p>
+    <!-- <p class="my-list__completed">{{listCompleted}}</p> -->
     <p>{{listCreatedAt}}</p>
   </li>
 </template>
@@ -34,14 +34,14 @@ export default {
     createdAt:{
       type:String,
     },
-    completed:{
-      type:Boolean,
-    }
+    // completed:{
+    //   type:Boolean,
+    // }
   },
   setup(props){
     const router = useRouter()
     const $moment = inject('$moment')
-    const {thumbnail, createdAt, completed, id} = toRefs(props) 
+    const {thumbnail, createdAt, id} = toRefs(props) 
 
     const img = computed(()=>{
       return `http://localhost:3000/images/${thumbnail.value}`
@@ -51,9 +51,9 @@ export default {
       return $moment(createdAt.value).format("YYYY-MM-DD HH:mm:ss")
     })
 
-    const listCompleted= computed(()=>{
-      return completed.value ? '구인 완료' : '구인 중'
-    })
+    // const listCompleted= computed(()=>{
+    //   return completed.value ? '구인 완료' : '구인 중'
+    // })
 
     const toListDetail = () =>{
       router.push({name:'myListDetail', params: {id: id.value}})
@@ -62,7 +62,7 @@ export default {
     return{
       img,
       listCreatedAt,
-      listCompleted,
+      // listCompleted,
       toListDetail
     }
   }
@@ -86,6 +86,7 @@ export default {
 
     &__group{
       margin-left: .9rem;
+      margin-right: auto;
      
       .group__title{
         margin-bottom: .5rem;
@@ -94,7 +95,7 @@ export default {
 
     &__completed{
       margin-left: .9rem;
-      margin-right: auto;
+      /* margin-right: auto; */
 
       font-size: .9rem;
       font-weight: 600;
