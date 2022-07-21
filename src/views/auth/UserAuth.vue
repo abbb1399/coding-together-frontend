@@ -127,12 +127,16 @@ export default {
         } else {
           // 회원가입
           await store.dispatch("signup", userInfo)
+          // Kanban 게시판 3개 생성
+          for (let index = 1; index <= 3; index++) {
+            await store.dispatch('kanbans/registerKanban',{title:`Board ${index}`})
+          }
         }
 
         const redirectUrl = "/" + (route.query.redirect || "articles")
         router.replace(redirectUrl)
       } catch (err) {
-        error.value = err || "인증실패, 다시 시도하세요."
+        error.value = err.message || "인증실패, 다시 시도하세요."
       }
 
       isLoading.value = false
@@ -154,6 +158,7 @@ export default {
       error,
       isLoading,
       mode,
+      name,
       email,
       password,
       formIsValid,

@@ -135,6 +135,9 @@ export default {
       this.$store.dispatch("schedules/deleteSchedule", schedule)
     })
   },
+  unmounted(){
+    this.calendarInstance.destroy()
+  },
   methods: {
     onClickNavi(event) {
       if (event.target.tagName === "BUTTON") {
