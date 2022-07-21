@@ -56,6 +56,7 @@ export default {
     // })
 
     const toListDetail = () =>{
+      console.log(id.value)
       router.push({name:'myListDetail', params: {id: id.value}})
     }
 

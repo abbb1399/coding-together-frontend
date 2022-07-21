@@ -10,7 +10,8 @@ export default {
       newMessage:{},
       roomList:[],
       currentRoom:{},
-      isRoomCreated: null
+      isRoomCreated: null,
+      total: null
     }
   },
   mutations,

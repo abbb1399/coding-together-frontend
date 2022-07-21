@@ -16,14 +16,14 @@ export default {
     }
   },
 
-  async fetchRequests(context){
+  async fetchRequests(context,page){
     // 로그인한사람의 유저 아이디
     // const userId = context.rootGetters.userId
     const token = context.rootGetters.token
 
     try{
       const {data} = await axios.get(
-        `http://localhost:3000/requests`,
+        `http://localhost:3000/requests/${page}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 

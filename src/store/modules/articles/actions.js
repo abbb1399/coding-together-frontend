@@ -87,7 +87,7 @@ export default {
   async fetchMyArticleDetail(context,id){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`http://localhost:3000/my-article/${id}`,
+      const { data } = await axios.get(`http://localhost:3000/my-article-detail/${id}`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 

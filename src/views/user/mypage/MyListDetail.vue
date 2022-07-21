@@ -70,7 +70,7 @@ export default {
     onMounted(async () => {
       await store.dispatch("articles/fetchMyArticleDetail", route.params.id)
       const myList = store.getters["articles/getMyListDetail"]
-
+   
       title.value = myList.name
       createdAt.value = $moment(myList.createdAt).format("YYYY-MM-DD")
       // this.description = myList.description

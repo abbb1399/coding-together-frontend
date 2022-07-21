@@ -26,6 +26,15 @@
       </ul>
       <h3 class="requests__no-request" v-else>받은 요청이 없습니다.</h3>
     </div>
+
+    <pagination
+      class="pagination"
+      :total-pages="totalPages"
+      :total="total"
+      :per-page="perPage"
+      :current-page="currentPage"
+      @pagechanged="onPageChange"
+    />
   </section>
 </template>
 
@@ -33,18 +42,30 @@
 import { ref, computed } from "vue"
 import { useStore } from "vuex"
 import RequestItem from "../../components/requests/RequestItem.vue"
+import Pagination from "../../components/ui/Pagination.vue"
 
 export default {
   components: {
     RequestItem,
+    Pagination,
   },
   setup() {
     const store = useStore()
     const isLoading = ref(false)
     const error = ref(null)
+    const currentPage = ref(1)
+    const perPage = ref(5)
 
     const receivedRequests = computed(() => {
       return store.getters["requests/requests"]
+    })
+
+    const total = computed(() => {
+      return store.getters["requests/getTotalRequest"]
+    })
+
+    const totalPages = computed(() => {
+      return Math.ceil(store.getters["requests/getTotalRequest"] / perPage.value)
     })
 
     const hasRequests = computed(() => {
@@ -54,8 +75,8 @@ export default {
     const loadRequests = async () => {
       isLoading.value = true
       // requests 불러오기
-      await store.dispatch("requests/fetchRequests")
-    
+      await store.dispatch("requests/fetchRequests", currentPage.value)
+
       isLoading.value = false
     }
 
@@ -63,14 +84,24 @@ export default {
       error.value = null
     }
 
+    const onPageChange = (page) => {
+      // store.dispatch("chat/fetchChatRoomList", page)
+      currentPage.value = page
+    }
+
     loadRequests()
 
     return {
+      total,
+      totalPages,
+      currentPage,
+      perPage,
       isLoading,
       error,
       receivedRequests,
       hasRequests,
       handleError,
+      onPageChange,
     }
   },
 }
@@ -95,5 +126,9 @@ export default {
     margin-top: 1rem;
     text-align: center;
   }
+}
+
+.pagination{
+  margin-top: 2rem;
 }
 </style>

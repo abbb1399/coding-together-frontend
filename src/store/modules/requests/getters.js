@@ -7,5 +7,8 @@ export default {
   },
   hasRequests(_,getters){
     return getters.requests &&  getters.requests.length > 0
+  },
+  getTotalRequest(state){
+    return state.total
   }
 }

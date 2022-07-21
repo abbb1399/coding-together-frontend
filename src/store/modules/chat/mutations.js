@@ -2,7 +2,7 @@ import moment from 'moment'
 
 export default {
   setRoomList(state, chatRoomInfo){
-    const roomInfo = chatRoomInfo.map(element => {
+    const roomInfo = chatRoomInfo.roomlist.map(element => {
       return {
         ...element,
         updatedAt: moment(element.updatedAt).format('YYYY-MM-DD HH:mm:ss') 
@@ -10,6 +10,7 @@ export default {
     }); 
     
     state.roomList = roomInfo
+    state.total = chatRoomInfo.total
   },
   setMessages(state,messages){
     messages.forEach(msg => {

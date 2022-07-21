@@ -131,7 +131,7 @@ export default {
     width: 180px;
 
     @include respond(tab-port) {
-      width: 70px;
+      width: 80px;
       font-size: 10px;
     }
 

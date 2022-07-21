@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section>
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
@@ -24,8 +24,8 @@
       </ul>
       <h3 class="my-list__no-request" v-else>내가 쓴 글이 없습니다.</h3>
     </div>
-
     <pagination
+      class="pagination"
       :total-pages="totalPages"
       :total="total"
       :per-page="perPage"
@@ -58,18 +58,18 @@ export default {
       return store.getters["articles/getMyPageList"]
     })
 
-    const total = computed(() =>{
+    const total = computed(() => {
       return store.getters["articles/getTotalMyListCount"]
     })
 
-    const totalPages = computed(() =>{
-      return Math.ceil(store.getters["articles/getTotalMyListCount"]/5)
+    const totalPages = computed(() => {
+      return Math.ceil(store.getters["articles/getTotalMyListCount"] / perPage.value)
     })
 
     const init = async () => {
       isLoading.value = true
-      await store.dispatch("articles/fetchMyArticle", currentPage.value)    
-      
+      await store.dispatch("articles/fetchMyArticle", currentPage.value)
+
       isLoading.value = false
     }
 
@@ -78,7 +78,7 @@ export default {
     }
 
     const onPageChange = (page) => {
-      store.dispatch("articles/fetchMyArticle", page)    
+      store.dispatch("articles/fetchMyArticle", page)
       currentPage.value = page
     }
 
@@ -100,30 +100,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+section {
   @include respond(phone) {
     margin-top: -45px;
     padding: 0;
   }
-}
 
-.my-list {
-  margin-top: 1rem;
-
-  &__header {
-    text-align: center;
-  }
-
-  &__list {
-    list-style: none;
-    margin: 2rem auto;
-    padding: 0;
-    max-width: 50rem;
-  }
-
-  &__no-request {
+  .my-list {
     margin-top: 1rem;
-    text-align: center;
+
+    &__header {
+      text-align: center;
+    }
+
+    &__list {
+      list-style: none;
+      margin: 2rem auto;
+      padding: 0;
+      max-width: 50rem;
+    }
+
+    &__no-request {
+      margin-top: 1rem;
+      text-align: center;
+    }
+  }
+
+  .pagination{
+    margin-top: 2rem;
   }
 }
 </style>

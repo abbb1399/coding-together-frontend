@@ -43,12 +43,12 @@ export default {
 
 
   // 채팅방 리스트 불러오기
-  async fetchChatRoomList(context){
+  async fetchChatRoomList(context,pageNum){
     const token = context.rootGetters.token
 
     try{
       const {data} = await axios.get(
-        'http://localhost:3000/roomList',
+        `http://localhost:3000/roomList/${pageNum}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 

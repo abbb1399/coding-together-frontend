@@ -1,18 +1,24 @@
 <template>
   <ul class="pagination">
     <li class="pagination__item">
-      <button type="button" @click="onClickFirstPage" :disabled="isInFirstPage">
-        First
+      <button
+        class="btns"
+        type="button"
+        @click="onClickFirstPage"
+        :disabled="isInFirstPage"
+      >
+        맨앞
       </button>
     </li>
 
     <li class="pagination__item">
       <button
+        class="btns"
         type="button"
         @click="onClickPreviousPage"
         :disabled="isInFirstPage"
       >
-        Previous
+        이전
       </button>
     </li>
 
@@ -22,23 +28,33 @@
         type="button"
         @click="onClickPage(page.name)"
         :disabled="page.isDisabled"
+        class="btns"
         :class="{ active: isPageActive(page.name) }"
       >
         {{ page.name }}
       </button>
     </li>
-
     <!--숫자 버튼 종료 -->
 
     <li class="pagination__item">
-      <button type="button" @click="onClickNextPage" :disabled="isInLastPage">
-        Next
+      <button
+        class="btns"
+        type="button"
+        @click="onClickNextPage"
+        :disabled="isInLastPage"
+      >
+        다음
       </button>
     </li>
 
     <li class="pagination__item">
-      <button type="button" @click="onClickLastPage" :disabled="isInLastPage">
-        Last
+      <button
+        class="btns"
+        type="button"
+        @click="onClickLastPage"
+        :disabled="isInLastPage"
+      >
+        맨끝
       </button>
     </li>
   </ul>
@@ -160,10 +176,32 @@ export default {
 
 <style scoped lang="scss">
 .pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   list-style-type: none;
 
   &__item {
     display: inline-block;
+
+    .btns {
+      cursor: pointer;
+      width: 3rem;
+      height: 2rem;
+      margin: 0 3px;
+
+      border: 1px solid #4aae9b;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0);
+      color: #4aae9b;
+      font-weight: 600;
+      padding: 5px;
+
+      @include respond(tab-port) {
+        font-size: 10px;
+        height: 2.7rem;
+      }
+    }
   }
 
   .active {

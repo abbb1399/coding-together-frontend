@@ -13,5 +13,8 @@ export default {
   },
   currentRoom(state){
     return state.currentRoom
+  },
+  getTotalChatRoom(state){
+    return state.total
   }
 }
