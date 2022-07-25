@@ -12,28 +12,26 @@
           group="people"
           :animation="90"
           :multiDrag="true"
-          @change="moveTask($event, board._id)"
-          @start="dragStart"
-          @end="dragEnd"
           class="test2"
           ghostClass="ghost"
           chosenClass="chosen"
           dragClass="drag"
           :forceFallback="true"
           :fallbackTolerance="3"
+          @change="moveTask($event, board._id)"
+          @start="dragStart($event)"
+          @end="dragEnd($event)"
         >
           <template #header>
             <div class="boards-container__header">
-              <div class="header-title">
-                <input
-                  :value="board.title"
-                  :class="['inputField cursor-pointer']"
-                  @blur="changeTitle($event, board)"
-                  @keydown.enter="$event.target.blur()"
-                  @focus="$event.target.select()"
-                  maxlength="20"
-                />
-              </div>
+              <input
+                :value="board.title"
+                class="header-input"
+                maxlength="15"
+                @blur="changeTitle($event, board)"
+                @keydown.enter="$event.target.blur()"
+                @focus="$event.target.select()"
+              />
 
               <div class="header-control">
                 <p>
@@ -90,12 +88,36 @@
           </template>
         </draggable>
       </div>
+
+      <div class="boards-container__add">
+        <transition name="add-list" mode="out-in">
+          <button
+            v-if="addStatus"
+            class="open-add"
+            @click="openAddBoard"
+            data-action="add-btn"
+          >
+            + 리스트 추가
+          </button>
+          <div class="add-group" v-else v-click-outside="clickOutside">
+            <input type="text" v-focus v-model="addListValue" @keydown.enter="addList"/>
+            <span>
+              <button @click="addList">추가</button>
+              <font-awesome-icon
+                class="x-icon"
+                icon="x"
+                @click="openAddBoard"
+              />
+            </span>
+          </div>
+        </transition>
+      </div>
     </div>
 
     <!-- 사이드바 -->
     <kanban-sidebar
       :sidebar="sidebar"
-      :board-id="boardId"
+      :board-id="selectedBoardId"
       :task-name="taskName"
       :task-id="taskId"
       :due-date="dueDate"
@@ -110,87 +132,97 @@
 import draggable from "vuedraggable"
 import KanbanSidebar from "../../components/kanban/KanbanSidebar.vue"
 
+import { ref, computed } from "vue"
+import { useStore } from "vuex"
+
 export default {
   components: {
     draggable,
     KanbanSidebar,
   },
-  data() {
-    return {
-      spinnerStatus: false,
-      taskId: null,
-      taskName: "",
-      sidebar: false,
-      inputValue: "",
-      currIndex: null,
-      inputStatus: false,
-      boardId: "",
-      selectedTask: "",
-      dueDate: "없음",
-      titleStatus: true,
+  setup() {
+    const store = useStore()
+
+    const spinnerStatus = ref(false)
+    const taskId = ref(null)
+    const taskName = ref("")
+    const sidebar = ref(false)
+    const inputValue = ref("")
+    const currIndex = ref(null)
+    const inputStatus = ref(false)
+    const selectedBoardId = ref("")
+    const selectedTask = ref("")
+    const dueDate = ref("없음")
+    const titleStatus = ref(true)
+    const addStatus = ref(true)
+    const addListValue = ref('')
+
+    const addStstus = computed(() => {
+      return inputStatus.value
+    })
+
+    const boardList = computed(() => {
+      return store.getters["kanbans/kanbans"]
+    })
+
+    const closeSideBar = () => {
+      sidebar.value = false
     }
-  },
-  computed: {
-    addStstus() {
-      return this.inputStatus
-    },
-    boardList() {
-      return this.$store.getters["kanbans/kanbans"]
-    },
-  },
-  async created() {
-    await this.$store.dispatch("kanbans/fetchKanbans")
-  },
-  methods: {
-    closeSideBar() {
-      this.sidebar = false
-    },
-    moveTask({ added, removed, moved }, boardId) {
+
+    const moveTask = ({ added, removed, moved }, boardId) => {
       if (added) {
-        this.$store.dispatch("kanbans/moveTask", {
+        store.dispatch("kanbans/moveTask", {
           status: "added",
           boardId: boardId,
           task: added.element,
+          newIndex: added.newIndex
         })
       } else if (removed) {
-        this.$store.dispatch("kanbans/moveTask", {
+        store.dispatch("kanbans/moveTask", {
           status: "removed",
           boardId: boardId,
           task: removed.element,
         })
       } else if (moved) {
-        console.log(moved)
-        this.$store.dispatch("kanbans/changeTaskOrder", {
+        store.dispatch("kanbans/changeTaskOrder", {
           ...moved,
           boardId: boardId,
         })
       }
-    },
-    dragStart() {
-      this.setDragCursor(true)
-    },
-    dragEnd() {
-      this.setDragCursor(false)
-    },
-    setDragCursor(value) {
+    }
+
+    const dragStart = (e) => {
+      console.log(e)
+      setDragCursor(true)
+    }
+
+    const dragEnd = (e) => {
+      console.log(e)
+      setDragCursor(false)
+    }
+
+    const setDragCursor = (value) => {
       const html = document.getElementsByTagName("html").item(0)
       html.classList.toggle("grabbing", value)
-    },
-    openAddInput(board, index) {
-      if (this.inputStatus && this.currIndex === index) {
-        this.inputStatus = false
+    }
+
+    const openAddInput = (board, index) => {
+      if (inputStatus.value && currIndex.value === index) {
+        inputStatus.value = false
       } else {
-        this.inputValue = ""
-        this.inputStatus = true
+        inputValue.value = ""
+        inputStatus.value = true
       }
-      this.currIndex = index
-    },
-    cancleAdding() {
-      this.inputStatus = false
-    },
-    addTask(board) {
-      if (this.inputValue.length === 0) return
-      this.spinnerStatus = true
+      currIndex.value = index
+    }
+
+    const cancleAdding = () => {
+      inputStatus.value = false
+    }
+
+    const addTask = (board) => {
+      if (inputValue.value.length === 0) return
+      spinnerStatus.value = true
 
       setTimeout(() => {
         const data = {
@@ -200,37 +232,39 @@ export default {
             Math.random()
               .toString(36)
               .substr(2),
-          name: this.inputValue,
+          name: inputValue.value,
         }
 
         board.list.push(data)
-        this.$store.dispatch("kanbans/registerTask", {
+        store.dispatch("kanbans/registerTask", {
           ...data,
           boardId: board._id,
         })
 
         // 초기화
-        this.inputValue = ""
-        this.spinnerStatus = false
+        inputValue.value = ""
+        spinnerStatus.value = false
       }, 1000)
-    },
-    clickTaskOpenSideBar(element, boardId) {
-      this.dueDate = "없음"
+    }
+
+    const clickTaskOpenSideBar = (element, boardId) => {
+      dueDate.value = "없음"
 
       // 업무 클릭시 옅은파랑으로
-      this.selectedTask = element.id
+      selectedTask.value = element.id
 
-      this.sidebar = true
-      this.boardId = boardId
-      this.taskName = element.name
-      this.taskId = element.id
+      sidebar.value = true
+      selectedBoardId.value = boardId
+      taskName.value = element.name
+      taskId.value = element.id
 
       if (element.date) {
-        this.dueDate = element.date
+        dueDate.value = element.date
       }
-    },
-    updateTask(taskData) {
-      const selectedBoard = this.boardList.find(
+    }
+
+    const updateTask = (taskData) => {
+      const selectedBoard = boardList.value.find(
         (board) => board._id === taskData.boardId
       )
       const selectedTask = selectedBoard.list.find(
@@ -239,19 +273,21 @@ export default {
 
       if (taskData.status === "NAME") {
         selectedTask.name = taskData.taskName
-        this.taskName = taskData.taskName
+        taskName.value = taskData.taskName
       } else if (taskData.status === "DATE") {
         selectedTask.date = taskData.taskDate
-        this.dueDate = taskData.taskDate
+        dueDate.value = taskData.taskDate
       }
-    },
-    deleteTask() {
+    }
+
+    const deleteTask = () => {
       console.log("ddd")
-    },
-    changeTitle(e, board) {
+    }
+
+    const changeTitle = (e, board) => {
       const inputValue = e.target.value.trim()
-   
-      if (inputValue === '') {
+
+      if (inputValue === "") {
         e.target.value = board.title
         return
       }
@@ -260,11 +296,68 @@ export default {
         return
       }
 
-      this.$store.dispatch("kanbans/updateBoardName", {
+      store.dispatch("kanbans/updateBoardName", {
         title: inputValue,
         boardId: board._id,
       })
-    },
+    }
+
+    const openAddBoard = () => {
+      addStatus.value = !addStatus.value
+
+      // 인풋값 초기화
+      addListValue.value = ''
+    }
+
+    const clickOutside = () => {
+      addStatus.value = true
+    }
+
+    const addList = () =>{
+      const inputTitle = addListValue.value.trim()
+      console.log(inputTitle.length)
+
+      if(inputTitle.length === 0){
+        return
+      }
+
+     
+
+    }
+
+    store.dispatch("kanbans/fetchKanbans")
+
+    return {
+      addListValue,
+      inputValue,
+      spinnerStatus,
+      currIndex,
+      selectedBoardId,
+      titleStatus,
+      inputStatus,
+      addStatus,
+      selectedTask,
+      sidebar,
+      taskName,
+      taskId,
+      addStstus,
+      boardList,
+      dueDate,
+      closeSideBar,
+      moveTask,
+      dragStart,
+      dragEnd,
+      openAddInput,
+      addList,
+      clickOutside,
+      cancleAdding,
+      addTask,
+      clickTaskOpenSideBar,
+      updateTask,
+      deleteTask,
+      changeTitle,
+      openAddBoard,
+    }
   },
 }
 </script>
@@ -301,7 +394,7 @@ export default {
 
 .boards-container {
   display: grid;
-  grid-auto-columns: 272px;
+  grid-auto-columns: 17rem;
   grid-auto-flow: column;
   grid-gap: 10px;
   height: 100%;
@@ -341,29 +434,37 @@ export default {
 
   &__header {
     display: flex;
-    margin: 0 0 12px 0;
+    margin-bottom: 12px;
     cursor: pointer;
 
-    .header-title {
+    .header-input {
+      word-break: break-all;
+      border: 2px solid transparent;
+      padding: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 5px;
+      background-color: transparent;
+      cursor: pointer;
       margin-right: auto;
       width: 75%;
 
-      h1 {
-        font-size: 1rem;
+      &:focus {
+        outline: none !important;
+        border: 2px solid #0079bf;
+        background-color: #fff;
+        height: 100%;
       }
-
-      input {
-        width: 100%;
-      }
-    }
-
-    p {
-      margin-right: 0.5rem;
     }
 
     .header-control {
       display: flex;
       align-items: center;
+
+      p {
+        font-size: 14px;
+        margin-right: 5px;
+      }
     }
   }
 
@@ -408,33 +509,75 @@ export default {
     display: flex;
     justify-content: center;
   }
+
+  &__add {
+    background-color: #ebecf0;
+    border-radius: 5px;
+    height: 2.5rem;
+
+    .open-add {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background: darken(#ebecf0, 3%);
+      }
+    }
+
+    .add-group {
+      width: inherit;
+      height: 4.5rem;
+      background: #ebecf0;
+      padding: 5px;
+
+      input {
+        width: 100%;
+        height: 1.8rem;
+        padding: 3px;
+        border-radius: 5px;
+        outline: none !important;
+        border: 2px solid #0079bf;
+      }
+
+      button {
+        display: inline-block;
+        background-color: $primary-color;
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+
+        width: 3.75rem;
+        height: 1.875rem;
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+
+        .x-icon {
+          cursor: pointer;
+          margin-left: 0.8rem;
+          height: 1.3rem;
+        }
+      }
+    }
+  }
 }
 
-.inputField {
-  word-break: break-all;
-  /* display: inline-block; */
-  // width: 80%;
-  border: 2px solid transparent;
-  padding: 4px;
-  font-size: 14x;
-  font-weight: 600;
-  border-radius: 5px;
-  background-color: transparent;
+// Vue Transition css
+.add-list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 
-.inputField:focus {
-  outline: none !important;
-  border: 2px solid #0079bf;
-  background-color: #fff;
-  height: 100%;
-}
-
-/* .inputField:hover {
-  border: 1px dashed black;
-  border-radius: 5px;
-} */
-
-.cursor-pointer {
-  cursor: pointer;
+.add-list-leave-active {
+  transition: all 0.3s ease-in;
 }
 </style>

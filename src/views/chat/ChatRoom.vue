@@ -34,7 +34,6 @@ import 'vue-advanced-chat/dist/vue-advanced-chat.css'
 import chatUtil from '../../utilities/advanced-chat.js'
 const { io } = require("socket.io-client");
 
-
 export default {
   inject:['$moment'],
   components: {

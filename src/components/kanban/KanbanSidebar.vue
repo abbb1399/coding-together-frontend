@@ -51,8 +51,8 @@
 </template>
 
 <script>
-// import { ref, toRefs, computed, watch, nextTick } from "vue"
-// import { useStore } from "vuex"
+import { ref, toRefs, computed, watch, nextTick } from "vue"
+import { useStore } from "vuex"
 
 export default {
   emit: ["close-sidebar", "update-name", "delete-task", "update-date"],
@@ -76,185 +76,107 @@ export default {
       type: String,
     },
   },
-  data() {
-    return {
-      nameEditStatus: false,
-      nameInputValue: "",
-      spinner: false,
-      dateEditStatus: false,
-    }
-  },
-  watch: {
-    taskName() {
-      this.nameEditStatus = false
-    },
-  },
-  computed: {
-    loadingStatus() {
-      return this.spinner
-    },
-    test() {
-      return this.dueDate
-    },
-  },
-  methods: {
-    close() {
-      this.$emit("close-sidebar")
-    },
-    editName() {
-      this.nameInputValue = this.taskName
-      this.nameEditStatus = true
+  setup(props, context) {
+    const store = useStore()
 
-      this.$nextTick(() => {
-        this.$refs.editInput.focus()
+    const nameEditStatus = ref(false)
+    const nameInputValue = ref("")
+    const spinner = ref(false)
+    const dateEditStatus = ref(false)
+    const editInput = ref()
+
+    const { taskName, boardId, taskId, dueDate } = toRefs(props)
+
+    watch(taskName, () => {
+      nameEditStatus.value = false
+    })
+
+    const loadingStatus = computed(() => {
+      return spinner.value
+    })
+
+    const test = computed(() => {
+      return dueDate.value
+    })
+
+    const close = () => {
+      context.emit("close-sidebar")
+    }
+
+    const editName = () => {
+      nameInputValue.value = taskName.value
+      nameEditStatus.value = true
+
+      nextTick(() => {
+        editInput.value.focus()
       })
-    },
-    confrimEditName() {
+    }
+
+    const confrimEditName = () => {
       // 같은이름 수정일시
-      if (this.taskName === this.nameInputValue) {
-        return (this.nameEditStatus = false)
+      if (taskName.value === nameInputValue.value) {
+        return (nameEditStatus.value = false)
       }
 
-      this.spinner = true
+      spinner.value = true
 
       setTimeout(async () => {
         const nameData = {
           status: "NAME",
-          boardId: this.boardId,
-          taskId: this.taskId,
-          taskName: this.nameInputValue,
+          boardId: boardId.value,
+          taskId: taskId.value,
+          taskName: nameInputValue.value,
         }
-        this.$emit("update-task", nameData)
-        await this.$store.dispatch("kanbans/updateTask", nameData)
+        context.emit("update-task", nameData)
+        await store.dispatch("kanbans/updateTask", nameData)
 
-        this.spinner = false
-        this.nameEditStatus = false
+        spinner.value = false
+        nameEditStatus.value = false
       }, 1000)
-    },
-    cancleEditName() {
-      this.nameEditStatus = false
-    },
-    editDate() {
-      this.dateEditStatus = !this.dateEditStatus
-    },
-    async changeDate(e) {
+    }
+
+    const cancleEditName = () => {
+      nameEditStatus.value = false
+    }
+
+    const editDate = () => {
+      dateEditStatus.value = !dateEditStatus.value
+    }
+
+    const changeDate = async (e) => {
       const dateData = {
         status: "DATE",
-        boardId: this.boardId,
-        taskId: this.taskId,
+        boardId: boardId.value,
+        taskId: taskId.value,
         taskDate: e.target.value,
       }
-      this.$emit("update-task", dateData)
-      await this.$store.dispatch("kanbans/updateTask", dateData)
+      context.emit("update-task", dateData)
+      await store.dispatch("kanbans/updateTask", dateData)
 
-      this.dateEditStatus = false
-    },
-    deleteTask() {
-      this.$emit("delete-task")
-    },
+      dateEditStatus.value = false
+    }
+
+    const deleteTask = () => {
+      context.emit("delete-task")
+    }
+
+    return {
+      nameEditStatus,
+      nameInputValue,
+      spinner,
+      dateEditStatus,
+      loadingStatus,
+      test,
+      editInput,
+      close,
+      editName,
+      confrimEditName,
+      cancleEditName,
+      editDate,
+      changeDate,
+      deleteTask,
+    }
   },
-
-  //   setup(props, context) {
-  //   const store = useStore()
-
-  //   const nameEditStatus = ref(false)
-  //   const nameInputValue = ref("")
-  //   const spinner = ref(false)
-  //   const dateEditStatus = ref(false)
-  //   const editInput = ref()
-
-  //   const { taskName, boardId, taskId } = toRefs(props)
-
-  //   watch(taskName, () => {
-  //     nameEditStatus.value = false
-  //   })
-
-  //   const loadingStatus = computed(() => {
-  //     return spinner.value
-  //   })
-
-  //   const test = computed(() => {
-  //     return this.dueDate
-  //   })
-
-  //   const close = () => {
-  //     context.emit("close-sidebar")
-  //   }
-
-  //   const editName = () => {
-  //     nameInputValue.value = taskName.value
-  //     nameEditStatus.value = true
-
-  //     nextTick(() => {
-  //       editInput.value.focus()
-  //     })
-  //   }
-
-  //   const confrimEditName = () => {
-  //     // 같은이름 수정일시
-  //     if (taskName.value === nameInputValue.value) {
-  //       return (nameEditStatus.value = false)
-  //     }
-
-  //     spinner.value = true
-
-  //     setTimeout(async () => {
-  //       const nameData = {
-  //         status: "NAME",
-  //         boardId: boardId.value,
-  //         taskId: taskId.value,
-  //         taskName: nameInputValue.value,
-  //       }
-  //       context.emit("update-task", nameData)
-  //       await store.dispatch("kanbans/updateTask", nameData)
-
-  //       spinner.value = false
-  //       nameEditStatus.value = false
-  //     }, 1000)
-  //   }
-
-  //   const cancleEditName = () => {
-  //     nameEditStatus.value = false
-  //   }
-
-  //   const editDate = () => {
-  //     dateEditStatus.value = !dateEditStatus.value
-  //   }
-
-  //   const changeDate = async (e) => {
-  //     const dateData = {
-  //       status: "DATE",
-  //       boardId: boardId.value,
-  //       taskId: taskId.value,
-  //       taskDate: e.target.value,
-  //     }
-  //     context.emit("update-task", dateData)
-  //     await store.dispatch("kanbans/updateTask", dateData)
-
-  //     dateEditStatus.value = false
-  //   }
-
-  //   const deleteTask = () => {
-  //     context.emit("delete-task")
-  //   }
-
-  //   return {
-  //     nameEditStatus,
-  //     nameInputValue,
-  //     spinner,
-  //     dateEditStatus,
-  //     loadingStatus,
-  //     test,
-  //     editInput,
-  //     close,
-  //     editName,
-  //     confrimEditName,
-  //     cancleEditName,
-  //     editDate,
-  //     changeDate,
-  //     deleteTask,
-  //   }
-  // },
 }
 </script>
 

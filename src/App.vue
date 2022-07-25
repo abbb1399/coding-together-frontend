@@ -1,14 +1,14 @@
 <template>
   <div id="app-main">    
-    <the-header></the-header>
+    <the-header/>
 
     <router-view v-slot="slotProps" >
       <transition name="route" mode="out-in">
-        <component :is="slotProps.Component" :class="{'flex-one':!$route.meta.hideFooter}"></component>
+        <component :is="slotProps.Component" :class="{'flex-one':!$route.meta.hideFooter}"/>
       </transition>
     </router-view>  
 
-    <the-footer v-if="!$route.meta.hideFooter"></the-footer>
+    <the-footer v-if="!$route.meta.hideFooter"/>
   </div>
 </template>
 
