@@ -6,10 +6,14 @@ export default {
     const token = context.rootGetters.token
 
     try {
-      await axios.post("http://localhost:3000/kanbans", kanbanData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      context.commit("addKanban", kanbanData)
+      const { data } = await axios.post(
+        "http://localhost:3000/kanbans",
+        kanbanData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      context.commit("addKanban", data)
     } catch (e) {
       console.log(e)
     }
@@ -36,6 +40,19 @@ export default {
 
     try {
       axios.patch(`http://localhost:3000/kanbans`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  },
+
+  // Kanban 순서 변경
+  moveBoard(context, data) {
+    const token = context.rootGetters.token
+
+    try {
+      axios.patch("http://localhost:3000/move-kanban", data, {
         headers: { Authorization: `Bearer ${token}` },
       })
     } catch (e) {

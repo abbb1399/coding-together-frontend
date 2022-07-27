@@ -128,8 +128,8 @@ export default {
           // 회원가입
           await store.dispatch("signup", userInfo)
           // Kanban 게시판 3개 생성
-          for (let index = 1; index <= 3; index++) {
-            await store.dispatch('kanbans/registerKanban',{title:`Board ${index}`})
+          for (let index = 0; index <= 2; index++) {
+            await store.dispatch('kanbans/registerKanban',{title:`Board ${index+1}`, order:index})
           }
         }
 
