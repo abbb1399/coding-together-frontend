@@ -26,12 +26,13 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref,inject } from "vue"
 import { useStore } from "vuex"
 
 export default {
   setup() {
     const store = useStore()
+    const $swal = inject("$swal")
 
     const addBtnStatus = ref(true)
     const inputValue = ref("")
@@ -48,6 +49,17 @@ export default {
     }
 
     const submitNewBoard = () => {
+      console.log(store.getters["kanbans/kanbans"].length)
+
+      if(store.getters["kanbans/kanbans"].length > 11){
+        return $swal.fire({
+          icon: "info",
+          title: '최대 10개까지만 생성 가능합니다.',
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
+
       const inputTitle = inputValue.value.trim()
 
       if (inputTitle.length === 0) {
@@ -73,7 +85,7 @@ export default {
   background-color: #ebecf0;
   border-radius: 5px;
   height: 2.5rem;
-  width: 18rem;
+  min-width: 18rem;
   
   &__button {
     width: 100%;

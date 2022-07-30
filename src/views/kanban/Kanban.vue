@@ -2,8 +2,10 @@
   <section>
     <div class="kanban">
       <draggable 
-        :list="boardList" itemKey="_id" class="kanban__board"
-         @change="moveBoard($event)"
+        :list="boardList" itemKey="_id" class="kanban__board" group="board"
+        :animation="90" :forceFallback="true" :fallbackTolerance="3"
+        ghostClass="ghost" chosenClass="chosen" dragClass="drag" handle=".handle"
+        @change="moveBoard($event)"
       >
         <template #item="{element}">
           <kanban-list 
@@ -57,7 +59,6 @@ export default {
     const selectedTaskId = ref('')
 
     const boardList = computed(() => {
-      console.log(store.getters["kanbans/kanbans"])
       return store.getters["kanbans/kanbans"]
     })
 
@@ -100,7 +101,7 @@ export default {
       console.log("ddd")
     }
 
-    const moveBoard = ({moved}) => {
+    const moveBoard = async ({moved}) => {
       const data ={
         boardId: moved.element._id,
         newIndex: moved.newIndex,
@@ -149,4 +150,5 @@ export default {
     gap: 1rem;
   }
 }
+
 </style>

@@ -1,23 +1,27 @@
 <template>
   <draggable
-    class="list-item" :list="itemList.list" item-key="_id" group="board" 
-    :animation="90" :multiDrag="true" :forceFallback="true" :fallbackTolerance="3"
+    class="list-item" :list="itemList.list" item-key="_id" group="list" 
+    :animation="90" :forceFallback="true" :fallbackTolerance="3"
     ghostClass="ghost" chosenClass="chosen" dragClass="drag"
     @change="moveTask($event, itemList._id)" @start="dragStart" @end="dragEnd"
   >
     <template #header>
-      <div class="list-item__header">
+      <div class="list-item__header handle">
         <input
           class="header-input" :value="itemList.title" maxlength="15"         
           @blur="changeTitle($event, itemList)"
           @keydown.enter="$event.target.blur()"
-          @focus="$event.target.select()"
+          @mouseup="mouseUp($event)"
+          @focusin="focusIn($event)"
         />
         <div class="header-control">
           <p><font-awesome-icon icon="tag" />&nbsp;{{ itemList.list.length }}</p>
           <button class="kanban__btn" @click="openAddInput(itemList, index)">
             <font-awesome-icon icon="plus" />
           </button>
+          <!-- <button class="kanban__btn" >
+            <font-awesome-icon icon="plus" />
+          </button> -->
         </div>
       </div>
 
@@ -189,6 +193,20 @@ export default {
       context.emit("open-sidebar", {element, boardId})
     }
 
+    const mouseUp = (e) => {
+      if(e.target.attributes.readonly){
+        e.target.removeAttribute('readonly')
+        e.target.select()
+      }
+    }
+ 
+    const focusIn = (e) =>{
+      if(!e.target.attributes.readonly){
+        e.target.setAttribute('readonly', true) 
+      }
+    }
+
+
     return {
       spinnerStatus,
       inputValue,
@@ -204,7 +222,8 @@ export default {
       addTask,
       clickTaskOpenSideBar,
       changeTitle,
-    
+      mouseUp,
+      focusIn
     }
   },
 }
@@ -251,6 +270,7 @@ export default {
   width: 18rem;
   background: #ebecf0;
   padding: 10px;
+
   height: calc(100vh - 6rem);
   overflow-y: auto;
   overflow-x: hidden;
@@ -277,6 +297,11 @@ export default {
         border: 2px solid #0079bf;
         background-color: #fff;
         height: 100%;
+      }
+
+      &:read-only{
+        background-color: inherit;
+        border: 2px solid #ebecf0;
       }
     }
 
