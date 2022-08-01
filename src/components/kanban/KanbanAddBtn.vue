@@ -49,9 +49,9 @@ export default {
     }
 
     const submitNewBoard = () => {
-      console.log(store.getters["kanbans/kanbans"].length)
+      const kanbanCount = store.getters["kanbans/kanbans"].length
 
-      if(store.getters["kanbans/kanbans"].length > 11){
+      if(kanbanCount> 11){
         return $swal.fire({
           icon: "info",
           title: '최대 10개까지만 생성 가능합니다.',
@@ -66,7 +66,9 @@ export default {
         return
       }
 
-      store.dispatch("kanbans/registerKanban", { title: inputTitle })
+      store.dispatch("kanbans/registerKanban", { title: inputTitle, order: kanbanCount})
+      inputValue.value = ''
+      addBtnStatus.value = true
     }
 
     return {

@@ -60,6 +60,20 @@ export default {
     }
   },
 
+  // kanban 삭제
+  async deleteKanban(context, boardId){
+    const token = context.rootGetters.token
+
+    try {
+      const {data} = await axios.delete(`http://localhost:3000/kanban/${boardId}`,
+        { headers: { Authorization: `Bearer ${token}` }}
+      )
+      context.commit("subtractKanban", data)
+    } catch (e) {
+      console.log(e)
+    }
+  },
+
   // Task 생성
   async registerTask(context, taskData) {
     try {
@@ -95,4 +109,16 @@ export default {
       console.log(e)
     }
   },
+  async deleteTask(context, taskData){
+    console.log(taskData)
+
+    try {
+      const {data} = await axios.delete(`http://localhost:3000/delete-task`, {data:taskData})
+      console.log(data)
+      
+      context.commit("deleteTask", data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }

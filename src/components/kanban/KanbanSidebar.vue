@@ -32,7 +32,7 @@
           <button class="kanban-btn" @click="editDate">수정</button>
         </div>
         <div class="sidebar__input">
-          <p v-if="!dateEditStatus" class="date-paragraph">{{ test }}</p>
+          <p v-if="!dateEditStatus" class="date-paragraph">{{ dueDateValue }}</p>
           <input
             v-else
             @change="changeDate"
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="sidebar__group">
+      <div class="sidebar__group delete-task">
         <button class="kanban-btn" @click="deleteTask">업무 삭제</button>
       </div>
     </div>
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { ref, toRefs, computed, watch, nextTick } from "vue"
+import { ref, toRefs, computed, watch, nextTick, inject } from "vue"
 import { useStore } from "vuex"
 
 export default {
@@ -78,6 +78,7 @@ export default {
   },
   setup(props, context) {
     const store = useStore()
+    const $swal = inject('$swal')
 
     const nameEditStatus = ref(false)
     const nameInputValue = ref("")
@@ -95,7 +96,7 @@ export default {
       return spinner.value
     })
 
-    const test = computed(() => {
+    const dueDateValue = computed(() => {
       return dueDate.value
     })
 
@@ -156,8 +157,27 @@ export default {
       dateEditStatus.value = false
     }
 
-    const deleteTask = () => {
-      context.emit("delete-task")
+    const deleteTask = async () => {
+      const result = await $swal.fire({
+        title: "삭제 하시겠습니까?",
+        text: "해당 업무를 삭제합니다.",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#34c38f",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
+      })
+
+      if (result.value) {
+        await store.dispatch("kanbans/deleteTask", {boardId: boardId.value, taskId: taskId.value})
+        $swal.fire({
+          icon: "success",
+          title: `삭제에 성공 하였습니다.`,
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
     }
 
     return {
@@ -166,7 +186,7 @@ export default {
       spinner,
       dateEditStatus,
       loadingStatus,
-      test,
+      dueDateValue,
       editInput,
       close,
       editName,
@@ -241,22 +261,29 @@ export default {
     margin-left: 50px;
     cursor: pointer;
   }
-}
 
-.kanban-btn {
-  background: #fff;
-  border-radius: 5px;
-  border: 1px solid gray;
-  font-size: 10px;
-  padding: 5px;
-  cursor: pointer;
-  width: 3.5rem;
+  .kanban-btn {
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid gray;
+    font-size: .7rem;
+    padding: 5px;
+    cursor: pointer;
+    width: 3.5rem;
 
-  &:hover,
-  &:active {
-    background: darken(#fff, 5%);
+    &:hover,
+    &:active {
+      background: darken(#fff, 5%);
+    }
+  }
+
+  .delete-task{
+    button{
+      width: 5rem;
+    }
   }
 }
+
 
 // Vue Transition css
 .side-leave-to {

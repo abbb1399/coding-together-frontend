@@ -15,13 +15,15 @@
           @focusin="focusIn($event)"
         />
         <div class="header-control">
-          <p><font-awesome-icon icon="tag" />&nbsp;{{ itemList.list.length }}</p>
+          <span>
+            <font-awesome-icon icon="tag" />&nbsp;{{ itemList.list.length }}
+          </span>
+          <button class="kanban__btn" @click="deleteBoard(itemList._id)">
+            <font-awesome-icon icon="trash"/>
+          </button>
           <button class="kanban__btn" @click="openAddInput(itemList, index)">
             <font-awesome-icon icon="plus" />
           </button>
-          <!-- <button class="kanban__btn" >
-            <font-awesome-icon icon="plus" />
-          </button> -->
         </div>
       </div>
 
@@ -56,7 +58,11 @@
         :class="{'selected-task': element.id === selectedTaskId }"
         @click="clickTaskOpenSideBar(element, itemList._id)"
       >
-        {{ element.name }} {{ element.date }}
+        <p>{{ element.name }}</p> 
+        <div v-if="element.date">
+          <font-awesome-icon icon="calendar"/>&nbsp;
+          {{ element.date }}
+        </div>
       </div>
     </template>
   </draggable>
@@ -64,7 +70,7 @@
 
 <script>
 import draggable from "vuedraggable"
-import { ref, computed} from "vue"
+import { ref, computed, inject} from "vue"
 import { useStore } from "vuex"
 
 export default {
@@ -83,6 +89,7 @@ export default {
   },
   setup(_, context) {
     const store = useStore()
+    const $swal = inject("$swal")
 
     const spinnerStatus = ref(false)
     const inputValue = ref("")
@@ -168,7 +175,7 @@ export default {
         // 초기화
         inputValue.value = ""
         spinnerStatus.value = false
-      }, 1000)
+      }, 500)
     }
 
     const changeTitle = (e, board) => {
@@ -206,6 +213,28 @@ export default {
       }
     }
 
+    const deleteBoard = async (boardId) =>{
+      const result = await $swal.fire({
+        title: "삭제 하시겠습니까?",
+        text: "관련 업무들도 모두 삭제 됩니다.",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#34c38f",
+        cancelButtonColor: "#f46a6a",
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
+      })
+
+      if (result.value) {
+        await store.dispatch("kanbans/deleteKanban", boardId)
+        $swal.fire({
+          icon: "success",
+          title: `삭제에 성공 하였습니다.`,
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
+    }
 
     return {
       spinnerStatus,
@@ -223,7 +252,8 @@ export default {
       clickTaskOpenSideBar,
       changeTitle,
       mouseUp,
-      focusIn
+      focusIn,
+      deleteBoard
     }
   },
 }
@@ -290,7 +320,7 @@ export default {
       background-color: transparent;
       cursor: pointer;
       margin-right: auto;
-      width: 75%;
+      width: 70%;
 
       &:focus {
         outline: none !important;
@@ -308,10 +338,19 @@ export default {
     .header-control {
       display: flex;
       align-items: center;
+      gap:3px;
+      /* flex: 0 0 50%; */
 
-      p {
-        font-size: 14px;
-        margin-right: 5px;
+      span {
+        font-size: .8rem;
+        width: 1.5rem;
+        /* margin-right: 5px; */
+      }
+
+      button{
+        font-size: .8rem;
+        /* height: 2rem;
+        width: 2rem; */
       }
     }
   }
@@ -346,6 +385,11 @@ export default {
   &__card {
     @include card;
     cursor: grab;
+ 
+    div{
+      margin-top: 4px;
+      color: #dd2b02;
+    }
   }
 
   .selected-task {
