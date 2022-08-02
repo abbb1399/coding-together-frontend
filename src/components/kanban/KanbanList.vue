@@ -21,30 +21,30 @@
           <button class="kanban__btn" @click="deleteBoard(itemList._id)">
             <font-awesome-icon icon="trash"/>
           </button>
-          <button class="kanban__btn" @click="openAddInput(itemList, index)">
+          <button class="kanban__btn" @click="toggleAddInput">
             <font-awesome-icon icon="plus" />
           </button>
         </div>
       </div>
 
-      <div class="list-item__input" v-if="inputStatus && currIndex === index">
-        <base-spinner2 v-if="spinnerStatus" />
+      <div class="list-item__input" v-if="inputStatus">
+        <base-spinner2 v-if="spinnerStatus"/>
         <div v-else>
           <p>제목</p>
           <input
             type="text"
             v-model="inputValue"
-            @keydown.enter="addTask(itemList, index)"
+            @keydown.enter="addTask(itemList)"
           />
           <div class="btn__group">
             <button
               class="kanban__btn"
-              @click="addTask(itemList, index)"
+              @click="addTask(itemList)"
               :disabled="inputValue.length === 0"
             >
               생성
             </button>
-            <button class="kanban__btn" @click="cancleAdding(index)">
+            <button class="kanban__btn" @click="toggleAddInput">
               취소
             </button>
           </div>
@@ -59,9 +59,9 @@
         @click="clickTaskOpenSideBar(element, itemList._id)"
       >
         <p>{{ element.name }}</p> 
-        <div v-if="element.date">
+        <div v-if="element.dueDate">
           <font-awesome-icon icon="calendar"/>&nbsp;
-          {{ element.date }}
+          <span class="hovertext" data-hover="만료일">{{ element.dueDate }}</span> 
         </div>
       </div>
     </template>
@@ -70,7 +70,7 @@
 
 <script>
 import draggable from "vuedraggable"
-import { ref, computed, inject} from "vue"
+import { ref, inject} from "vue"
 import { useStore } from "vuex"
 
 export default {
@@ -93,15 +93,8 @@ export default {
 
     const spinnerStatus = ref(false)
     const inputValue = ref("")
-    const currIndex = ref(null)
     const inputStatus = ref(false)
   
-    const titleStatus = ref(true)
-  
-    const addStstus = computed(() => {
-      return inputStatus.value
-    })
-
     const moveTask = ({ added, removed, moved }, boardId) => {
       if (added) {
         store.dispatch("kanbans/moveTask", {
@@ -137,18 +130,9 @@ export default {
       html.classList.toggle("grabbing", value)
     }
 
-    const openAddInput = (board, index) => {
-      if (inputStatus.value && currIndex.value === index) {
-        inputStatus.value = false
-      } else {
-        inputValue.value = ""
-        inputStatus.value = true
-      }
-      currIndex.value = index
-    }
-
-    const cancleAdding = () => {
-      inputStatus.value = false
+    const toggleAddInput = () => {
+      inputStatus.value = !inputStatus.value
+      inputValue.value = ""
     }
 
     const addTask = (board) => {
@@ -239,15 +223,11 @@ export default {
     return {
       spinnerStatus,
       inputValue,
-      currIndex,
       inputStatus,
-      titleStatus,
-      addStstus,
       moveTask,
       dragStart,
       dragEnd,
-      openAddInput,
-      cancleAdding,
+      toggleAddInput,
       addTask,
       clickTaskOpenSideBar,
       changeTitle,
@@ -387,13 +367,41 @@ export default {
     cursor: grab;
  
     div{
-      margin-top: 4px;
+      margin-top: 7px;
+      font-size: .9rem;
       color: #dd2b02;
     }
   }
 
   .selected-task {
     background: #e9f3fc !important;
+  }
+
+  .hovertext {
+    position: relative;
+
+    &:before {
+      content: attr(data-hover);
+      visibility: hidden;
+      opacity: 0;
+      width: 62px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      padding: 5px 0;
+      transition: opacity 1s ease-in-out;
+
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 110%;
+    }
+
+    &:hover:before {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }
 

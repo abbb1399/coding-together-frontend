@@ -7,9 +7,10 @@
         ghostClass="ghost" chosenClass="chosen" dragClass="drag" handle=".handle"
         @change="moveBoard($event)"
       >
-        <template #item="{element}">
+        <template #item="{element, index}">
           <kanban-list 
             :item-list="element" 
+            :index="index"
             :selected-task-id="selectedTaskId"
             @open-sidebar="openSidebar"
           />
@@ -78,8 +79,8 @@ export default {
         selectedTask.name = taskData.taskName
         taskName.value = taskData.taskName
       } else if (taskData.status === "DATE") {
-        selectedTask.date = taskData.taskDate
-        dueDate.value = taskData.taskDate
+        selectedTask.dueDate = taskData.dueDate
+        dueDate.value = taskData.dueDate
       }
     }
 
@@ -92,8 +93,8 @@ export default {
       taskName.value = element.name
       taskId.value = element.id
 
-      if (element.date) {
-        dueDate.value = element.date
+      if (element.dueDate) {
+        dueDate.value = element.dueDate
       }
     }
 

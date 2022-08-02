@@ -133,7 +133,7 @@ export default {
 
         spinner.value = false
         nameEditStatus.value = false
-      }, 1000)
+      }, 500)
     }
 
     const cancleEditName = () => {
@@ -149,7 +149,7 @@ export default {
         status: "DATE",
         boardId: boardId.value,
         taskId: taskId.value,
-        taskDate: e.target.value,
+        dueDate: e.target.value,
       }
       context.emit("update-task", dateData)
       await store.dispatch("kanbans/updateTask", dateData)

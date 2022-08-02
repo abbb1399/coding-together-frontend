@@ -110,8 +110,6 @@ export default {
     }
   },
   async deleteTask(context, taskData){
-    console.log(taskData)
-
     try {
       const {data} = await axios.delete(`http://localhost:3000/delete-task`, {data:taskData})
       console.log(data)
