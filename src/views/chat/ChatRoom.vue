@@ -41,78 +41,59 @@ export default {
 	},
   props:{
     roomId:{
-      type:String
+      type:String,
+      requird:true
     }
   },
 	data() {
 		return {
       ...chatUtil,
-			currentUserId: '',
-			rooms: [
-				// {
-				// 	roomId: 1,
-				// 	roomName: 'Room 1',
-				// 	avatar: 'https://66.media.tumblr.com/avatar_c6a8eae4303e_512.pnj',
-				// 	users: [
-				// 		{ _id: '1234', username: 'John Doe' },
-				// 		{ _id: '4321', username: 'John Snow' }
-				// 	],
-        // }
-			],
+			rooms: [],
 			messages: [],
+			currentUserId: '',
       currentUserName:'',
-      
 		}
 	},
   async created(){
-    // await this.$store.dispatch('fetchMyInfo')
-    const myInfo = this.$store.getters.myInfo
-  
-
-    this.currentUserId = myInfo.id
-    this.currentUserName = myInfo.name
+    const { id, name } = this.$store.getters.myInfo
+    this.currentUserId =id
+    this.currentUserName = name
 
     const socket = io("http://localhost:3000")
 
     // 방정보 불러오기
     await this.$store.dispatch('chat/fetchCurrentRoom', this.roomId)
     const enteredRoom = this.$store.getters['chat/currentRoom']
+   
+    this.rooms = [enteredRoom]
 
-    const room = enteredRoom.roomName
-    const roomId = enteredRoom.roomId
-    const userId = myInfo.id
-    const username = myInfo.name
-  
     // 소켓 Join
-    socket.emit('join',{username, room, userId, roomId},(error)=>{
+    socket.emit('join',{
+      username: name, 
+      room:enteredRoom.roomName, 
+      userId: id, 
+      roomId:enteredRoom.roomId
+    },(error)=>{
       if(error){
         alert(error)
-        // location.href='/'
       }
     })
 
-    // 방정보 불러오기 소켓
-    // socket.on('roomData',({room,users})=>{
-    socket.on('roomData',()=>{
-      // console.log(users)
-      // console.log(room)
-      this.rooms = [enteredRoom]
-    })
-
     // 메세지 받기 소켓
-    socket.on('message', (message) => {
-      const array = [
+    socket.on('message', ({_id,content,senderId,username,date,timestamp,deleted,replyMessage}) => {
+      this.messages = [
+        ...this.messages,
         {
-          _id: message._id,
-          content: message.text,
-          senderId: message.senderId,
-          username: message.username,
-          date: this.$moment(message.date).format('YYYY-MM-DD'),
-          timestamp: message.timestamp,
-          deleted: message.deleted
+          _id,
+          content,
+          senderId,
+          username,
+          date: this.$moment(date).format('YYYY-MM-DD'),
+          timestamp,
+          deleted,
+          replyMessage
         }
       ]
-      this.messages = [...this.messages, ...array]
     })
 
     // 메세지 삭제
@@ -142,33 +123,25 @@ export default {
   },
 	methods: {
     // 메세지 불러오기
-		async fetchMessages({ options = {} }) {
+		async fetchMessages() {
 			await this.$store.dispatch('chat/fetchMessages',this.roomId)
-      // console.log(this.$store.getters['chat/messages'])
-
-      setTimeout(() => {
-        // 방이 처음 열렸을때 reset:true
-				if (options.reset) {
-					this.messages = [...this.$store.getters['chat/messages']]
-				} else {
-          // this.messages = [...this.addMessages(), ...this.messages]
-				}
-        this.messagesLoaded = true
-			})
+      this.messages = [...this.$store.getters['chat/messages']]
+      this.messagesLoaded = true
 		},
 
     // 메세지 보내기
-		async sendMessage(message) {
+		async sendMessage({roomId, content, replyMessage}) {
       // 메세지 생성 -서버
       const msgData ={
-        content: message.content,
+        content,
         senderId: this.currentUserId,
         username: this.currentUserName,
-        owner: this.roomId
+        owner: roomId,
+        replyMessage
       }
       await this.$store.dispatch('chat/registerMessage', msgData)
       const msg = this.$store.getters['chat/newMessage']
-    
+ 
       // 메세지 보내기 소켓
       this.socket.emit('sendMessage', msg, (error)=>{
         if(error){
@@ -176,7 +149,9 @@ export default {
         }
         console.log('메세지 전송됨')
       })
-		},		
+		},
+    
+    
     async deleteMessage({message}){
       await this.$store.dispatch('chat/deleteMessage', message._id)
 
@@ -188,15 +163,15 @@ export default {
         console.log('메세지 삭제됨')
       })
     },
-    editMessage({messageId, newContent, replyMessage}){
-      console.log(replyMessage)
-      
+    editMessage({newContent, messageId, replyMessage}){
       const msgData = {
         content : newContent,
         msgId: messageId,
-        edited: new Date()
+        edited: new Date(),
+        replyMessage
       }
 
+      // 메세지 수정 서버
       this.$store.dispatch('chat/updateMessage', msgData)
 
       // 메세지 수정 소켓

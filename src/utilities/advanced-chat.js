@@ -20,10 +20,10 @@ export default {
     //   name: 'addMessageToFavorite',
     //   title: '커스텀버튼1'
     // },
-    // {
-    //   name: 'replyMessage',
-    //   title: '답장'
-    // },
+    {
+      name: 'replyMessage',
+      title: '답장'
+    },
     {
       name: 'editMessage',
       title: '수정',

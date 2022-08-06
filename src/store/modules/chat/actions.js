@@ -77,11 +77,11 @@ export default {
   async registerMessage(context, msgData){
     try{
       const {data} = await axios.post(
-        'http://localhost:3000/chatMessages', 
+        'http://localhost:3000/chat-messages', 
         msgData
       )   
-
-      context.commit('addMessage', data)
+      
+      // context.commit('addMessage', data)
       context.commit('setNewlyAddedMessage', data)
     }catch(e){
       console.log(e)
@@ -91,7 +91,7 @@ export default {
   // 메세지 삭제하기
   async deleteMessage(_, msgId){
     try{
-      await axios.patch(`http://localhost:3000/deleteMessage/${msgId}`)
+      await axios.patch(`http://localhost:3000/delete-message/${msgId}`)
 
     }catch(e){
       console.log(e)
@@ -100,12 +100,8 @@ export default {
 
   // 메세지 수정하기
   async updateMessage(_, msgData){
-    // const {msgId, content} = msgData
-
     try{
-      await axios.patch(`http://localhost:3000/updateMessage`,msgData)
-
-
+      await axios.patch(`http://localhost:3000/update-message`,msgData)
     }catch(e){
       console.log(e)
     }
@@ -114,12 +110,11 @@ export default {
   // 메세지 불러오기 - 방 아이디 별로
   async fetchMessages(context, roomNum){
     try{
-      const {data} = await axios.get(`http://localhost:3000/chatMessages/${roomNum}`)
+      const {data} = await axios.get(`http://localhost:3000/chat-messages/${roomNum}`)
 
       context.commit('setMessages', data)
     }catch(e){
       console.log(e)
     }
-
   }
 }

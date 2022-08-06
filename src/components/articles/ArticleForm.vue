@@ -199,12 +199,13 @@ export default {
         this.validateForm()
 
         if (!this.formIsValid) {
-          return this.$swal.fire({
+          this.$swal.fire({
             icon: "error",
             title: "모든 내용을 기입하여 주세요.",
             showConfirmButton: false,
             timer: 2000,
           })
+          return 
         }
 
         const formData = {
@@ -256,7 +257,7 @@ export default {
       } catch (e) {
         this.file.isValid = false
         
-        return this.$swal.fire({
+        this.$swal.fire({
           icon: "error",
           title: e.message,
           showConfirmButton: false,
