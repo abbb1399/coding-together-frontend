@@ -1,43 +1,43 @@
 <template>
-  <div>
-		<chat-window
-      id="chat-room"
-			height="calc(100vh - 5rem)"
-			:current-user-id="currentUserId"
-			:rooms="rooms"
-			:rooms-loaded="true"
-      :show-audio="false"
-      :show-files="false"
-      :single-room="true"
-      :show-reaction-emojis="false"
-      :room-id="roomId"
-      :username-options="usernameOptions"
-			:messages="messages"
-			:messages-loaded="messagesLoaded"
-      :text-messages="textMessages"
-      :message-actions="messageActions"
-			@send-message="sendMessage"
-			@fetch-messages="fetchMessages"
-      @delete-message="deleteMessage"
-      @edit-message="editMessage"
-		>
-      <template #room-options>
-        <font-awesome-icon icon="arrow-left-long" id="back-space" @click="backSpace"/>
-      </template>
-    </chat-window>
-  </div>
+  <chat-window
+    id="chat-room"
+    height="calc(100vh - 5rem)"
+    :current-user-id="currentUserId"
+    :rooms="rooms"
+    :rooms-loaded="true"
+    :show-audio="false"
+    :show-files="false"
+    :single-room="true"
+    :show-reaction-emojis="false"
+    :room-id="roomId"
+    :username-options="usernameOptions"
+    :messages="messages"
+    :messages-loaded="messagesLoaded"
+    :text-messages="textMessages"
+    :message-actions="messageActions"
+    @send-message="sendMessage"
+    @fetch-messages="fetchMessages"
+    @delete-message="deleteMessage"
+    @edit-message="editMessage"
+  >
+    <template #room-options>
+      <font-awesome-icon icon="arrow-left-long" id="back-space" @click="backSpace"/>
+    </template>
+  </chat-window>
 </template>
 
 <script>
 import ChatWindow from 'vue-advanced-chat'
 import 'vue-advanced-chat/dist/vue-advanced-chat.css'
-import chatUtil from '../../utilities/advanced-chat.js'
-const { io } = require("socket.io-client");
+import useChatOptions from '../../hooks/use-chat-options'
+
+import {ref, toRefs, inject, onUnmounted} from 'vue'
+import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 
 export default {
-  inject:['$moment'],
   components: {
-		ChatWindow
+    ChatWindow
 	},
   props:{
     roomId:{
@@ -45,125 +45,119 @@ export default {
       requird:true
     }
   },
-	data() {
-		return {
-      ...chatUtil,
-			rooms: [],
-			messages: [],
-			currentUserId: '',
-      currentUserName:'',
-		}
-	},
-  async created(){
-    const { id, name } = this.$store.getters.myInfo
-    this.currentUserId =id
-    this.currentUserName = name
+  setup(props){
+    const store = useStore()
+    const router = useRouter()
+    const { roomId } = toRefs(props)
+    const $moment = inject('$moment')
+    const { socket, textMessages, usernameOptions, messagesLoaded, messageActions} = useChatOptions()
+    const rooms = ref([]) 
+		const	messages = ref([])
+		const	currentUserId = ref('') 
+    const currentUserName = ref('')
 
-    const socket = io("http://localhost:3000")
+    const init = async () => {
+      const { id, name } = store.getters.myInfo
+      currentUserId.value = id
+      currentUserName.value = name
 
-    // 방정보 불러오기
-    await this.$store.dispatch('chat/fetchCurrentRoom', this.roomId)
-    const enteredRoom = this.$store.getters['chat/currentRoom']
+      // 방정보 불러오기
+      await store.dispatch('chat/fetchCurrentRoom', roomId.value)
+      const enteredRoom = store.getters['chat/currentRoom']
    
-    this.rooms = [enteredRoom]
+      rooms.value = [enteredRoom]
 
-    // 소켓 Join
-    socket.emit('join',{
-      username: name, 
-      room:enteredRoom.roomName, 
-      userId: id, 
-      roomId:enteredRoom.roomId
-    },(error)=>{
-      if(error){
-        alert(error)
-      }
-    })
-
-    // 메세지 받기 소켓
-    socket.on('message', ({_id,content,senderId,username,date,timestamp,deleted,replyMessage}) => {
-      this.messages = [
-        ...this.messages,
-        {
-          _id,
-          content,
-          senderId,
-          username,
-          date: this.$moment(date).format('YYYY-MM-DD'),
-          timestamp,
-          deleted,
-          replyMessage
+      // 소켓 Join
+      socket.emit('join',{
+        username: name, 
+        room:enteredRoom.roomName, 
+        userId: id, 
+        roomId:enteredRoom.roomId
+      },(error)=>{
+        if(error){
+          alert(error)
         }
-      ]
-    })
+      })
 
-    // 메세지 삭제
-    socket.on('deleteMessage', (msgId)=> {
-      const messageArray= [...this.messages]
-      const index = messageArray.findIndex((message)=> message._id === msgId)
-      if(index !== -1){
-        this.messages[index].deleted = true
-      }    
-    })
+      // 메세지 받기 소켓
+      socket.on('message', ({_id,content,senderId,username,date,timestamp,deleted,replyMessage}) => {
+        messages.value = [
+          ...messages.value,
+          {
+            _id,
+            content,
+            senderId,
+            username,
+            date: $moment(date).format('YYYY-MM-DD'),
+            timestamp,
+            deleted,
+            replyMessage
+          }
+        ]
+      })
 
-    // 메세지 수정
-    socket.on('updateMessage', (msgData) => {
-      const messageArray= [...this.messages]
-      const index = messageArray.findIndex((message)=> message._id === msgData.msgId)
-      if(index !== -1){
-        this.messages[index].content = msgData.content
-        this.messages[index].edited = new Date()
-      }  
-    })
+      // 메세지 삭제
+      socket.on('deleteMessage', (msgId)=> {
+        const messageArray= [...messages.value]
+        const index = messageArray.findIndex((message)=> message._id === msgId)
+        if(index !== -1){
+          messages.value[index].deleted = true
+        }    
+      })
 
-    this.socket = socket
-  },
-  unmounted(){
-    // 소켓 해제
-    this.socket.disconnect()
-  },
-	methods: {
+      // 메세지 수정
+      socket.on('updateMessage', (msgData) => {
+        const messageArray= [...messages.value]
+        const index = messageArray.findIndex((message)=> message._id === msgData.msgId)
+        if(index !== -1){
+          messages.value[index].content = msgData.content
+          messages.value[index].edited = new Date()
+        }  
+      })
+    }
+
     // 메세지 불러오기
-		async fetchMessages() {
-			await this.$store.dispatch('chat/fetchMessages',this.roomId)
-      this.messages = [...this.$store.getters['chat/messages']]
-      this.messagesLoaded = true
-		},
+		const fetchMessages = async () => {
+			await store.dispatch('chat/fetchMessages', roomId.value)
+      messages.value = [...store.getters['chat/messages']]
+      messagesLoaded.value = true
+		}
 
     // 메세지 보내기
-		async sendMessage({roomId, content, replyMessage}) {
+		const sendMessage = async({roomId, content, replyMessage}) => {
       // 메세지 생성 -서버
       const msgData ={
         content,
-        senderId: this.currentUserId,
-        username: this.currentUserName,
+        senderId: currentUserId.value,
+        username: currentUserName.value,
         owner: roomId,
         replyMessage
       }
-      await this.$store.dispatch('chat/registerMessage', msgData)
-      const msg = this.$store.getters['chat/newMessage']
+      await store.dispatch('chat/registerMessage', msgData)
+      const msg = store.getters['chat/newMessage']
  
       // 메세지 보내기 소켓
-      this.socket.emit('sendMessage', msg, (error)=>{
+      socket.emit('sendMessage', msg, (error)=>{
         if(error){
           return console.log(error)
         }
         console.log('메세지 전송됨')
       })
-		},
-    
-    
-    async deleteMessage({message}){
-      await this.$store.dispatch('chat/deleteMessage', message._id)
+		}
+
+    const deleteMessage = async ({message}) => {
+      await store.dispatch('chat/deleteMessage', message._id)
 
       // 메세지 삭제 소켓
-      this.socket.emit('deleteMessage', message._id, (error)=>{
+      socket.emit('deleteMessage', message._id, (error)=>{
         if(error){
           return console.log(error)
         }
         console.log('메세지 삭제됨')
       })
-    },
-    editMessage({newContent, messageId, replyMessage}){
+    }
+
+    const editMessage = ({newContent, messageId, replyMessage}) => {
       const msgData = {
         content : newContent,
         msgId: messageId,
@@ -172,21 +166,44 @@ export default {
       }
 
       // 메세지 수정 서버
-      this.$store.dispatch('chat/updateMessage', msgData)
+      store.dispatch('chat/updateMessage', msgData)
 
       // 메세지 수정 소켓
-      this.socket.emit('updateMessage', msgData, (error)=>{
+      socket.emit('updateMessage', msgData, (error)=>{
         if(error){
           return console.log(error)
         }
         console.log('메세지 수정됨')
       })
-    },
-    backSpace(){
-      this.$router.replace({name:'chatMain'})
     }
+    
+    const backSpace = () => {
+      router.replace({name:'chatMain'})
+    }
+    
+    onUnmounted(()=>{
+      // 소켓 해제
+      socket.disconnect()
+    })
 
-	}
+    init()
+
+    return {
+      textMessages,
+      usernameOptions,
+      messagesLoaded,
+      messageActions,
+      rooms,
+      messages,
+      currentUserId,
+      currentUserName,
+      fetchMessages,
+      sendMessage,
+      deleteMessage,
+      editMessage,
+      backSpace
+    }
+  }
 }
 </script>
 

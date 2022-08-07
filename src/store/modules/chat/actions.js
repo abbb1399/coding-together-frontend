@@ -81,7 +81,6 @@ export default {
         msgData
       )   
       
-      // context.commit('addMessage', data)
       context.commit('setNewlyAddedMessage', data)
     }catch(e){
       console.log(e)

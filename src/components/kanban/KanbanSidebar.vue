@@ -177,6 +177,7 @@ export default {
           showConfirmButton: false,
           timer: 2000,
         })
+        context.emit("close-sidebar")
       }
     }
 

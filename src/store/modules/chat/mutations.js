@@ -21,9 +21,6 @@ export default {
 
     state.messages = messages
   },
-  addMessage(state,payload){
-    state.messages.push(payload)
-  },
   setNewlyAddedMessage(state, newMsg){ 
     state.newMessage = newMsg
   },
