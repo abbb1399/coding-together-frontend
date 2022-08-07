@@ -28,6 +28,7 @@
     </div>
 
     <pagination
+      v-if="receivedRequests.length"
       class="pagination"
       :total-pages="totalPages"
       :total="total"

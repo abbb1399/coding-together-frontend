@@ -12,22 +12,25 @@ export default {
   useCreationPopup : true,
   useDetailPopup: true,
   template:{
-    popupSave: function() {
+    popupSave() {
       return '저장';
     },
-    popupDelete: function() {
+    popupDelete() {
       return '삭제';
     },
-    popupEdit: function() {
+    popupEdit() {
       return '수정';
     },
-    titlePlaceholder: function() {
+    popupUpdate () {
+      return '수정 완료';
+    },
+    titlePlaceholder() {
       return '제목';
     },
-    locationPlaceholder: function() {
+    locationPlaceholder() {
       return '장소';
     },
-    popupIsAllDay: function() {
+    popupIsAllDay() {
       return '온 종일';
     },
     popupStateFree () {
@@ -42,7 +45,7 @@ export default {
     endDatePlaceholder(){
       return '종료일'
     },
-    popupDetailState: function(schedule) {
+    popupDetailState(schedule) {
       return '상태 : ' + schedule.state || '바쁨';
     },
   }

@@ -43,6 +43,7 @@
       <h3 v-else>채팅 방 목록이 없습니다.</h3>
     </div>
     <pagination
+      v-if="roomList.length"
       class="pagination"
       :total-pages="totalPages"
       :total="total"

@@ -9,7 +9,6 @@ import ArticleRegistration from '../views/articles/ArticleRegistration.vue'
 import RequestsReceived from '../views/requests/RequestsReceived.vue'
 import UserAuth from '../views/auth/UserAuth.vue'
 import MyPage from '../views/user/MyPage.vue'
-import Test from '../views/Test.vue'
 
 import MyProfile from '../views/user/mypage/MyProfile.vue'
 import MyList from '../views/user/mypage/MyList.vue'
@@ -50,7 +49,6 @@ const routes = [
     meta:{ requiresAuth: true, hideFooter: true}
   },
   {path:'/kanban', component:() => import('../views/kanban/Kanban.vue'), meta:{ requiresAuth: true,hideFooter: true} },
-  {path:'/test', component: Test},
   {path:'/:notFound(.*)*', component: () => import('../views/NotFound.vue'), meta:{hideFooter:true}}
 ]
 

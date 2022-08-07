@@ -135,7 +135,7 @@ export default {
       this.$store.dispatch("schedules/deleteSchedule", schedule)
     })
   },
-  unmounted(){
+  unmounted() {
     this.calendarInstance.destroy()
   },
   methods: {
@@ -191,28 +191,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(#tui-full-calendar-schedule-private) {
-  display: none;
-}
-
-:deep(.tui-full-calendar-section-title) {
-  width: 100%;
-}
-
-:deep(#tui-full-calendar-schedule-title) {
-  width: 96.3%;
-}
-
 .calendar {
   max-width: $website-width;
   margin: 0 auto;
+
+  @include respond(big-screen) {
+    max-width: 1400px;
+    margin-top: 1.5rem;
+  }
 
   &__header {
     display: flex;
     padding: 0.5rem 0;
     align-items: center;
 
-    @include respond(phone){
+    @include respond(phone) {
       flex-direction: column-reverse;
     }
   }
@@ -224,7 +217,7 @@ export default {
     width: 90.8px;
     height: 2rem;
 
-    @include respond(phone){
+    @include respond(phone) {
       height: auto;
     }
   }
@@ -233,8 +226,8 @@ export default {
     font-size: 1.2rem;
     font-weight: 500;
     margin-left: 20px;
-     
-    @include respond(phone){
+
+    @include respond(phone) {
       margin-bottom: 5px;
     }
   }
@@ -271,5 +264,49 @@ export default {
 .move-day {
   padding: 0.4rem 0.8rem;
   line-height: 1.1rem;
+}
+
+:deep(#tui-full-calendar-schedule-private) {
+  display: none;
+}
+
+:deep(.tui-full-calendar-section-title) {
+  width: 100%;
+}
+
+:deep(#tui-full-calendar-schedule-title) {
+  width: 96.3%;
+}
+
+:deep(.tui-full-calendar-section-calendar .tui-full-calendar-popup-section-item) {
+  width: 176.2px;
+}
+
+:deep(.tui-full-calendar-section-state .tui-full-calendar-popup-section-item) {
+  width: 109.2px;
+}
+
+:deep(.tui-full-calendar-section-start-date) {
+  width: 176.2px;
+
+  & .tui-full-calendar-content{
+    height: 29.8px;
+  }
+}
+
+:deep(.tui-full-calendar-section-end-date) {
+  width: 176.2px;
+
+  & .tui-full-calendar-content{
+    height: 29.8px;
+  }
+}
+
+:deep(.tui-full-calendar-section-title .tui-full-calendar-content) {
+  height: 29.8px;
+}
+
+:deep(.tui-full-calendar-section-location .tui-full-calendar-content) {
+  height: 29.8px;
 }
 </style>

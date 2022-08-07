@@ -27,13 +27,13 @@
 </template>
 
 <script>
-import ChatWindow from 'vue-advanced-chat'
-import 'vue-advanced-chat/dist/vue-advanced-chat.css'
-import useChatOptions from '../../hooks/use-chat-options'
-
 import {ref, toRefs, inject, onUnmounted} from 'vue'
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
+
+import useChatOptions from '../../hooks/use-chat-options'
+import ChatWindow from 'vue-advanced-chat'
+import 'vue-advanced-chat/dist/vue-advanced-chat.css'
 
 export default {
   components: {
@@ -48,8 +48,8 @@ export default {
   setup(props){
     const store = useStore()
     const router = useRouter()
-    const { roomId } = toRefs(props)
     const $moment = inject('$moment')
+    const { roomId } = toRefs(props)
     const { socket, textMessages, usernameOptions, messagesLoaded, messageActions} = useChatOptions()
     const rooms = ref([]) 
 		const	messages = ref([])
@@ -98,19 +98,17 @@ export default {
 
       // 메세지 삭제
       socket.on('deleteMessage', (msgId)=> {
-        const messageArray= [...messages.value]
-        const index = messageArray.findIndex((message)=> message._id === msgId)
+        const index = messages.value.findIndex((message)=> message._id === msgId)
         if(index !== -1){
           messages.value[index].deleted = true
         }    
       })
 
       // 메세지 수정
-      socket.on('updateMessage', (msgData) => {
-        const messageArray= [...messages.value]
-        const index = messageArray.findIndex((message)=> message._id === msgData.msgId)
+      socket.on('updateMessage', ({msgId, content}) => {
+        const index = messages.value.findIndex((message)=> message._id === msgId)
         if(index !== -1){
-          messages.value[index].content = msgData.content
+          messages.value[index].content = content
           messages.value[index].edited = new Date()
         }  
       })
@@ -141,7 +139,6 @@ export default {
         if(error){
           return console.log(error)
         }
-        console.log('메세지 전송됨')
       })
 		}
 
@@ -153,7 +150,6 @@ export default {
         if(error){
           return console.log(error)
         }
-        console.log('메세지 삭제됨')
       })
     }
 
@@ -173,7 +169,6 @@ export default {
         if(error){
           return console.log(error)
         }
-        console.log('메세지 수정됨')
       })
     }
     
@@ -221,7 +216,7 @@ export default {
 
     &:hover,
     &:active{
-       background-color: $color-grey-light;
+      background-color: $color-grey-light;
     }
   }
 </style>

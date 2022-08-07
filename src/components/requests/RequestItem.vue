@@ -139,6 +139,6 @@ export default {
 }
 
 .read {
-  color: grey;
+  color: rgb(177, 174, 174);
 }
 </style>

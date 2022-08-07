@@ -46,9 +46,6 @@ export default {
 </script>
 
 <style lang="scss">
-  // Loboto, Lobster 폰트
-  @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
-  
   #app-main{
     display: flex; 
     flex-direction:column; 

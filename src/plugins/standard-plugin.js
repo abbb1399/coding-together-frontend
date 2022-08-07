@@ -3,15 +3,13 @@ import swal from "sweetalert2"
 
 export default {
   install(app) {
-    // app.config.globalProperties.$moment = moment
-
     // moment.js
     app.provide("$moment", moment)
 
     // sweetalert2
     app.provide("$swal", swal)
 
-    // input,textarea focus() 이벤트
+    // input,textarea focus() 명령어
     app.directive("focus", {
       mounted(el) {
         el.focus()
@@ -43,6 +41,5 @@ export default {
     }
 
     app.directive("click-outside", clickOutside)
-
   },
 }

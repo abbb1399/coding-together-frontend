@@ -1,5 +1,5 @@
-const { io } = require("socket.io-client");
 import {reactive, ref} from 'vue'
+const { io } = require("socket.io-client");
 
 export default function useChatOptions() {
   // socket-io
@@ -22,26 +22,28 @@ export default function useChatOptions() {
   }) 
   const usernameOptions = reactive({minUsers: 0, currentUser: false}) 
   const messagesLoaded = ref(false) 
-  const messageActions= reactive([
-    // {
-    //   name: 'addMessageToFavorite',
-    //   title: '커스텀버튼1'
-    // },
-    {
-      name: 'replyMessage',
-      title: '답장'
-    },
-    {
-      name: 'editMessage',
-      title: '수정',
-      onlyMe: true
-    },
-    {
-      name: 'deleteMessage',
-      title: '삭제',
-      onlyMe: true
-    }
-  ]) 
+  const messageActions= reactive(
+    [
+      // {
+      //   name: 'addMessageToFavorite',
+      //   title: '커스텀버튼1'
+      // },
+      {
+        name: 'replyMessage',
+        title: '답장'
+      },
+      {
+        name: 'editMessage',
+        title: '수정',
+        onlyMe: true
+      },
+      {
+        name: 'deleteMessage',
+        title: '삭제',
+        onlyMe: true
+      }
+    ]
+  ) 
 
   return {
     socket,
