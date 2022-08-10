@@ -4,7 +4,7 @@
       @click="imageUpload"
       id="myImage"
       alt="내 이미지"
-      :src="getMyInfo.avatar ? `http://localhost:3000/avatars/${getMyInfo.avatar}` : defaultImg"
+      :src="getMyInfo.avatar ? getImage(getMyInfo.avatar) : defaultImg"
     />
     <p><strong>이름 : </strong>{{ getMyInfo.name }}</p>
     <p><strong>이메일 : </strong>{{ getMyInfo.email }}</p>
@@ -13,19 +13,17 @@
 </template>
 
 <script>
-import { ref, computed, inject } from "vue"
+import { ref, computed } from "vue"
 import { useStore } from "vuex"
+import {address} from '../../../../config/address'
 
 export default {
   setup() {
     const store = useStore()
-    const $moment = inject('$moment')
     const defaultImg = ref(require("../../../assets/avatar.jpg"))
 
     const getMyInfo = computed(() => {
-      const myInfo = {...store.getters.myInfo}
-      myInfo.createdAt = $moment(myInfo.createdAt).format('YYYY-MM-DD')
-      return myInfo
+      return store.getters.myInfo
     })
 
     const imageUpload = () => {
@@ -47,6 +45,10 @@ export default {
       upload.click()
     }
 
+    const getImage = (avatar) =>{
+      return `${address}/avatars/${avatar}`
+    }
+
     // const deleteAccount = async ()=>{
     //   await this.$store.dispatch('deleteAccount')
     //   this.$router.push('/')
@@ -56,6 +58,7 @@ export default {
       defaultImg,
       getMyInfo,
       imageUpload,
+      getImage
     }
   },
 }

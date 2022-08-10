@@ -42,7 +42,6 @@ import "tui-time-picker/dist/tui-time-picker.css"
 
 // 유틸 요소 길어서 따로 빼놓음 - src/utilities/tui-calendar
 import calendarOption from "../../utilities/tui-calendar/calendar-option"
-// import dummyData from '../../utilities/tui-calendar/calendar-dummy-data'
 import scheduleType from "../../utilities/tui-calendar/schedule-type"
 
 export default {
@@ -111,9 +110,7 @@ export default {
       this.$store.dispatch("schedules/resigerSchedule", schedule)
     })
 
-    this.calendarInstance.on("beforeUpdateSchedule", (event) => {
-      const { schedule, changes } = event
-
+    this.calendarInstance.on("beforeUpdateSchedule", ({ schedule, changes }) => {
       // tui-calendar - Update
       this.calendarInstance.updateSchedule(
         schedule.id,
@@ -126,9 +123,7 @@ export default {
       this.$store.dispatch("schedules/updateSchedule", updateData)
     })
 
-    this.calendarInstance.on("beforeDeleteSchedule", (scheduleData) => {
-      const { schedule } = scheduleData
-
+    this.calendarInstance.on("beforeDeleteSchedule", ({ schedule }) => {
       // tui-calendar - Delete
       this.calendarInstance.deleteSchedule(schedule.id, schedule.calendarId)
       // 서버로직 - Delete

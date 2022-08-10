@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default {
   setUser(state, {token, myInfo}){
     state.token = token
@@ -5,7 +7,7 @@ export default {
     state.myInfo.email = myInfo.email
     state.myInfo.name = myInfo.name
     state.myInfo.avatar = myInfo.avatar
-    state.myInfo.createdAt = myInfo.createdAt
+    state.myInfo.createdAt = moment(myInfo.createdAt).format('YYYY-MM-DD')
 
     state.didAutoLogout = false
   },
@@ -15,5 +17,8 @@ export default {
   // 내 정보 보기
   setMyInfo(state, payload){
     state.myInfo = payload
+  },
+  setMyAvatar(state, payload){
+    state.myInfo.avatar = payload
   }
 }

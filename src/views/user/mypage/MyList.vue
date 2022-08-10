@@ -25,6 +25,7 @@
       <h3 class="my-list__no-request" v-else>내가 쓴 글이 없습니다.</h3>
     </div>
     <pagination
+      v-if="myList.length"
       class="pagination"
       :total-pages="totalPages"
       :total="total"

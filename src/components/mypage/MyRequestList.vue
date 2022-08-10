@@ -13,6 +13,7 @@
 <script>
 import {toRefs, computed, inject} from 'vue'
 import { useRouter } from "vue-router"
+import {address} from '../../../config/address'
 
 export default {
   props:{
@@ -42,9 +43,10 @@ export default {
     const router = useRouter()
     const $moment = inject('$moment')
     const {thumbnail, createdAt, id} = toRefs(props) 
+    
 
     const img = computed(()=>{
-      return `http://localhost:3000/images/${thumbnail.value}`
+      return `${address}/images/${thumbnail.value}`
     })
 
     const listCreatedAt = computed(()=>{

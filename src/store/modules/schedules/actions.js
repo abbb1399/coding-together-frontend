@@ -1,4 +1,5 @@
 const axios = require('axios');
+import {address} from '../../../../config/address'
 
 export default {
   // 스케줄 생성
@@ -19,7 +20,7 @@ export default {
 
     try{
       await axios.post(
-        'http://localhost:3000/schedules', 
+        `${address}/schedules`, 
         scheduleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -36,7 +37,7 @@ export default {
 
     try{
       const {data}  = await axios.get(
-        'http://localhost:3000/schedules',
+        `${address}/schedules`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -60,7 +61,7 @@ export default {
 
     try{
       axios.patch(
-        `http://localhost:3000/schedules/${id}`,
+        `${address}/schedules/${id}`,
         changes,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -76,7 +77,7 @@ export default {
 
     try{
       await axios.delete(
-        `http://localhost:3000/schedules/${calendarId}/${id}`,
+        `${address}/schedules/${calendarId}/${id}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
     }catch(e){

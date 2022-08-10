@@ -1,4 +1,5 @@
 const axios = require('axios');
+import {address} from '../../../../config/address'
 
 let timer
 
@@ -23,11 +24,11 @@ export default {
     const mode = payload.mode
 
     // 로그인 router
-    let url = 'http://localhost:3000/users/login' 
+    let url = `${address}/users/login` 
 
     if(mode === 'signup'){
       // 회원가입 router
-      url = 'http://localhost:3000/users'
+      url = `${address}/users`
     }
 
     try{
@@ -90,7 +91,7 @@ export default {
     const token = localStorage.getItem('token')
 
     try{
-      await axios.post('http://localhost:3000/users/logoutAll',
+      await axios.post(`${address}/users/logoutAll`,
         {},
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -140,7 +141,7 @@ export default {
   async deleteAccount(){
     const token = localStorage.getItem('token')
     try{
-      await axios.delete('http://localhost:3000/users/me',
+      await axios.delete(`${address}/users/me`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
     }catch(e){
@@ -148,16 +149,24 @@ export default {
     }
   },
   // 아바타 업로드하기
-  async uploadAvatar(_, file){
+  async uploadAvatar(context, file){
     const token = localStorage.getItem('token')
 
     try{
-      await axios.post(
-        'http://localhost:3000/avatar', 
+      const {data} = await axios.post(
+        `${address}/avatar`, 
         file, 
         { headers: { Authorization: `Bearer ${token}` }}
       )
+      
+      context.commit('setMyAvatar', data)
 
+      // 아바타 변한거도 localStorage 담아주기
+      const info = JSON.parse(localStorage.getItem('myInfo'));
+      localStorage.setItem('myInfo', JSON.stringify({
+        ...info,
+        avatar:data
+      }))
     }catch(e){
       console.log(e)
     }

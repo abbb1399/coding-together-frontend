@@ -1,16 +1,17 @@
 const axios = require('axios')
+import {address} from '../../../../config/address'
 
 export default {
   // 채팅방 생성하기
   async createOrEnterRoom(context, roomInfo){
     
     try{
-      const {data} = await axios.get(`http://localhost:3000/checkroom/${roomInfo.roomId}`)
+      const {data} = await axios.get(`${address}/checkroom/${roomInfo.roomId}`)
       
       if(data.length === 0){
         // 처음 만들때
         await axios.post(
-          'http://localhost:3000/chatroom',
+          `${address}/chatroom`,
           roomInfo
         )
         context.commit('setIsRoomCreated', true)
@@ -31,7 +32,7 @@ export default {
 
     try{
       await axios.patch(
-        `http://localhost:3000/chatroom`,  
+        `${address}/chatroom`,  
         {roomId},
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -48,7 +49,7 @@ export default {
 
     try{
       const {data} = await axios.get(
-        `http://localhost:3000/roomList/${pageNum}`,
+        `${address}/roomList/${pageNum}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -63,7 +64,7 @@ export default {
   async fetchCurrentRoom(context,roomId){
     try{
       const {data} = await axios.get(
-        `http://localhost:3000/chatroom/${roomId}`
+        `${address}/chatroom/${roomId}`
       )
 
 
@@ -77,7 +78,7 @@ export default {
   async registerMessage(context, msgData){
     try{
       const {data} = await axios.post(
-        'http://localhost:3000/chat-messages', 
+        '${address}/chat-messages', 
         msgData
       )   
       
@@ -90,7 +91,7 @@ export default {
   // 메세지 삭제하기
   async deleteMessage(_, msgId){
     try{
-      await axios.patch(`http://localhost:3000/delete-message/${msgId}`)
+      await axios.patch(`${address}/delete-message/${msgId}`)
 
     }catch(e){
       console.log(e)
@@ -100,7 +101,7 @@ export default {
   // 메세지 수정하기
   async updateMessage(_, msgData){
     try{
-      await axios.patch(`http://localhost:3000/update-message`,msgData)
+      await axios.patch(`${address}/update-message`,msgData)
     }catch(e){
       console.log(e)
     }
@@ -109,7 +110,7 @@ export default {
   // 메세지 불러오기 - 방 아이디 별로
   async fetchMessages(context, roomNum){
     try{
-      const {data} = await axios.get(`http://localhost:3000/chat-messages/${roomNum}`)
+      const {data} = await axios.get(`${address}/chat-messages/${roomNum}`)
 
       context.commit('setMessages', data)
     }catch(e){

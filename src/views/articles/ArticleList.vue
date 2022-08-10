@@ -95,7 +95,7 @@ export default {
 <style lang="scss" scoped>
   .articles{
     max-width: $website-width;
-    margin: auto;
+    margin: 0 auto;
 
     @include respond(tab-land){
       margin: 0 1rem;

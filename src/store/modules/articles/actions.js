@@ -1,4 +1,5 @@
 const axios = require('axios');
+import {address} from '../../../../config/address'
 
 export default {
   // 글 등록
@@ -16,7 +17,7 @@ export default {
 
     try{
       await axios.post(
-        'http://localhost:3000/articles', 
+        `${address}/articles`, 
         articleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )   
@@ -32,9 +33,9 @@ export default {
 
   // 글 리스트 불러오기
   async loadArticles(context, payload){  
-    try{
+    try{  
       const { data } = await axios.get(
-        `http://localhost:3000/articles/${payload.pageNum}`,{
+        `${address}/articles/${payload.pageNum}`,{
         params: {
           filter: payload.filter
         }
@@ -61,7 +62,7 @@ export default {
   // 글 내용 불러오기
   async loadArticleDetail(context,id){
     try{
-      const {data} = await axios.get(`http://localhost:3000/article/${id}`)
+      const {data} = await axios.get(`${address}/article/${id}`)
     
       context.commit('setArticle',data)
     }catch(e){
@@ -73,7 +74,7 @@ export default {
   async fetchMyArticle(context,pageNum){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`http://localhost:3000/my-article/${pageNum}`,
+      const { data } = await axios.get(`${address}/my-article/${pageNum}`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -87,7 +88,7 @@ export default {
   async fetchMyArticleDetail(context,id){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`http://localhost:3000/my-article-detail/${id}`,
+      const { data } = await axios.get(`${address}/my-article-detail/${id}`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -102,7 +103,7 @@ export default {
   async deleteMyArticle(context,id){
     try{
       const token = context.rootGetters.token
-      await axios.delete(`http://localhost:3000/article/${id}`,
+      await axios.delete(`${address}/article/${id}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
     }catch(e){
@@ -123,7 +124,7 @@ export default {
 
     try{
       const token = context.rootGetters.token
-      await axios.patch(`http://localhost:3000/articles/${id}`,
+      await axios.patch(`${address}/articles/${id}`,
         articleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -136,7 +137,7 @@ export default {
   async uploadImage(context,file){
     try{
       const {data} = await axios.post(
-       'http://localhost:3000/images',
+       `${address}/images`,
        file
       )
      

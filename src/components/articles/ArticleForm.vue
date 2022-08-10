@@ -78,13 +78,10 @@
 </template>
 
 <script>
-// import {ref,reactive,inject,onMounted} from 'vue'
-// import {useStore} from 'vuex'
-// import {useRoute, useRouter} from 'vue-router'
-
 import Editor from "@toast-ui/editor"
 import "@toast-ui/editor/dist/toastui-editor.css"
 import "@toast-ui/editor/dist/i18n/ko-kr"
+import {address} from '../../../config/address'
 
 export default {
   inject: ["$swal"],
@@ -134,18 +131,18 @@ export default {
     // mypage에서 변경시
 
     if (this.$route.path.split("/")[1] === "mypage") {
-      const myInfo = this.$store.getters["articles/getMyListDetail"]
+      const {name, description, areas, thumbnail, _id} = this.$store.getters["articles/getMyListDetail"]
 
-      this.name.val = myInfo.name
-      const desc = myInfo.description
+      this.name.val = name
+      const desc = description
       this.description.val = desc
       this.tuiEditor.setMarkdown(desc, false)
 
-      this.areas.val = [...myInfo.areas]
-      this.chosenFileName = myInfo.thumbnail
-      this.file.val = myInfo.thumbnail
+      this.areas.val = [...areas]
+      this.chosenFileName = thumbnail
+      this.file.val = thumbnail
 
-      this.listId = myInfo._id
+      this.listId = _id
     }
   },
 
@@ -285,208 +282,10 @@ export default {
 
       await this.$store.dispatch("articles/uploadImage", fd)
       callbacks(
-        `http://localhost:3000/images/${this.$store.getters["articles/getUploadFileName"]}`
+        `${address}/images/${this.$store.getters["articles/getUploadFileName"]}`
       )
     },
-  },
-
-  // setup(_, context){
-  //   const store = useStore()
-  //   const route = useRoute()
-  //   const router = useRouter()
-  //   const $swal = inject('$swal')
-  //   const name = reactive({
-  //     val:'',
-  //     isValid:true
-  //   })
-  //   const description = reactive({
-  //     val:'',
-  //     isValid:true
-  //   })
-  //   const areas = reactive({
-  //     val:[],
-  //     isValid:true
-  //   })
-  //   const file = reactive({
-  //     val:null,
-  //     isValid:true
-  //   })
-
-  //   const formIsValid = ref(true)
-  //   const listId = ref('')
-  //   const chosenFileName = ref('파일을 선택하세요.')
-  //   const tuiEditor = ref()
-
-  //   onMounted(()=>{
-  //     const tuiEditor= new Editor({
-  //       el: document.querySelector("#editor"),
-  //       initialEditType: "wysiwyg",
-  //       previewStyle: "vertical",
-  //       language: 'ko-KR',
-  //       autofocus:false,
-  //       linkAttribute: {
-  //         target: '_blank',
-  //         contenteditable: 'false',
-  //         rel: 'noopener noreferrer'
-  //       },
-  //       hooks: {
-  //         addImageBlobHook: addImageBlobHook
-  //       }
-  //     })
-  //     // mypage에서 변경시
-  //     if(route.path ==='/mypage/list'){
-  //       const myInfo = store.getters['articles/getMyPageList']
-
-  //       name.val = myInfo.name
-  //       const desc = myInfo.description
-  //       description.val = desc
-  //       tuiEditor.value.setMarkdown(desc,false)
-
-  //       areas.val= [...myInfo.areas]
-  //       chosenFileName.value = myInfo.thumbnail
-  //       listId.value = myInfo._id
-  //     }
-  //   })
-
-  //   // input이 blur될때마다 에러표시 지워주기
-  //   const clearValidity = (input) =>{
-  //     if(input === 'name'){
-  //       name.isValid = true
-  //     }else if(input === 'description'){
-  //       description.isValid = true
-  //     }else if(input === 'areas'){
-  //       areas.isValid = true
-  //     }else if(input === 'file'){
-  //       file.isValid = true
-  //     }
-  //   }
-
-  //   const validateForm = () =>{
-  //     formIsValid.value = true
-
-  //     if(name.val === ''){
-  //       name.isValid = false
-  //       formIsValid.value = false
-  //     }
-  //     if(description.val === ''){
-  //       description.isValid = false
-  //       formIsValid.value = false
-  //     }
-  //     if(areas.val.length === 0){
-  //       areas.isValid = false
-  //       formIsValid.value = false
-  //     }
-  //     if(!file.val){
-  //       file.isValid = false
-  //       formIsValid.value = false
-  //     }
-  //   }
-
-  //   const submitForm = async ()=>{
-  //     const result = await swalAlert(route.path ==='/mypage/list' ? '수정' :' 등록')
-  //     if(result.value){
-  //       // tui 에디터 글내용 받아오기
-  //       description.val = tuiEditor.value.getMarkdown()
-
-  //       if(description.val !== ''){
-  //         clearValidity('description')
-  //       }
-
-  //       validateForm()
-
-  //       if(!formIsValid.value){
-  //         return $swal.fire({
-  //           icon: 'error',
-  //           title: '모든 내용을 기입하여 주세요.',
-  //           showConfirmButton: false,
-  //           timer: 2000
-  //         })
-  //       }
-
-  //       if(file.val){
-  //         // 파일업로드 로직
-  //         const data = new FormData()
-  //         const fileToUpload = file.val
-  //         data.append('images', fileToUpload)
-
-  //         await store.dispatch('articles/uploadImage',data)
-  //         file.val = store.getters['articles/getUploadFileName']
-  //       }
-
-  //       const formData={
-  //         _id: listId.value,
-  //         name: name.val,
-  //         desc: description.val,
-  //         areas: areas.val,
-  //         thumbnail: file.val
-  //       }
-
-  //       if(route.path ==='/mypage/list'){
-  //         // 마이페이지 경우는 Update
-  //         if(!file.val){
-  //           delete formData.thumbnail
-  //         }
-
-  //         await store.dispatch('articles/updateArticle', formData)
-  //         router.replace({name:'myProfile'})
-  //         $swal.fire({
-  //           icon: 'success',
-  //           title: `글 수정에 성공 하였습니다.`,
-  //           showConfirmButton: false,
-  //           timer: 2000
-  //         })
-  //       }else{
-  //         // 공고등록 경우는 Create
-  //         context.emit('save-data', formData)
-  //       }
-  //     }
-  //   }
-
-  //   const focusEditor = () =>{
-  //     tuiEditor.value.focus()
-  //   }
-
-  //   const selectFile = (e)=> {
-  //     file.val = e.target.files[0]
-  //     chosenFileName.value = e.target.files[0].name
-  //     clearValidity('file')
-  //   }
-
-  //   const swalAlert = (title) => {
-  //     return $swal.fire({
-  //       title: `${title} 하시겠습니까?`,
-  //       text: `해당 글을 ${title}합니다.`,
-  //       icon: 'info',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#34c38f',
-  //       cancelButtonColor: '#f46a6a',
-  //       confirmButtonText: '네',
-  //       cancelButtonText: '아니오'
-  //     })
-  //   }
-
-  //   const addImageBlobHook = async(blob, callbacks) =>{
-  //     const fd = new FormData()
-  //     fd.append('images', blob)
-
-  //     await store.dispatch('articles/uploadImage',fd)
-  //     callbacks(`http://localhost:3000/images/${store.getters['articles/getUploadFileName']}`)
-  //   }
-
-  //   return{
-  //     name,
-  //     description,
-  //     areas,
-  //     file,
-  //     formIsValid,
-  //     chosenFileName,
-  //     clearValidity,
-  //     validateForm,
-  //     submitForm,
-  //     focusEditor,
-  //     selectFile
-  //   }
-  // }
+  }
 }
 </script>
 

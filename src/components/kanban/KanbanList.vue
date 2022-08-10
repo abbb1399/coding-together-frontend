@@ -174,6 +174,8 @@ export default {
         return
       }
 
+      board.title = inputValue
+
       store.dispatch("kanbans/updateBoardName", {
         title: inputValue,
         boardId: board._id,

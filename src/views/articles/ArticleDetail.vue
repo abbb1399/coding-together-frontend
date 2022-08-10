@@ -2,14 +2,15 @@
   <section class="article">
     <img
       class="article__thumbnail"
-      :src="`http://localhost:3000/images/${thumbnail}`"
+      :src="articeImage"
       alt="썸내일"
     />
     <h1 class="article__title">{{ title }}</h1>
     <div class="article__meta">
-      <small class="description"
-        >Written By {{ owner.name }} {{ updatedAt }}</small
-      >
+      <small class="description">
+        <font-awesome-icon icon="pen-nib" />&nbsp;
+        <span>{{ owner.name }} - {{ updatedAt }}</span>
+      </small>
       <base-badge
         class="bagde"
         v-for="area in areas"
@@ -29,10 +30,11 @@
 </template>
 
 <script>
-import { ref, reactive, inject } from "vue"
+import { ref, reactive, inject, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
 
+import {address} from '../../../config/address'
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 
@@ -58,6 +60,10 @@ export default {
     const owner = reactive({ id: "", name: "" })
     const thumbnail = ref(null)
     const articleOwner = ref('')
+
+    const articeImage = computed(()=>{
+      return `${address}/images/${thumbnail.value}`
+    })
 
     const init = async () => {
       try {
@@ -155,7 +161,7 @@ export default {
       title,
       areas,
       updatedAt,
-      thumbnail,
+      articeImage,
       owner,
       sendRequest,
     }
@@ -193,16 +199,16 @@ export default {
     background: #eee;
     padding: 0.5rem;
 
-    .description {
+    .description {   
       margin-right: auto;
     }
 
     .badge {
       text-align: center;
       font-size: 12px;
-      width: 5.5rem;
+      width: 4.8rem;
 
-      @include respond(phone){
+      @include respond(tab-land){
         font-size: 10px;
         width: 5.5rem;
       }

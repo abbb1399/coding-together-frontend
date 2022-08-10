@@ -2,7 +2,7 @@
   <section class="dropDownMenuWrapper">
     <slot name="content">
       <img
-        :src="imgSrc"
+        :src="avatar ? getImage(avatar) : defaultImg"
         style="border-radius:20px;"
         ref="menu"
         @click="openClose"
@@ -16,24 +16,28 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref,computed } from "vue"
 import { useStore } from "vuex"
+import {address} from '../../../config/address'
 
 export default {
   setup() {
     const store = useStore()
-
     const isOpen = ref(false)
-    const imgSrc = ref(require("../../assets/avatar.jpg"))
+    const defaultImg = ref(require("../../assets/avatar.jpg"))
     const menu = ref()
+
+    const avatar = computed(() => {
+      return store.getters.myInfo.avatar
+    })
 
     const openClose = () => {
       const closeListerner = (e) => {
-        if (catchOutsideClick(e, menu.value))
-          window.removeEventListener("click", closeListerner),
-            (isOpen.value = false)
+        if (catchOutsideClick(e, menu.value)){
+          window.removeEventListener("click", closeListerner)
+          isOpen.value = false
+        }
       }
-
       window.addEventListener("click", closeListerner)
 
       isOpen.value = !isOpen.value
@@ -41,57 +45,30 @@ export default {
 
     const catchOutsideClick = (event, dropdown) => {
       // 메뉴를 클릭할시는 아무일도 안생기게
-      if (dropdown === event.target) return false
+      if (dropdown === event.target) {
+        return false
+      }
 
       // 메뉴 바깥을 눌렀을때 메뉴가 닫히게
-      if (isOpen.value && dropdown !== event.target) return true
+      if (isOpen.value && dropdown !== event.target) {
+        return true
+      }
     }
 
-    if (store.getters.myInfo.avatar) {
-      imgSrc.value = `http://localhost:3000/avatars/${store.getters.myInfo.avatar}`
-    }
+    const getImage =(avatar) =>{
+      return `${address}/avatars/${avatar}`
+    } 
 
     return {
       isOpen,
-      imgSrc,
+      defaultImg,
       menu,
+      avatar,
       openClose,
       catchOutsideClick,
+      getImage
     }
-  },
-
-  // data(){
-  //   return{
-  //     isOpen: false,
-  //     imgSrc:require("../../assets/avatar.jpg")
-  //   }
-  // },
-  // created(){
-  //   if(this.$store.getters.myInfo.avatar){
-  //     this.imgSrc = `http://localhost:3000/avatars/${this.$store.getters.myInfo.avatar}`
-  //   }
-  // },
-  // methods:{
-  //   openClose(){
-  //     const closeListerner = (e) => {
-  //       if ( this.catchOutsideClick(e, this.$refs.menu ))
-  //       window.removeEventListener('click', closeListerner) , this.isOpen = false
-  //     }
-
-  //     window.addEventListener('click', closeListerner)
-
-  //     this.isOpen = !this.isOpen
-  //   },
-  //   catchOutsideClick(event, dropdown)  {
-  //     // 메뉴를 클릭할시는 아무일도 안생기게
-  //     if( dropdown === event.target )
-  //       return false
-
-  //     // 메뉴 바깥을 눌렀을때 메뉴가 닫히게
-  //     if( this.isOpen && dropdown !== event.target )
-  //       return true
-  //   }
-  // },
+  }
 }
 </script>
 

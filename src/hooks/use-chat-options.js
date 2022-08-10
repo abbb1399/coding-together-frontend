@@ -1,9 +1,10 @@
 import {reactive, ref} from 'vue'
+import {address} from '../../config/address'
 const { io } = require("socket.io-client");
 
 export default function useChatOptions() {
   // socket-io
-  const socket = io("http://localhost:3000")
+  const socket = io(address)
   
   // 채팅 옵션
   const textMessages = reactive({

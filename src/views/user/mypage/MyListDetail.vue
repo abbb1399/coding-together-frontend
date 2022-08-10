@@ -2,7 +2,7 @@
   <section class="detail" v-if="!editMode">
     <header class="detail-header">
       <div class="detail-header__title">
-        <h2>{{ title }}</h2>
+        <h2>{{ articleTitle }}</h2>
         <span>
           <base-button mode="secondary" @click="editArticle">수정</base-button>
           <base-button mode="primary" @click="deleteArticle">삭제</base-button>
@@ -32,14 +32,16 @@
 </template>
 
 <script>
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
-import "@toast-ui/editor/dist/toastui-editor-viewer.css"
-import ArticleForm from "../../../components/articles/ArticleForm.vue"
-
-import { ref, inject, onMounted, toRefs } from "vue"
+import { ref, inject, toRefs } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import { useRoute } from "vue-router"
+
+import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
+import "@toast-ui/editor/dist/toastui-editor-viewer.css"
+import ArticleForm from "../../../components/articles/ArticleForm.vue"
+import {address} from '../../../../config/address'
+
 
 export default {
   components: {
@@ -60,28 +62,28 @@ export default {
     const route = useRoute()
 
     const {id} = toRefs(props)
-    const title = ref("")
+    const articleTitle = ref("")
     const createdAt = ref("")
     const description = ref("")
     const areas = ref([])
     const imgSrc = ref(null)
     const editMode = ref(false)
 
-    onMounted(async () => {
+    const init = async () => {
       await store.dispatch("articles/fetchMyArticleDetail", route.params.id)
       const myList = store.getters["articles/getMyListDetail"]
-   
-      title.value = myList.name
+
+      articleTitle.value = myList.name
       createdAt.value = $moment(myList.createdAt).format("YYYY-MM-DD")
       // this.description = myList.description
       areas.value = myList.areas
-      imgSrc.value = `http://localhost:3000/images/${myList.thumbnail}`
+      imgSrc.value = `${address}/images/${myList.thumbnail}`
 
       new Viewer({
         el: document.querySelector("#viewer"),
         initialValue: myList.description,
       })
-    })
+    }
 
     const deleteArticle = async () => {
       const result = await $swal.fire({
@@ -112,8 +114,10 @@ export default {
       // vuex로 article form에 데이터 전달
     }
 
+    init()
+
     return {
-      title,
+      articleTitle,
       createdAt,
       description,
       areas,
@@ -124,73 +128,6 @@ export default {
     }
   },
 
-  // inject:['$moment','$swal'],
-  // components:{
-  //   ArticleForm
-  // },
-  // data(){
-  //   return{
-  //     title:'',
-  //     createdAt:'',
-  //     description:'',
-  //     areas:[],
-  //     imgSrc:null,
-  //     hasArticle: null,
-  //     editMode: false
-  //   }
-  // },
-  // async created(){
-  //   await this.getMyList()
-  // },
-  // methods:{
-  //   async getMyList(){
-  //     this.hasArticle = true
-  //     await this.$store.dispatch('articles/fetchMyArticle')
-  //     const myList = this.$store.getters['articles/getMyPageList']
-
-  //     if(myList){
-  //       this.title = myList.name
-  //       this.createdAt = this.$moment(myList.createdAt).format('YYYY-MM-DD')
-  //       // this.description = myList.description
-  //       this.areas = myList.areas
-  //       this.imgSrc = `http://localhost:3000/images/${myList.thumbnail}`
-
-  //       new Viewer({
-  //         el: document.querySelector('#viewer'),
-  //         initialValue: myList.description
-  //       });
-  //     }else{
-  //       this.hasArticle = false
-  //     }
-  //   },
-  //   async deleteArticle(){
-  //     const result = await this.$swal.fire({
-  //       title: '삭제 하시겠습니까??',
-  //       text: '해당 글을 삭제합니다.',
-  //       icon: 'info',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#34c38f',
-  //       cancelButtonColor: '#f46a6a',
-  //       confirmButtonText: '네',
-  //       cancelButtonText: '아니오'
-  //     })
-
-  //     if(result.value){
-  //       await this.$store.dispatch('articles/deleteMyArticle')
-  //       this.$router.replace({name:'myList'})
-  //       this.$swal.fire({
-  //         icon: 'success',
-  //         title: `글 삭제에 성공 하였습니다.`,
-  //         showConfirmButton: false,
-  //         timer: 2000
-  //       })
-  //     }
-  //   },
-  //   editArticle(){
-  //     this.editMode = true
-  //     // vuex로 article form에 데이터 전달
-  //   },
-  // }
 }
 </script>
 

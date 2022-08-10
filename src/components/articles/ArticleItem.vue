@@ -17,6 +17,7 @@
 <script>
 import { toRefs, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import {address} from '../../../config/address'
 
 export default {
   props: {
@@ -43,7 +44,7 @@ export default {
     const { id, thumbnail } = toRefs(props)
 
     const getListImage = computed(() => {
-      return `http://localhost:3000/images/${thumbnail.value}`
+      return `${address}/images/${thumbnail.value}`
     })
 
     const toDetail = () => {
@@ -65,7 +66,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 1rem;
-
+ 
   img {
     width: 100%;
     border-radius: 5px;

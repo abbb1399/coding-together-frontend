@@ -1,18 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import store from '../store/index.js'
 
-// import ArticleDetail from '../views/articles/ArticleDetail.vue'
 import ArticleList from '../views/articles/ArticleList.vue'
-import ArticleRegistration from '../views/articles/ArticleRegistration.vue'
-// import ContactOwner from '../views/requests/ContactOwner.vue'
-import RequestsReceived from '../views/requests/RequestsReceived.vue'
-import UserAuth from '../views/auth/UserAuth.vue'
-import MyPage from '../views/user/MyPage.vue'
-
-import MyProfile from '../views/user/mypage/MyProfile.vue'
-import MyList from '../views/user/mypage/MyList.vue'
-import MyListDetail from '../views/user/mypage/MyListDetail'
 
 const routes = [
   { path:'/', redirect: '/articles' },
@@ -21,22 +10,19 @@ const routes = [
     path:'/articles/:id',
     component: () => import('../views/articles/ArticleDetail.vue'),
     props:true,
-    // children:[
-    //   { path: 'contact', component: ContactOwner}, 
-    // ]
   },
-  {path:'/register', component: ArticleRegistration, meta:{ requiresAuth: true}},
-  {path: '/requests', component: RequestsReceived, meta:{ requiresAuth: true}},
-  {path: '/auth', component: UserAuth, meta:{ requiresUnauth: true}},
+  {path:'/register', component: () => import('../views/articles/ArticleRegistration.vue'), meta:{ requiresAuth: true}},
+  {path: '/requests', component: () => import('../views/requests/RequestsReceived.vue'), meta:{ requiresAuth: true}},
+  {path: '/auth', component:() => import('../views/auth/UserAuth.vue'), meta:{ requiresUnauth: true}},
   {
     path: '/mypage', 
     name:'myPage', 
-    component:MyPage, 
+    component:() => import('../views/user/MyPage.vue'), 
     meta:{ requiresAuth: true},
     children:[
-      {path:'profile', name:"myProfile", component: MyProfile},
-      {path:'list', name:"myList", component: MyList},
-      {path:'list/:id', name:'myListDetail', component: MyListDetail, props:true,  meta:{ requiresAuth: true}}
+      {path:'profile', name:"myProfile", component: ()=> import('../views/user/mypage/MyProfile.vue')},
+      {path:'list', name:"myList", component: ()=> import('../views/user/mypage/MyList.vue')},
+      {path:'list/:id', name:'myListDetail', component: () => import('../views/user/mypage/MyListDetail'), props:true,  meta:{ requiresAuth: true}}
     ]
   },
   {path:'/schedule', component: () => import('../views/schedule/Schedule.vue'), meta:{ requiresAuth: true, hideFooter:true}},

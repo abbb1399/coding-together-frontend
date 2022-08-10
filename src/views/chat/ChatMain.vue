@@ -12,7 +12,7 @@
           <img
             class="chat__img"
             alt="유저 프로필"
-            :src="`http://localhost:3000/images/${room.avatar}`"
+            :src="getImage(room.avatar)"
           />
           <div class="chat__group">
             <div class="content__group--1">
@@ -33,7 +33,7 @@
                 {{ user.username }}
               </p>
               <span>님의 채팅방</span>
-              <p v-if="roomList.length === 0" class="content__waiting">
+              <p v-if="roomList.length" class="content__waiting">
                 &nbsp; - 상대방이 들어오길 기다리고 있습니다.
               </p>
             </div>
@@ -59,16 +59,18 @@ import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import Pagination from "../../components/ui/Pagination.vue"
+import {address} from '../../../config/address'
 
 export default {
   components: { Pagination },
   setup() {
     const store = useStore()
     const router = useRouter()
-
+    
     const noImg = ref(require("../../assets/avatar.jpg"))
     const currentPage = ref(1)
     const perPage = ref(5)
+
 
     const roomList = computed(() => {
       return store.getters["chat/roomList"]
@@ -91,6 +93,10 @@ export default {
       currentPage.value = page
     }
 
+    const getImage = (roomAvatar) =>{
+      return `${address}/images/${roomAvatar}`
+    }
+
     const init = async () => {
       await store.dispatch("chat/fetchChatRoomList", currentPage.value)
     }
@@ -106,6 +112,7 @@ export default {
       roomList,
       enterChatRoom,
       onPageChange,
+      getImage
     }
   },
 }
