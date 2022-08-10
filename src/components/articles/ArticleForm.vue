@@ -81,7 +81,6 @@
 import Editor from "@toast-ui/editor"
 import "@toast-ui/editor/dist/toastui-editor.css"
 import "@toast-ui/editor/dist/i18n/ko-kr"
-import {address} from '../../../config/address'
 
 export default {
   inject: ["$swal"],
@@ -282,7 +281,7 @@ export default {
 
       await this.$store.dispatch("articles/uploadImage", fd)
       callbacks(
-        `${address}/images/${this.$store.getters["articles/getUploadFileName"]}`
+        `${process.env.VUE_APP_API_URL}/images/${this.$store.getters["articles/getUploadFileName"]}`
       )
     },
   }

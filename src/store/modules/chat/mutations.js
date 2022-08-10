@@ -1,5 +1,4 @@
 import moment from 'moment'
-import {address} from '../../../../config/address'
 
 export default {
   setRoomList(state, chatRoomInfo){
@@ -26,7 +25,7 @@ export default {
     state.newMessage = newMsg
   },
   setCurrentRoom(state, currentRoomInfo){
-    currentRoomInfo.avatar = `${address}/images/${currentRoomInfo.avatar}`
+    currentRoomInfo.avatar = `${process.env.VUE_APP_API_URL}/images/${currentRoomInfo.avatar}`
 
     state.currentRoom = currentRoomInfo
   },

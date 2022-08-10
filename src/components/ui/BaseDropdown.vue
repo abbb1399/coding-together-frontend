@@ -18,7 +18,6 @@
 <script>
 import { ref,computed } from "vue"
 import { useStore } from "vuex"
-import {address} from '../../../config/address'
 
 export default {
   setup() {
@@ -56,7 +55,7 @@ export default {
     }
 
     const getImage =(avatar) =>{
-      return `${address}/avatars/${avatar}`
+      return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`
     } 
 
     return {

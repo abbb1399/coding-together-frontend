@@ -34,7 +34,6 @@ import { ref, reactive, inject, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
 
-import {address} from '../../../config/address'
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 
@@ -62,7 +61,7 @@ export default {
     const articleOwner = ref('')
 
     const articeImage = computed(()=>{
-      return `${address}/images/${thumbnail.value}`
+      return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
     })
 
     const init = async () => {

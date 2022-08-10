@@ -20,7 +20,6 @@
 import { toRefs, computed, inject } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
-import {address} from '../../../config/address'
 
 export default {
   props: {
@@ -60,7 +59,7 @@ export default {
 
     const img = computed(() => {
       if (fromImgSrc.value) {
-        return `${address}/avatars/${fromImgSrc.value}`
+        return `${process.env.VUE_APP_API_URL}/avatars/${fromImgSrc.value}`
       } else {
         return require("../../assets/avatar.jpg")
       }

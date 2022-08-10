@@ -29,8 +29,9 @@ export default {
     const store = useStore()
     const router = useRouter()
     
+    // auto login
     store.dispatch('tryLogin')
-
+ 
     const didAutoLogout = computed(() => {
       return store.getters.didAutoLogout
     })

@@ -13,7 +13,6 @@
 <script>
 import {toRefs, computed, inject} from 'vue'
 import { useRouter } from "vue-router"
-import {address} from '../../../config/address'
 
 export default {
   props:{
@@ -46,7 +45,7 @@ export default {
     
 
     const img = computed(()=>{
-      return `${address}/images/${thumbnail.value}`
+      return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
     })
 
     const listCreatedAt = computed(()=>{

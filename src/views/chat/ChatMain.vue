@@ -59,7 +59,6 @@ import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import Pagination from "../../components/ui/Pagination.vue"
-import {address} from '../../../config/address'
 
 export default {
   components: { Pagination },
@@ -94,7 +93,7 @@ export default {
     }
 
     const getImage = (roomAvatar) =>{
-      return `${address}/images/${roomAvatar}`
+      return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
     }
 
     const init = async () => {

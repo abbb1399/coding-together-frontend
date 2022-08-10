@@ -1,11 +1,10 @@
 import axios from "axios"
-import {address} from '../../../../config/address'
 
 export default {
   async contactCoach(context, request){
     try{
       const response = await axios.post(
-        `${address}/requests`, 
+        `${process.env.VUE_APP_API_URL}/requests`, 
         request,
       )
       request.id = response._id
@@ -24,7 +23,7 @@ export default {
 
     try{
       const {data} = await axios.get(
-        `${address}/requests/${page}`,
+        `${process.env.VUE_APP_API_URL}/requests/${page}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -36,7 +35,7 @@ export default {
 
   haveRequestRead(_,id){
     try{
-      axios.patch(`${address}/requests/${id}`)
+      axios.patch(`${process.env.VUE_APP_API_URL}/requests/${id}`)
     }catch(e){
       console.log(e)
     }

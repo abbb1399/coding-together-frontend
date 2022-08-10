@@ -1,5 +1,4 @@
 const axios = require('axios');
-import {address} from '../../../../config/address'
 
 let timer
 
@@ -24,11 +23,11 @@ export default {
     const mode = payload.mode
 
     // 로그인 router
-    let url = `${address}/users/login` 
+    let url = `${process.env.VUE_APP_API_URL}/users/login` 
 
     if(mode === 'signup'){
       // 회원가입 router
-      url = `${address}/users`
+      url = `${process.env.VUE_APP_API_URL}/users`
     }
 
     try{
@@ -91,7 +90,7 @@ export default {
     const token = localStorage.getItem('token')
 
     try{
-      await axios.post(`${address}/users/logoutAll`,
+      await axios.post(`${process.env.VUE_APP_API_URL}/users/logoutAll`,
         {},
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -141,7 +140,7 @@ export default {
   async deleteAccount(){
     const token = localStorage.getItem('token')
     try{
-      await axios.delete(`${address}/users/me`,
+      await axios.delete(`${process.env.VUE_APP_API_URL}/users/me`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
     }catch(e){
@@ -154,7 +153,7 @@ export default {
 
     try{
       const {data} = await axios.post(
-        `${address}/avatar`, 
+        `${process.env.VUE_APP_API_URL}/avatar`, 
         file, 
         { headers: { Authorization: `Bearer ${token}` }}
       )

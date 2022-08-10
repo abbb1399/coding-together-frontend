@@ -1,5 +1,4 @@
 const axios = require('axios');
-import {address} from '../../../../config/address'
 
 export default {
   // 스케줄 생성
@@ -20,7 +19,7 @@ export default {
 
     try{
       await axios.post(
-        `${address}/schedules`, 
+        `${process.env.VUE_APP_API_URL}/schedules`, 
         scheduleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -37,7 +36,7 @@ export default {
 
     try{
       const {data}  = await axios.get(
-        `${address}/schedules`,
+        `${process.env.VUE_APP_API_URL}/schedules`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -61,7 +60,7 @@ export default {
 
     try{
       axios.patch(
-        `${address}/schedules/${id}`,
+        `${process.env.VUE_APP_API_URL}/schedules/${id}`,
         changes,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -71,14 +70,13 @@ export default {
   },
 
   // 스케쥴 삭제
-  async deleteSchedule(context,payload){
+  async deleteSchedule(context, {id, calendarId}){
     const token = context.rootGetters.token
-    const {id, calendarId} = payload
 
     try{
       await axios.delete(
-        `${address}/schedules/${calendarId}/${id}`,
-        { headers: { Authorization: `Bearer ${token}` }}
+        `${process.env.VUE_APP_API_URL}/schedules`,
+        { headers: { Authorization: `Bearer ${token}` }, data: {id, calendarId}}
       )
     }catch(e){
       console.log(e)

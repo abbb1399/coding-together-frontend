@@ -1,5 +1,4 @@
 const axios = require('axios');
-import {address} from '../../../../config/address'
 
 export default {
   // 글 등록
@@ -17,7 +16,7 @@ export default {
 
     try{
       await axios.post(
-        `${address}/articles`, 
+        `${process.env.VUE_APP_API_URL}/articles`, 
         articleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )   
@@ -35,7 +34,7 @@ export default {
   async loadArticles(context, payload){  
     try{  
       const { data } = await axios.get(
-        `${address}/articles/${payload.pageNum}`,{
+        `${process.env.VUE_APP_API_URL}/articles/${payload.pageNum}`,{
         params: {
           filter: payload.filter
         }
@@ -62,7 +61,7 @@ export default {
   // 글 내용 불러오기
   async loadArticleDetail(context,id){
     try{
-      const {data} = await axios.get(`${address}/article/${id}`)
+      const {data} = await axios.get(`${process.env.VUE_APP_API_URL}/article/${id}`)
     
       context.commit('setArticle',data)
     }catch(e){
@@ -74,7 +73,7 @@ export default {
   async fetchMyArticle(context,pageNum){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`${address}/my-article/${pageNum}`,
+      const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/my-article/${pageNum}`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -88,7 +87,7 @@ export default {
   async fetchMyArticleDetail(context,id){
     try{
       const token = context.rootGetters.token
-      const { data } = await axios.get(`${address}/my-article-detail/${id}`,
+      const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/my-article-detail/${id}`,
        { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -103,7 +102,7 @@ export default {
   async deleteMyArticle(context,id){
     try{
       const token = context.rootGetters.token
-      await axios.delete(`${address}/article/${id}`,
+      await axios.delete(`${process.env.VUE_APP_API_URL}/article/${id}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
     }catch(e){
@@ -124,7 +123,7 @@ export default {
 
     try{
       const token = context.rootGetters.token
-      await axios.patch(`${address}/articles/${id}`,
+      await axios.patch(`${process.env.VUE_APP_API_URL}/articles/${id}`,
         articleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -137,7 +136,7 @@ export default {
   async uploadImage(context,file){
     try{
       const {data} = await axios.post(
-       `${address}/images`,
+       `${process.env.VUE_APP_API_URL}/images`,
        file
       )
      

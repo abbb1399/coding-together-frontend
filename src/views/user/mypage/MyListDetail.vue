@@ -40,8 +40,6 @@ import { useRoute } from "vue-router"
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 import ArticleForm from "../../../components/articles/ArticleForm.vue"
-import {address} from '../../../../config/address'
-
 
 export default {
   components: {
@@ -77,7 +75,7 @@ export default {
       createdAt.value = $moment(myList.createdAt).format("YYYY-MM-DD")
       // this.description = myList.description
       areas.value = myList.areas
-      imgSrc.value = `${address}/images/${myList.thumbnail}`
+      imgSrc.value = `${process.env.VUE_APP_API_URL}/images/${myList.thumbnail}`
 
       new Viewer({
         el: document.querySelector("#viewer"),
