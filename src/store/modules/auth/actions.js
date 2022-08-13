@@ -58,7 +58,7 @@ export default {
         myInfo
       })
     }catch(error){
-      throw new Error('유효한 아이디/비밀번호를 입력해주세요.')
+      throw new Error(error.response.data)
     }        
   },
   

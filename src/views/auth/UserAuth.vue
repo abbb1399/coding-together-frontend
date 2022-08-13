@@ -143,8 +143,12 @@ export default {
     }
 
     const switchAuthMode = () => {
+      email.value = ''
+      password.value = ''
+
       if (mode.value === "login") {
         mode.value = "signup"
+        name.value = ''
       } else {
         mode.value = "login"
       }
@@ -166,86 +170,9 @@ export default {
       switchModeButtonCaption,
       switchAuthMode,
       handleError,
-      submitForm,
-      
+      submitForm
     }
-  },
-
-  // data() {
-  //   return {
-  //     name: "",
-  //     email: "",
-  //     password: "",
-  //     formIsValid: true,
-  //     mode: "login",
-  //     isLoading: false,
-  //     error: null,
-  //   }
-  // },
-  // computed: {
-  //   submitButtonCaption() {
-  //     if (this.mode === "login") {
-  //       return "로그인"
-  //     } else {
-  //       return "회원가입"
-  //     }
-  //   },
-  //   switchModeButtonCaption() {
-  //     if (this.mode === "login") {
-  //       return "회원가입하러 가기"
-  //     } else {
-  //       return "로그인하러 가기"
-  //     }
-  //   },
-  // },
-  // methods: {
-  //   async submitForm() {
-  //     this.formIsValid = true
-  //     if (
-  //       this.email === "" ||
-  //       !this.email.includes("@") ||
-  //       this.password.length < 6
-  //     ) {
-  //       this.formIsValid = false
-  //       return
-  //     }
-
-  //     this.isLoading = true
-
-  //     const userInfo = {
-  //       name: this.name,
-  //       email: this.email,
-  //       password: this.password,
-  //     }
-
-  //     try {
-  //       if (this.mode === "login") {
-  //         // 로그인
-  //         await this.$store.dispatch("login", userInfo)
-  //       } else {
-  //         // 회원가입
-  //         await this.$store.dispatch("signup", userInfo)
-  //       }
-
-  //       const redirectUrl = "/" + (this.$route.query.redirect || "articles")
-  //       this.$router.replace(redirectUrl)
-  //     } catch (err) {
-  //       this.error = err || "인증실패, 다시 시도하세요."
-  //     }
-
-  //     this.isLoading = false
-  //   },
-  //   switchAuthMode() {
-  //     if (this.mode === "login") {
-  //       this.mode = "signup"
-  //     } else {
-  //       this.mode = "login"
-  //     }
-  //   },
-  //   handleError() {
-  //     this.error = null
-  //   },
-  // },
+  }
 }
 </script>
 
