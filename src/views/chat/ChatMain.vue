@@ -33,7 +33,7 @@
                 {{ user.username }}
               </p>
               <span>님의 채팅방</span>
-              <p v-if="roomList.length" class="content__waiting">
+              <p v-if="room.users.length < 2" class="content__waiting">
                 &nbsp; - 상대방이 들어오길 기다리고 있습니다.
               </p>
             </div>
