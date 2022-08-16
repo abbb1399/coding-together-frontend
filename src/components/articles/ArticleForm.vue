@@ -116,6 +116,12 @@ export default {
       previewStyle: "vertical",
       language: "ko-KR",
       autofocus: false,
+      toolbarItems: [
+        ['heading', 'bold', 'italic', 'strike'],
+        ['hr', 'quote'],
+        ['ul', 'ol', 'task', 'table', 'image'],
+        [ 'link','code', 'codeblock']
+      ],
       linkAttribute: {
         target: "_blank",
         contenteditable: "false",
