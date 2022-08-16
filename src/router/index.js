@@ -45,6 +45,10 @@ const router = createRouter({
 
 // 네비게이션 가드
 router.beforeEach(function(to, _, next){
+  if(!localStorage.getItem('token') && store.getters.isAuthenticated){
+    store.commit('setUnAuthenticated')
+  }
+
   // 인증이 안된경우 로그인페이지로 이동
   if(to.meta.requiresAuth && !store.getters.isAuthenticated){
     next('/auth')

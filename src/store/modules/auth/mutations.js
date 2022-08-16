@@ -20,5 +20,8 @@ export default {
   },
   setMyAvatar(state, payload){
     state.myInfo.avatar = payload
+  },
+  setUnAuthenticated(state){
+    state.token = null
   }
 }
