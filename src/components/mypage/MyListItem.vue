@@ -2,7 +2,7 @@
   <li class="my-list" @click="toListDetail">
     <img class="my-list__img" alt="유저 프로필" :src="img">
     <div class="my-list__group">
-      <h2 class="group__title">{{title}}</h2>
+      <h2 class="group__title">{{listItemTitle}}</h2>
       <base-badge class="group__badge" v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
     </div>
     <!-- <p class="my-list__completed">{{listCompleted}}</p> -->
@@ -41,8 +41,11 @@ export default {
   setup(props){
     const router = useRouter()
     const $moment = inject('$moment')
-    const {thumbnail, createdAt, id} = toRefs(props) 
+    const {thumbnail, createdAt, id, title} = toRefs(props) 
     
+    const listItemTitle = computed(()=>{
+      return title.value.length > 13 ? title.value.slice(0, 12) + '...' : title.value
+    })
 
     const img = computed(()=>{
       return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
@@ -62,6 +65,7 @@ export default {
     }
 
     return{
+      listItemTitle,
       img,
       listCreatedAt,
       // listCompleted,

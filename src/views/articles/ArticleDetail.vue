@@ -142,7 +142,7 @@ export default {
 
         // 방이 이미 생성되었을 경우 - 상대방에게 요청도 생성
         if (store.getters["chat/isRoomCreated"]) {
-          await store.dispatch("requests/contactCoach", {
+          await store.dispatch("requests/sendRequest", {
             userId: store.getters.myInfo.id,
             title: title.value,
             owner: owner.id,

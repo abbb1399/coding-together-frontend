@@ -2,7 +2,7 @@
   <li class="article-list" @click.once="toDetail">
     <img :src="getListImage" alt="리스트 썸내일" />
     <div class="list-detail">
-      <h3>{{ title }}</h3>
+      <h3>{{ articleTitle }}</h3>
       <base-badge
         class="badge"
         v-for="area in areas"
@@ -40,7 +40,11 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
-    const { id, thumbnail } = toRefs(props)
+    const { id, thumbnail, title } = toRefs(props)
+
+    const articleTitle = computed(()=>{
+      return title.value.length > 12 ? title.value.slice(0,11) + '...' : title.value
+    })
 
     const getListImage = computed(() => {
       return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
@@ -51,6 +55,7 @@ export default {
     }
 
     return {
+      articleTitle,
       getListImage,
       toDetail,
     }

@@ -10,7 +10,7 @@
       </header>
       <base-spinner v-if="isLoading"></base-spinner>
       <ul class="my-list__list" v-else-if="total > 0 && !isLoading">
-        <my-request-list
+        <my-list-item
           v-for="list in myList"
           :key="list._id"
           :id="list._id"
@@ -39,13 +39,13 @@
 <script>
 import { ref, computed } from "vue"
 import { useStore } from "vuex"
-import MyRequestList from "../../../components/mypage/MyRequestList.vue"
+import MyListItem from "../../../components/mypage/MyListItem.vue"
 import Pagination from "../../../components/ui/Pagination.vue"
 
 export default {
   components: {
-    MyRequestList,
-    Pagination,
+    MyListItem,
+    Pagination
   },
   setup() {
     const store = useStore()

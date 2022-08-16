@@ -1,14 +1,13 @@
 import axios from "axios"
 
 export default {
-  async contactCoach(context, request){
+  async sendRequest(context, request){
     try{
       const response = await axios.post(
         `${process.env.VUE_APP_API_URL}/requests`, 
         request,
       )
       request.id = response._id
-      // newRequest.coachId = payload.coachId
 
       context.commit('addRequest', request)
     }catch(e){
