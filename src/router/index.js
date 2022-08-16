@@ -45,6 +45,7 @@ const router = createRouter({
 
 // 네비게이션 가드
 router.beforeEach(function(to, _, next){
+  // 한 컴퓨터에서 두개의 창으로 로그인하고, 한쪽에서 로그아웃 할시 나머지 창도 로그아웃 되도록
   if(!localStorage.getItem('token') && store.getters.isAuthenticated){
     store.commit('setUnAuthenticated')
   }

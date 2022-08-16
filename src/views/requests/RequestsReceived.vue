@@ -110,17 +110,12 @@ export default {
 
 <style lang="scss" scoped>
 .requests {
+  max-width: 62.5rem;
+  margin: 0 auto;
   margin-top: 1rem;
 
   &__header {
     text-align: center;
-  }
-
-  &__list {
-    list-style: none;
-    margin: 2rem auto;
-    padding: 0;
-    max-width: 50rem;
   }
 
   &__no-request {

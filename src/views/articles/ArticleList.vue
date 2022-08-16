@@ -94,8 +94,12 @@ export default {
 
 <style lang="scss" scoped>
   .articles{
-    max-width: $website-width;
+    max-width: 62.5rem;
     margin: 0 auto;
+
+    @include respond(big-screen){
+      max-width: $website-width;
+    }
 
     @include respond(tab-land){
       margin: 0 1rem;

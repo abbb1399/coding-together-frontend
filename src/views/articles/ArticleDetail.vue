@@ -174,7 +174,7 @@ export default {
 }
 
 .article {
-  max-width: $website-width;
+  max-width: 43.5rem;
   margin: 1rem auto;
 
   &__title {

@@ -4,12 +4,12 @@
 
     <router-view v-slot="slotProps" >
       <transition name="route" mode="out-in">
-        <component :is="slotProps.Component" :class="{'flex-one':!$route.meta.hideFooter}"/>
+        <component :is="slotProps.Component"/>
       </transition>
-    </router-view>  
-
-    <the-footer v-if="!$route.meta.hideFooter"/>
+    </router-view>
   </div>
+
+  <the-footer v-if="!$route.meta.hideFooter"/>
 </template>
 
 <script>
@@ -42,15 +42,13 @@ export default {
         router.replace('/articles')
       }
     })
-  },
+  }
 }
 </script>
 
 <style lang="scss">
   #app-main{
-    display: flex; 
-    flex-direction:column; 
-    min-height: 100vh;
+    min-height: 90vh;
   }
   
   // Vue Transition css
