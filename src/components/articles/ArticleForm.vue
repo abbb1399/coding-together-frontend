@@ -241,12 +241,12 @@ export default {
       this.chosenFileName = e.target.files[0].name
 
       // 파일업로드 로직
-      const data = new FormData()
+      const file = new FormData()
       const fileToUpload = e.target.files[0]
-      data.append("images", fileToUpload)
+      file.append("images", fileToUpload)
 
       try {
-        await this.$store.dispatch("articles/uploadImage", data)
+        await this.$store.dispatch("articles/uploadImage", {file, type:'thumbnail'})
         this.file.val = this.$store.getters["articles/getUploadFileName"]
 
         this.clearValidity("file")
@@ -276,10 +276,10 @@ export default {
     },
 
     async addImageBlobHook(blob, callbacks) {
-      const fd = new FormData()
-      fd.append("images", blob)
+      const file = new FormData()
+      file.append("images", blob)
 
-      await this.$store.dispatch("articles/uploadImage", fd)
+      await this.$store.dispatch("articles/uploadImage", {file, type:'content'})
       callbacks(
         `${process.env.VUE_APP_API_URL}/images/${this.$store.getters["articles/getUploadFileName"]}`
       )

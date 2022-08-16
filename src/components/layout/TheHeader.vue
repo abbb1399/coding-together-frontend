@@ -88,25 +88,7 @@ export default {
       toUserInfo,
       display,
     }
-  },
-  // computed:{
-  //   isLoggedIn(){
-  //     return this.$store.getters.isAuthenticated
-  //   }
-  // },
-  // methods:{
-  //   logout(){
-  //     this.$store.dispatch('logout')
-  //     this.$router.replace('/articles')
-  //   },
-  //   openMenu(){
-  //     const menu = document.querySelector('ul');
-  //     menu.classList.toggle('active');
-  //   },
-  //   toUserInfo(){
-  //     this.$router.push({name:'myProfile'})
-  //   }
-  // }
+  }
 }
 </script>
 

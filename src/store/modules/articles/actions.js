@@ -133,11 +133,12 @@ export default {
   },
 
   // 이미지 업로드
-  async uploadImage(context,file){
+  async uploadImage(context,{file, type}){
     try{
       const {data} = await axios.post(
-       `${process.env.VUE_APP_API_URL}/images`,
-       file
+       `${process.env.VUE_APP_API_URL}/images/${type}`,
+       file,
+       { headers: {'Content-Type': 'multipart/form-data'}}
       )
      
       context.commit('setUploadFileName', data)

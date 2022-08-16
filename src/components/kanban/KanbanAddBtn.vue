@@ -52,12 +52,13 @@ export default {
       const kanbanCount = store.getters["kanbans/kanbans"].length
 
       if(kanbanCount> 11){
-        return $swal.fire({
+        $swal.fire({
           icon: "info",
           title: '최대 10개까지만 생성 가능합니다.',
           showConfirmButton: false,
           timer: 2000,
         })
+        return 
       }
 
       const inputTitle = inputValue.value.trim()
