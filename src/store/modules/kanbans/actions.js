@@ -1,4 +1,4 @@
-const axios = require("axios")
+import axios from "../../../plugins/axios"
 
 export default {
   // Kanban 생성
@@ -7,7 +7,7 @@ export default {
 
     try {
       const { data } = await axios.post(
-        `${process.env.VUE_APP_API_URL}/kanbans`,
+        '/kanbans',
         kanbanData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -24,7 +24,7 @@ export default {
     const token = context.rootGetters.token
 
     try {
-      const { data } = await axios.get(`${process.env.VUE_APP_API_URL}/kanbans`, {
+      const { data } = await axios.get('/kanbans', {
         headers: { Authorization: `Bearer ${token}` },
       })
 
@@ -39,7 +39,7 @@ export default {
     const token = context.rootGetters.token
 
     try {
-      axios.patch(`${process.env.VUE_APP_API_URL}/kanbans`, data, {
+      axios.patch('/kanbans', data, {
         headers: { Authorization: `Bearer ${token}` },
       })
     } catch (e) {
@@ -52,7 +52,7 @@ export default {
     const token = context.rootGetters.token
 
     try {
-      axios.patch(`${process.env.VUE_APP_API_URL}/move-kanban`, data, {
+      axios.patch('/move-kanban', data, {
         headers: { Authorization: `Bearer ${token}` },
       })
     } catch (e) {
@@ -65,7 +65,7 @@ export default {
     const token = context.rootGetters.token
 
     try {
-      const {data} = await axios.delete(`${process.env.VUE_APP_API_URL}/kanban/${boardId}`,
+      const {data} = await axios.delete(`/kanban/${boardId}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
       context.commit("subtractKanban", data)
@@ -77,7 +77,7 @@ export default {
   // Task 생성
   async registerTask(context, taskData) {
     try {
-      await axios.patch(`${process.env.VUE_APP_API_URL}/tasks`, taskData)
+      await axios.patch('/tasks', taskData)
       context.commit("addTask", taskData)
     } catch (e) {
       console.log(e)
@@ -87,7 +87,7 @@ export default {
   // Task 이동
   moveTask(_, taskData) {
     try {
-      axios.patch(`${process.env.VUE_APP_API_URL}/move-task`, taskData)
+      axios.patch('/move-task', taskData)
     } catch (e) {
       console.log(e)
     }
@@ -96,7 +96,7 @@ export default {
   // Task 업데이트
   updateTask(_, taskData) {
     try {
-      axios.patch(`${process.env.VUE_APP_API_URL}/update-task`, taskData)
+      axios.patch('/update-task', taskData)
     } catch (e) {
       console.log(e)
     }
@@ -104,14 +104,14 @@ export default {
   // Task 순서 변경
   changeTaskOrder(_, data) {
     try {
-      axios.patch(`${process.env.VUE_APP_API_URL}/change-task-order`, data)
+      axios.patch('/change-task-order', data)
     } catch (e) {
       console.log(e)
     }
   },
   async deleteTask(context, taskData){
     try {
-      const {data} = await axios.delete(`${process.env.VUE_APP_API_URL}/delete-task`, {data:taskData})
+      const {data} = await axios.delete('/delete-task', {data:taskData})
       
       context.commit("deleteTask", data)
     } catch (e) {

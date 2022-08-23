@@ -26,33 +26,33 @@
           type="checkbox"
           id="frontend"
           value="frontend"
-          class="form__input"
+          class="form__input pointer"
           v-model="areas.val"
           @blur="clearValidity('areas')"
         />
-        <label for="frontend" class="form__caption">프론트엔드 개발자</label>
+        <label for="frontend" class="form__caption pointer">프론트엔드 개발자</label>
       </div>
       <div>
         <input
           type="checkbox"
           id="backend"
           value="backend"
-          class="form__input"
+          class="form__input pointer"
           v-model="areas.val"
           @blur="clearValidity('areas')"
         />
-        <label for="backend" class="form__caption">백엔드 개발자</label>
+        <label for="backend" class="form__caption pointer">백엔드 개발자</label>
       </div>
       <div>
         <input
           type="checkbox"
           id="publisher"
           value="publisher"
-          class="form__input"
+          class="form__input pointer"
           v-model="areas.val"
           @blur="clearValidity('areas')"
         />
-        <label for="publisher" class="form__caption">퍼블리셔</label>
+        <label for="publisher" class="form__caption pointer">퍼블리셔</label>
       </div>
     </div>
 
@@ -366,6 +366,10 @@ export default {
       font-size: 1rem;
       width: 7rem;
     }
+  }
+
+  .pointer{
+    cursor: pointer;
   }
 }
 

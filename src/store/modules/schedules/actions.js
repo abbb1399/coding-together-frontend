@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from "../../../plugins/axios"
 
 export default {
   // 스케줄 생성
@@ -19,7 +19,7 @@ export default {
 
     try{
       await axios.post(
-        `${process.env.VUE_APP_API_URL}/schedules`, 
+        '/schedules', 
         scheduleData,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -36,7 +36,7 @@ export default {
 
     try{
       const {data}  = await axios.get(
-        `${process.env.VUE_APP_API_URL}/schedules`,
+        '/schedules',
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -60,7 +60,7 @@ export default {
 
     try{
       axios.patch(
-        `${process.env.VUE_APP_API_URL}/schedules/${id}`,
+        `/schedules/${id}`,
         changes,
         { headers: { Authorization: `Bearer ${token}` }}
       )
@@ -75,7 +75,7 @@ export default {
 
     try{
       await axios.delete(
-        `${process.env.VUE_APP_API_URL}/schedules`,
+        '/schedules',
         { headers: { Authorization: `Bearer ${token}` }, data: {id, calendarId}}
       )
     }catch(e){

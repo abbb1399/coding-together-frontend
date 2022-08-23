@@ -101,7 +101,7 @@ export default {
       max-width: $website-width;
     }
 
-    @include respond(tab-land){
+    @media screen and (max-width: 860px) {
       margin: 0 1rem;
     }
 

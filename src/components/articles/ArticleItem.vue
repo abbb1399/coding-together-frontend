@@ -43,7 +43,7 @@ export default {
     const { id, thumbnail, title } = toRefs(props)
 
     const articleTitle = computed(()=>{
-      return title.value.length > 12 ? title.value.slice(0,11) + '...' : title.value
+      return title.value.length > 13 ? title.value.slice(0,12) + '...' : title.value
     })
 
     const getListImage = computed(() => {
@@ -70,7 +70,25 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 1rem;
- 
+  
+  h3{
+    @media screen and (min-width: 1201px) and (max-width: 1799px) {
+      font-size: 17.9px;
+    }
+
+    @include respond(tab-land){
+      font-size: 15.7px;
+    }
+
+    @media screen and (min-width: 601px) and (max-width: 692px) {
+      font-size: 13.5px;
+    }
+
+    @include respond(phone){
+      font-size: 17px;
+    }
+  }
+
   img {
     width: 100%;
     border-radius: 5px;

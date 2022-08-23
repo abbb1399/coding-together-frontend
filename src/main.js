@@ -2,14 +2,15 @@ import { createApp, defineAsyncComponent } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 import standardPlugin from './plugins/standard-plugin'
+import FontAwesomeIcon from "./utilities/font-awesome";
 
 import BaseCard from './components/ui/BaseCard.vue'
 import BaseButton from './components/ui/BaseButton.vue'
 import BaseBadge from './components/ui/BaseBadge.vue'
 import BaseSpinner from './components/ui/BaseSpinner.vue'
 
-import FontAwesomeIcon from "./utilities/font-awesome";
 
 
 // defineAsyncComponent - 필요할때만 import

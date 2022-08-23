@@ -1,10 +1,10 @@
-import axios from "axios"
+import axios from "../../../plugins/axios"
 
 export default {
   async sendRequest(context, request){
     try{
       const response = await axios.post(
-        `${process.env.VUE_APP_API_URL}/requests`, 
+        '/requests', 
         request,
       )
       request.id = response._id
@@ -22,7 +22,7 @@ export default {
 
     try{
       const {data} = await axios.get(
-        `${process.env.VUE_APP_API_URL}/requests/${page}`,
+        `/requests/${page}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -34,7 +34,7 @@ export default {
 
   haveRequestRead(_,id){
     try{
-      axios.patch(`${process.env.VUE_APP_API_URL}/requests/${id}`)
+      axios.patch(`/requests/${id}`)
     }catch(e){
       console.log(e)
     }
