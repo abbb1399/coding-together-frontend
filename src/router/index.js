@@ -22,7 +22,8 @@ const routes = [
     children:[
       {path:'profile', name:"myProfile", component: ()=> import('../views/user/mypage/MyProfile.vue')},
       {path:'list', name:"myList", component: ()=> import('../views/user/mypage/MyList.vue')},
-      {path:'list/:id', name:'myListDetail', component: () => import('../views/user/mypage/MyListDetail'), props:true,  meta:{ requiresAuth: true}}
+      {path:'list/:id', name:'myListDetail', component: () => import('../views/user/mypage/MyListDetail'), props:true},
+      {path:'change-password', name:'changePassword', component: () => import('../views/user/mypage/ChangePassword')}
     ]
   },
   {path:'/schedule', component: () => import('../views/schedule/Schedule.vue'), meta:{ requiresAuth: true, hideFooter:true}},

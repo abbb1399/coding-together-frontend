@@ -6,6 +6,11 @@
   margin-bottom: 8px;
 }
 
+@mixin object-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 // 미디어쿼리 메니져
 /*

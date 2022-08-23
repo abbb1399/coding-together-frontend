@@ -1,28 +1,29 @@
 <template>
-  <div>
-    <section class="my-page">
-      <div class="my-page__grid">
-        <aside id="categories" class="my-page__card">
-          <h2>내 정보</h2>
-          <ul class="my-page__list">
-            <li>
-              <router-link to="/mypage/profile">프로필</router-link>
-            </li>
-            <li>
-              <router-link to="/mypage/list">내가 쓴 공고</router-link>
-            </li>
-          </ul>
-        </aside>
-        <article class="card">
-          <router-view v-slot="slotProps">
-            <transition name="route" mode="out-in">
-              <component :is="slotProps.Component"></component>
-            </transition>
-          </router-view>
-        </article>
-      </div>
-    </section>
-  </div>
+  <section class="my-page">
+    <div class="my-page__grid">
+      <aside id="categories" class="my-page__card">
+        <h2>내 정보</h2>
+        <ul class="my-page__list">
+          <li>
+            <router-link to="/mypage/profile">내 정보</router-link>
+          </li>
+          <li>
+            <router-link to="/mypage/change-password">비밀번호 변경</router-link>
+          </li>
+          <li>
+            <router-link to="/mypage/list">내가 쓴 공고</router-link>
+          </li>
+        </ul>
+      </aside>
+      <article class="card">
+        <router-view v-slot="slotProps">
+          <transition name="route" mode="out-in">
+            <component :is="slotProps.Component"></component>
+          </transition>
+        </router-view>
+      </article>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>
@@ -62,6 +63,7 @@
 
       a {
         color: #333;
+        font-weight: 600;
 
         &.router-link-active {
           color: $primary-color;

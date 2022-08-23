@@ -1,14 +1,22 @@
 <template>
   <section>
-    <img
-      @click="imageUpload"
-      id="myImage"
-      alt="내 이미지"
-      :src="getMyInfo.avatar ? getImage(getMyInfo.avatar) : defaultImg"
-    />
-    <p><strong>이름 : </strong>{{ getMyInfo.name }}</p>
-    <p><strong>이메일 : </strong>{{ getMyInfo.email }}</p>
-    <p><strong>가입일 : </strong>{{ getMyInfo.createdAt}}</p>
+    <div class="avatar" @click="imageUpload">
+      <img
+        class="avatar__image"
+        :src="getMyInfo.avatar ? getImage(getMyInfo.avatar) : defaultImg"
+        alt="내 아바타"
+      />
+      <div class="avatar__overlay">
+        <span><font-awesome-icon icon="camera" class="avatar__overlay-icon"/></span>
+        <span class="avatar__overlay-text">아바타 변경</span>
+      </div>
+    </div>
+
+    <div>
+      <p><strong>이름 : </strong>{{ getMyInfo.name }}</p>
+      <p><strong>이메일 : </strong>{{ getMyInfo.email }}</p>
+      <p><strong>가입일 : </strong>{{ getMyInfo.createdAt }}</p>
+    </div>
   </section>
 </template>
 
@@ -44,7 +52,7 @@ export default {
       upload.click()
     }
 
-    const getImage = (avatar) =>{
+    const getImage = (avatar) => {
       return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`
     }
 
@@ -57,23 +65,58 @@ export default {
       defaultImg,
       getMyInfo,
       imageUpload,
-      getImage
+      getImage,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-  p {
-    margin: 0.8rem 0;
+p:not(:last-child) {
+  margin: 0.8rem 0;
+}
+
+.avatar {
+  position: relative;
+  width: 30%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+
+  &__image {
+    width: 100%;
+    transition: 0.5s ease;
+    border-radius: 50%;
+    cursor: pointer;
   }
 
-  #myImage {
-    display: block;
-    height: 150px;
-    border-radius: 50%;
-    margin: 0 auto;
+  &__overlay {
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
     cursor: pointer;
-    margin-bottom: 2rem;
+
+    &-text {
+      color: rgb(250, 250, 250);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    &-icon {
+      color: rgb(250, 250, 250);
+      margin-right: 5px;
+    }
   }
+
+  &:hover &__image {
+    opacity: 0.6;
+  }
+
+  &:hover &__overlay {
+    opacity: 1;
+  }
+}
 </style>
