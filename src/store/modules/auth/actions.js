@@ -123,8 +123,8 @@ export default {
   },
 
   // 비밀번호 변경하기
-  async changePassword(_,passwords) {
-    const token = localStorage.getItem("token")
+  async changePassword(context,passwords) {
+    const token = context.rootGetters.token
 
     try {
       await axios.patch("/change-password", passwords, {
@@ -135,9 +135,18 @@ export default {
     }
   },
 
+  // 비밀번호 찾기 (새 비밀번호 이메일로 발송)
+  async findPassword(_, email){
+    try {
+      await axios.patch("/find-password", email)
+    } catch (e) {
+      console.log(e)
+    }
+  },
+
   // 회원탈퇴하기
-  async deleteAccount() {
-    const token = localStorage.getItem("token")
+  async deleteAccount(context) {
+    const token = context.rootGetters.token
     try {
       await axios.delete("/users/me", {
         headers: { Authorization: `Bearer ${token}` },
@@ -146,9 +155,10 @@ export default {
       console.log(e)
     }
   },
+
   // 아바타 업로드하기
   async uploadAvatar(context, file) {
-    const token = localStorage.getItem("token")
+    const token = context.rootGetters.token
 
     try {
       const { data } = await axios.post("/avatar", file, {

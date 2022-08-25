@@ -174,7 +174,13 @@ export default {
       })
 
       if (email) {
-        $swal.fire(`Entered email: ${email}`)
+        await store.dispatch("findPassword", {email})
+        $swal.fire({
+          icon: "success",
+          title: `${email}로 새로운 비밀번호가 발송 되었습니다.`,
+          showConfirmButton: false,
+          timer: 2000,
+        })
       }
     }
 
