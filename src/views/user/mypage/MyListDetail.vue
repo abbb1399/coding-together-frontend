@@ -95,7 +95,7 @@ export default {
         cancelButtonText: "아니오",
       })
 
-      if (result.value) {
+      if (result.isConfirmed) {
         await store.dispatch("articles/deleteMyArticle", id.value)
         router.replace({ name: "myList" })
         $swal.fire({

@@ -1,5 +1,5 @@
 import {reactive, ref} from 'vue'
-const { io } = require("socket.io-client");
+import { io } from "socket.io-client"
 
 export default function useChatOptions() {
   // socket-io

@@ -211,7 +211,7 @@ export default {
         cancelButtonText: "아니오",
       })
 
-      if (result.value) {
+      if (result.isConfirmed) {
         await store.dispatch("kanbans/deleteKanban", boardId)
         $swal.fire({
           icon: "success",

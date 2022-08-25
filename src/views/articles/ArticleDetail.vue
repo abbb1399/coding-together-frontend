@@ -97,21 +97,23 @@ export default {
       if (!store.getters.isAuthenticated) {
         router.push("/auth")
 
-        return $swal.fire({
+        $swal.fire({
           icon: "info",
           title: `같이 코딩하기 위하여 로그인을 먼저하여 주세요.`,
           showConfirmButton: false,
           timer: 2000,
         })
+        return 
       }
 
       if (store.getters.myInfo.id === owner.id) {
-        return $swal.fire({
+        $swal.fire({
           icon: "info",
           title: `내가 작성한 공고 입니다.`,
           showConfirmButton: false,
           timer: 2000,
         })
+        return 
       }
 
       const result = await $swal.fire({
@@ -125,7 +127,7 @@ export default {
         cancelButtonText: "아니오",
       })
 
-      if (result.value) {
+      if (result.isConfirmed) {
         // 채팅방 생성 혹은 이동
         await store.dispatch("chat/createOrEnterRoom", {
           roomId: articleId,

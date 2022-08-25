@@ -48,8 +48,10 @@ export default {
 
         // 서버 로직
         await store.dispatch("uploadAvatar", data)
+        // const avatar = document.querySelector('.avatar')
+        // avatar.style = 'pointer-events: auto;'
       }
-      upload.click()
+      upload.click()     
     }
 
     const getImage = (avatar) => {
@@ -65,7 +67,7 @@ export default {
       defaultImg,
       getMyInfo,
       imageUpload,
-      getImage,
+      getImage
     }
   },
 }

@@ -108,8 +108,6 @@ section {
   }
 
   .my-list {
-    margin-top: 1rem;
-
     &__header {
       text-align: center;
     }
