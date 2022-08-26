@@ -33,9 +33,8 @@
 
 <script>
 import { ref, inject, toRefs } from "vue"
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
-import { useRoute } from "vue-router"
 
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"

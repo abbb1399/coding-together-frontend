@@ -65,7 +65,7 @@ export default {
           $state.complete()
         } 
       }catch(e){
-        error.value = e.message || '에러 발생!'
+        error.value = e.message
       }
     }
 

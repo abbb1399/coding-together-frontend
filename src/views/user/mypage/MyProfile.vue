@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="avatar" @click="imageUpload">
+    <div class="avatar" @click="imageUpload" ref="avatar">
       <img
         class="avatar__image"
         :src="getMyInfo.avatar ? getImage(getMyInfo.avatar) : defaultImg"
@@ -28,6 +28,7 @@ export default {
   setup() {
     const store = useStore()
     const defaultImg = ref(require("../../../assets/avatar.jpg"))
+    const avatar = ref(null)
 
     const getMyInfo = computed(() => {
       return store.getters.myInfo
@@ -48,8 +49,7 @@ export default {
 
         // 서버 로직
         await store.dispatch("uploadAvatar", data)
-        // const avatar = document.querySelector('.avatar')
-        // avatar.style = 'pointer-events: auto;'
+        avatar.value.blur()
       }
       upload.click()     
     }
@@ -58,12 +58,8 @@ export default {
       return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`
     }
 
-    // const deleteAccount = async ()=>{
-    //   await this.$store.dispatch('deleteAccount')
-    //   this.$router.push('/')
-    // }
-
     return {
+      avatar,
       defaultImg,
       getMyInfo,
       imageUpload,

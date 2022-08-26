@@ -54,7 +54,7 @@ export default {
       
       context.commit('setArticles', articles)
     }catch(e) {
-      return Promise.reject({message: '서버에서 불러오는데 실패 했습니다.'})
+      throw new Error('서버에서 불러오는데 실패 했습니다.')
     }
   },
 
@@ -65,7 +65,7 @@ export default {
     
       context.commit('setArticle',data)
     }catch(e){
-      return Promise.reject({message: '없는 글입니다.'})
+      throw new Error('없는 글입니다.')
     }
   },
 
@@ -133,11 +133,11 @@ export default {
   },
 
   // 이미지 업로드
-  async uploadImage(context,{file, type}){
+  async uploadImage(context,{uploadFile, type}){
     try{
       const {data} = await axios.post(
        `/images/${type}`,
-       file,
+       uploadFile,
        { headers: {'Content-Type': 'multipart/form-data'}}
       )
      

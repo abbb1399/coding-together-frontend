@@ -16,7 +16,7 @@
 
     <div class="form__control" :class="{ invalid: !description.isValid }">
       <label class="form__caption" @click="focusEditor">설명</label>
-      <div id="editor" ref="tuiEditor"></div>
+      <div id="editor"/>
     </div>
 
     <div class="form__control" :class="{ invalid: !areas.isValid }">
@@ -82,6 +82,8 @@ import Editor from "@toast-ui/editor"
 import "@toast-ui/editor/dist/toastui-editor.css"
 import "@toast-ui/editor/dist/i18n/ko-kr"
 
+// 이 페이지(TuiEditor 사용)는 Options Api를 사용 
+// - Composition Api 사용시 TuiEditor메소드 사용 문제가 있음
 export default {
   inject: ["$swal"],
   emits: ["save-data"],
@@ -103,14 +105,13 @@ export default {
         val: null,
         isValid: true,
       },
-
       formIsValid: true,
       listId: "",
       chosenFileName: "파일을 선택하세요.",
     }
   },
   mounted() {
-    const editor = new Editor({
+    this.tuiEditor = new Editor({
       el: document.querySelector("#editor"),
       initialEditType: "wysiwyg",
       previewStyle: "vertical",
@@ -131,10 +132,8 @@ export default {
         addImageBlobHook: this.addImageBlobHook,
       },
     })
-    // tuiEditor 바인딩
-    this.tuiEditor = editor
+    
     // mypage에서 변경시
-
     if (this.$route.path.split("/")[1] === "mypage") {
       const {name, description, areas, thumbnail, _id} = this.$store.getters["articles/getMyListDetail"]
 
@@ -192,12 +191,13 @@ export default {
       )
       if (result.isConfirmed) {
         // tui 에디터 글내용 받아오기
-        this.description.val = this.tuiEditor.getMarkdown()
+        const description = this.tuiEditor.getMarkdown().trim()
+        this.description.val = description
 
-        if (this.description.val !== "") {
+        if (description !== "") {
           this.clearValidity("description")
         }
-
+        
         this.validateForm()
 
         if (!this.formIsValid) {
@@ -213,17 +213,12 @@ export default {
         const formData = {
           _id: this.listId,
           name: this.name.val,
-          desc: this.description.val,
+          desc: description,
           areas: this.areas.val,
           thumbnail: this.file.val,
         }
 
         if (this.$route.path.split("/")[1] === "mypage") {
-          // 마이페이지 경우는 Update
-          // if (!this.file.val) {
-          //   delete formData.thumbnail
-          // }
-
           await this.$store.dispatch("articles/updateArticle", formData)
           this.$router.replace({ name: "myList" })
           this.$swal.fire({
@@ -247,12 +242,12 @@ export default {
       this.chosenFileName = e.target.files[0].name
 
       // 파일업로드 로직
-      const file = new FormData()
+      const uploadFile = new FormData()
       const fileToUpload = e.target.files[0]
-      file.append("images", fileToUpload)
+      uploadFile.append("images", fileToUpload)
 
       try {
-        await this.$store.dispatch("articles/uploadImage", {file, type:'thumbnail'})
+        await this.$store.dispatch("articles/uploadImage", {uploadFile, type:'thumbnail'})
         this.file.val = this.$store.getters["articles/getUploadFileName"]
 
         this.clearValidity("file")
@@ -282,10 +277,10 @@ export default {
     },
 
     async addImageBlobHook(blob, callbacks) {
-      const file = new FormData()
-      file.append("images", blob)
+      const uploadFile = new FormData()
+      uploadFile.append("images", blob)
 
-      await this.$store.dispatch("articles/uploadImage", {file, type:'content'})
+      await this.$store.dispatch("articles/uploadImage", {uploadFile, type:'content'})
       callbacks(
         `${process.env.VUE_APP_API_URL}/images/${this.$store.getters["articles/getUploadFileName"]}`
       )

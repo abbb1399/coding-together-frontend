@@ -206,8 +206,7 @@ export default {
 <style lang="scss" scoped>
 .auth{
   &__form{
-    margin: 1rem;
-    padding: 1rem;
+    padding: 2rem;
   }
 
   &__form-control {
@@ -244,11 +243,11 @@ export default {
     border: 1px solid #ccc;
     padding: 0.3125rem;
     border-radius: 5px;
+    height: 2.2rem;
 
     &:focus {
       border-color: $primary-color;
-      background-color: $primary-bg-color;
-      outline: none;
+      outline: 1px solid $primary-color;
     }
   }
 

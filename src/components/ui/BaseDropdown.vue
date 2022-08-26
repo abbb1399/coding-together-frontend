@@ -73,7 +73,6 @@ export default {
 
 <style lang="scss" scoped>
 .dropDownMenuWrapper {
-  cursor: pointer;
   // position: relative;
   // border-radius: 8px;
   // box-shadow: 10px 10px 0 0 rgba(black,.03);
@@ -87,6 +86,7 @@ export default {
   img {
     width: 40px;
     height: 40px;
+    cursor: pointer;
 
     @include respond(tab-port) {
       height: 25px;

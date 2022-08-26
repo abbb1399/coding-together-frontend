@@ -44,6 +44,8 @@ import "tui-time-picker/dist/tui-time-picker.css"
 import calendarOption from "../../utilities/tui-calendar/calendar-option"
 import scheduleType from "../../utilities/tui-calendar/schedule-type"
 
+// 이 페이지(TuiCalendar 사용)는 Options Api를 사용 
+// - Composition Api 사용시 TuiCalendar메소드 사용 문제가 있음
 export default {
   inject: ["$moment"],
   data() {
