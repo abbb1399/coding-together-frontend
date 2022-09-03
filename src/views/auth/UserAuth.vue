@@ -14,7 +14,7 @@
       <h1 v-if="mode === 'signup'">회원가입</h1>
       <h1 v-else>로그인</h1>
 
-      <div v-if="mode === 'signup'" class="auth__form-group">
+      <div v-if="mode === 'signup'" class="form-group">
         <input
           type="text"
           id="name"
@@ -26,7 +26,7 @@
         <label for="name">이름</label>
       </div>
 
-      <div class="auth__form-group">
+      <div class="form-group">
         <input
           id="email"
           type="email"
@@ -38,7 +38,7 @@
         <label for="email">이메일</label>
       </div>
 
-      <div class="auth__form-group">
+      <div class="form-group">
         <input
           id="password"
           type="password"
@@ -235,45 +235,45 @@ export default {
       margin-bottom: 2.5rem;
     }
 
+    .form-group {
+      width: 100%;
+      margin-bottom: 0.7rem;
+
+      input {
+        background-color: #ededee;
+        border: none;
+        border-radius: 5px;
+        padding: 0.75rem 0.93rem;
+        width: 100%;
+
+        &:focus {
+          border-color: $primary-color;
+          outline: 2px solid $primary-color;
+        }
+      }
+
+      label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: $color-grey-dark-2;
+        display: block;
+        margin-top: 0.3rem;
+        margin-left: 1.25rem;
+        transition: all 0.3s;
+      }
+
+      input:placeholder-shown + label {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-40px);
+      }
+    }
+
     .login-btn {
       @include respond(phone) {
         font-size: 1rem;
         padding: 1rem 5rem;
       }
-    }
-  }
-
-  &__form-group {
-    width: 100%;
-    margin-bottom: 0.7rem;
-
-    input {
-      background-color: #ededee;
-      border: none;
-      border-radius: 5px;
-      padding: 0.75rem 0.93rem;
-      width: 100%;
-
-      &:focus {
-        border-color: $primary-color;
-        outline: 2px solid $primary-color;
-      }
-    }
-
-    label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: $color-grey-dark-2;
-      display: block;
-      margin-top: 0.3rem;
-      margin-left: 1.25rem;
-      transition: all 0.3s;
-    }
-
-    input:placeholder-shown + label {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-40px);
     }
   }
 
@@ -330,7 +330,7 @@ export default {
   &__warning {
     color: red;
     margin-top: 0.5rem;
-    
+
     @include message;
   }
 
@@ -339,7 +339,7 @@ export default {
     margin: 0.93rem 0;
     cursor: pointer;
 
-     @include message;
+    @include message;
   }
 
   button {
