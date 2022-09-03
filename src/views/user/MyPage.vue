@@ -62,7 +62,7 @@
       list-style: inside;
 
       a {
-        color: #333;
+        color: $color-grey-dark-3;
         font-weight: 600;
 
         &.router-link-active {

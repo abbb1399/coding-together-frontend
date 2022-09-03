@@ -5,12 +5,13 @@
 </template>
 
 <style lang="scss" scoped>
-  .card{
-    border-radius: 12px;
-    box-shadow:0 2px 8px rgba(0, 0, 0, 0.26);
-    padding: 1rem;
-    margin: 2rem auto;
-    max-width: 45rem;
-    background: #fff;
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  background: #fff;
+
+  @include respond(phone) {
+    box-shadow: none;
   }
+}
 </style>

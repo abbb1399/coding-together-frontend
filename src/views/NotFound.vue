@@ -34,7 +34,7 @@
     font-family: "Lato", sans-serif;
     font-size: 1.5rem;
     color: #293b49;
-    margin: auto;
+    margin: 5rem auto;
   }
 
   .center {

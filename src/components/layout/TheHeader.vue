@@ -146,7 +146,7 @@ export default {
       }
 
       a {
-        color: #333;
+        color: $color-grey-dark-3;
         font-size: 1rem;
         font-weight: 700;
         padding: 0.3rem;
