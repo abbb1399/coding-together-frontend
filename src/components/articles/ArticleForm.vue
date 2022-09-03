@@ -72,7 +72,7 @@
     </div>
 
     <div class="form__btn-container">
-      <base-button>등록</base-button>
+      <base-button class="write-btn">등록</base-button>
     </div>
   </form>
 </template>
@@ -346,20 +346,19 @@ export default {
     }
 
     &:focus {
-      /* background-color: $primary-bg-color; */
       outline: none;
       border-color: $color-grey-dark-1;
     }
   }
 
   &__btn-container {
-    margin-top: 1.6rem;
-    display: flex;
-    justify-content: flex-end;
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
 
-    * {
+    .write-btn{
       font-size: 1rem;
-      width: 7rem;
+      padding: 1rem 4.5rem;
     }
   }
 

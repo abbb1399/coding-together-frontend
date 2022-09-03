@@ -8,7 +8,7 @@
     <h1 class="article__title">{{ title }}</h1>
     <div class="article__meta">
       <small class="description">
-        <font-awesome-icon icon="pen-nib" />&nbsp;
+        <font-awesome-icon icon="user" />&nbsp;
         <span>{{ owner.name }} - {{ updatedAt }}</span>
       </small>
       <base-badge

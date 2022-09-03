@@ -119,7 +119,7 @@ export default {
 
 <style lang="scss" scoped>
 .chat {
-  max-width: 1000px;
+  max-width: 62.5rem;
   margin: 0 auto;
 
   h3 {
