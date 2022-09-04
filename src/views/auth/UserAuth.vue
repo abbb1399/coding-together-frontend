@@ -211,7 +211,11 @@ export default {
   display: flex;
   max-width: 50rem;
   height: 32rem;
-  margin: 5rem auto;
+  margin: 3rem auto;
+
+  @include respond(big-screen) {
+    margin-top: 5rem;
+  }
 
   @include respond(phone) {
     flex-direction: column;
