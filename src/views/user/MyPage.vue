@@ -15,6 +15,7 @@
           </li>
         </ul>
       </aside>
+
       <article class="card">
         <router-view v-slot="slotProps">
           <transition name="route" mode="out-in">
@@ -22,14 +23,15 @@
           </transition>
         </router-view>
       </article>
+
     </div>
   </section>
 </template>
 
 <style lang="scss" scoped>
 .my-page {
-  max-width: 1100px;
-  margin: auto;
+  max-width: 62.5rem;
+  margin: 2rem auto;
   padding: 0 2rem;
   overflow: hidden;
 
@@ -39,13 +41,11 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: 2fr 5fr;
-    margin: 2rem 0;
+    grid-template-columns: 20rem minmax(20rem, 1fr);
     gap: 1.5rem;
 
-    @include respond(phone) {
-      grid-template-rows: 20vh min-content;
-      grid-template-columns: auto;
+    @include respond(tab-port) {
+      grid-template-columns: 100%;
     }
   }
 
@@ -60,6 +60,11 @@
       border-bottom: #555 dotted 1px;
       width: 90%;
       list-style: inside;
+
+      
+      @include respond(tab-port) {
+        width: 100%;
+      }
 
       a {
         color: $color-grey-dark-3;

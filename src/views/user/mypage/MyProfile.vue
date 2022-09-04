@@ -99,7 +99,7 @@ p:not(:last-child) {
 
     &-text {
       color: rgb(250, 250, 250);
-      font-size: 15px;
+      font-size: .8rem;
       font-weight: 600;
     }
 

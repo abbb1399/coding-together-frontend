@@ -1,33 +1,36 @@
 <template>
-  <section class="detail" v-if="!editMode">
-    <header class="detail-header">
-      <div class="detail-header__title">
-        <h2>{{ articleTitle }}</h2>
-        <span>
-          <base-button mode="secondary" @click="editArticle">수정</base-button>
-          <base-button mode="primary" @click="deleteArticle">삭제</base-button>
-        </span>
-      </div>
-      
-      <div class="detail-header__description">
-        <p class="date">작성일 : {{ createdAt }}</p>
-        <base-badge
-          class="badge"
-          v-for="area in areas"
-          :key="area"
-          :type="area"
-          :title="area"
-        />
-      </div>
-    </header>
+  <section>
+    <div class="detail" v-if="!editMode">
+      <header class="detail__header">
+        <div class="header-title">
+          <h2>{{ articleTitle }}</h2>
+          <span>
+            <base-button mode="secondary" @click="editArticle">수정</base-button>
+            <base-button mode="primary" @click="deleteArticle">삭제</base-button>
+          </span>
+        </div>
 
-    <img class="detail-image" :src="imgSrc" alt="글 이미지" />
-    <div id="viewer" />
-  </section>
+        <div class="header-description">
+          <p class="date">작성일 : {{ createdAt }}</p>
+          <base-badge
+            v-for="area in areas"
+            :key="area"
+            :type="area"
+            :title="area"
+          />
+        </div>
+      </header>
 
-  <section v-else>
-    <h2>공고 수정</h2>
-    <article-form id="article-form"></article-form>
+      <img class="detail__image" :src="imgSrc" alt="글 이미지" />
+      <div id="viewer" />
+    </div>
+
+    <div class="edit" v-else>
+      <header class="edit__header">
+        <h2>공고 수정</h2>
+      </header>
+      <article-form class="edit__form"/>
+    </div>
   </section>
 </template>
 
@@ -58,7 +61,7 @@ export default {
     const router = useRouter()
     const route = useRoute()
 
-    const {id} = toRefs(props)
+    const { id } = toRefs(props)
     const articleTitle = ref("")
     const createdAt = ref("")
     const description = ref("")
@@ -124,7 +127,6 @@ export default {
       editArticle,
     }
   },
-
 }
 </script>
 
@@ -133,45 +135,40 @@ export default {
   font: inherit;
 }
 
-.detail-header {
-  &__description{
-    display: flex;
-    align-items: center;
-    color: #555;
-    margin: 0 1rem 1em 0;
-    font-size: 1em;
-    font-style: italic;
-    border-top: 1px solid rgba(144, 144, 144, 0.25);
-    border-bottom: 1px solid rgba(144, 144, 144, 0.25);
-    padding: 5px 0;
+.detail {
+  &__header {
+    .header-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-    .date{
-      margin-right: 1rem;
+    .header-description {
+      display: flex;
+      align-items: center;
+      color: #555;
+      margin: 0 1rem 1em 0;
+      font-size: 1em;
+      font-style: italic;
+      border-top: 1px solid rgba(144, 144, 144, 0.25);
+      border-bottom: 1px solid rgba(144, 144, 144, 0.25);
+      padding: 5px 0;
+
+      .date {
+        margin-right: 1rem;
+      }
     }
   }
 
-  &__title {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &__badge {
-    margin-left: 0.3rem;
-    height: 10px;
-  }
-
-  h2 {
+  &__image {
+    width: 100%;
     margin-bottom: 1rem;
-    color: #555;
   }
 }
 
-.detail-image {
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-#article-form {
-  width: 45vw;
+.edit{
+  &__header{
+    text-align: center;
+  }
 }
 </style>

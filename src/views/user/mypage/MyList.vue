@@ -102,11 +102,6 @@ export default {
 
 <style lang="scss" scoped>
 section {
-  @include respond(phone) {
-    margin-top: -45px;
-    padding: 0;
-  }
-
   .my-list {
     &__header {
       text-align: center;
