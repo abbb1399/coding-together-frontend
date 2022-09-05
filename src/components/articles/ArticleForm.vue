@@ -215,7 +215,7 @@ export default {
           _id: this.listId,
           name: this.name.val,
           desc: description,
-          areas: this.areas.val,
+          areas: this.areas.val.sort(),
           thumbnail: this.file.val,
         }
 
