@@ -57,6 +57,12 @@ export default {
     if(changes.end){
       changes.end = changes.end._date
     }
+    if(changes.calendarId){
+      delete changes.bgColor
+      delete changes.borderColor
+      delete changes.color
+      delete changes.dragBgColor
+    }
 
     try{
       axios.patch(

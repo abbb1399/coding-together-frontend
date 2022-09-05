@@ -1,36 +1,34 @@
 <template>
-  <section>
-    <div class="calendar">
-      <div class="calendar__header">
-        <div>
-          <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
-          <select v-model="selectedView" class="calendar__select">
-            <option
-              v-for="(options, index) in viewModeOption"
-              :value="options.value"
-              :key="index"
-            >
-              {{ options.title }}
-            </option>
-          </select>
-          <span @click="onClickNavi($event)">
-            <button type="button" class="btn move-day" data-action="move-today">
-              오늘
-            </button>
-            <button type="button" class="btn move-day" data-action="move-prev">
-              이전
-            </button>
-            <button type="button" class="btn move-day" data-action="move-next">
-              다음
-            </button>
-          </span>
-        </div>
-        <span class="calendar__render-range">{{ dateRange }}</span>
+  <section class="calendar">
+    <div class="calendar__header">
+      <div>
+        <!-- selectedView - watch속성으로 선택한 값을 감지 후, mode변경 -->
+        <select v-model="selectedView" class="calendar__select">
+          <option
+            v-for="(options, index) in viewModeOption"
+            :value="options.value"
+            :key="index"
+          >
+            {{ options.title }}
+          </option>
+        </select>
+        <span @click="onClickNavi($event)">
+          <button type="button" class="btn move-day" data-action="move-today">
+            오늘
+          </button>
+          <button type="button" class="btn move-day" data-action="move-prev">
+            이전
+          </button>
+          <button type="button" class="btn move-day" data-action="move-next">
+            다음
+          </button>
+        </span>
       </div>
-
-      <!-- 캘린더 컨테이너 요소 작성 -->
-      <div ref="tuiCalendar"></div>
+      <span class="calendar__render-range">{{ dateRange }}</span>
     </div>
+
+    <!-- 캘린더 컨테이너 요소 작성 -->
+    <div ref="tuiCalendar"/>
   </section>
 </template>
 
@@ -80,20 +78,20 @@ export default {
     await this.$store.dispatch("schedules/fetchSchedules")
 
     // 캘린더 인스턴스 생성
-    this.calendarInstance = new Calendar(this.$refs.tuiCalendar, calendarOption)
+    const calendar = new Calendar(this.$refs.tuiCalendar, calendarOption)
 
     // 오늘 날짜설정
-    this.calendarInstance.setDate(this.$moment().format("YYYY-MM-DD"))
+    calendar.setDate(this.$moment().format("YYYY-MM-DD"))
 
     // 스케줄 Type
-    this.calendarInstance.setCalendars(scheduleType)
+    calendar.setCalendars(scheduleType)
 
     // 스케쥴 생성
-    this.calendarInstance.createSchedules(
+    calendar.createSchedules(
       this.$store.getters["schedules/schedules"]
     )
 
-    this.calendarInstance.on("beforeCreateSchedule", (scheduleData) => {
+    calendar.on("beforeCreateSchedule", (scheduleData) => {
       const schedule = {
         calendarId: scheduleData.calendarId,
         id: String(Date.now()),
@@ -107,30 +105,30 @@ export default {
       }
 
       // tui-calendar - Create
-      this.calendarInstance.createSchedules([schedule])
+      calendar.createSchedules([schedule])
       // 서버로직 - Create
       this.$store.dispatch("schedules/resigerSchedule", schedule)
     })
 
-    this.calendarInstance.on("beforeUpdateSchedule", ({ schedule, changes }) => {
+    calendar.on("beforeUpdateSchedule", ({ schedule, changes }) => {
       // tui-calendar - Update
-      this.calendarInstance.updateSchedule(
+      calendar.updateSchedule(
         schedule.id,
         schedule.calendarId,
         changes
       )
       // 서버로직 - Update
-      const updateData = [schedule.id, changes]
-
-      this.$store.dispatch("schedules/updateSchedule", updateData)
+      this.$store.dispatch("schedules/updateSchedule", [schedule.id, changes])
     })
 
-    this.calendarInstance.on("beforeDeleteSchedule", ({ schedule }) => {
+    calendar.on("beforeDeleteSchedule", ({ schedule }) => {
       // tui-calendar - Delete
-      this.calendarInstance.deleteSchedule(schedule.id, schedule.calendarId)
+      calendar.deleteSchedule(schedule.id, schedule.calendarId)
       // 서버로직 - Delete
       this.$store.dispatch("schedules/deleteSchedule", schedule)
     })
+
+    this.calendarInstance = calendar
   },
   unmounted() {
     this.calendarInstance.destroy()
@@ -189,17 +187,12 @@ export default {
 
 <style lang="scss" scoped>
 .calendar {
-  max-width: $website-width;
+  max-width: 62.5rem;
   margin: 0 auto;
-
-  @include respond(big-screen) {
-    max-width: 1400px;
-    margin-top: 1.5rem;
-  }
 
   &__header {
     display: flex;
-    padding: 0.5rem 0;
+    padding: .75rem 0;
     align-items: center;
 
     @include respond(phone) {

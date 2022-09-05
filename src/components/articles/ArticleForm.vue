@@ -117,6 +117,7 @@ export default {
       previewStyle: "vertical",
       language: "ko-KR",
       autofocus: false,
+      initialValue:'',
       toolbarItems: [
         ['heading', 'bold', 'italic', 'strike'],
         ['hr', 'quote'],
