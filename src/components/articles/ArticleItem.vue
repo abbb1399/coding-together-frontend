@@ -2,7 +2,7 @@
   <li class="article-list" @click.once="toDetail">
     <img :src="getListImage" alt="리스트 썸내일" />
     <div class="list-detail">
-      <h3>{{ articleTitle }}</h3>
+      <h3 :title="title">{{ title }}</h3>
       <base-badge
         class="badge"
         v-for="area in areas"
@@ -40,11 +40,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
-    const { id, thumbnail, title } = toRefs(props)
-
-    const articleTitle = computed(()=>{
-      return title.value.length > 13 ? title.value.slice(0,12) + '...' : title.value
-    })
+    const { id, thumbnail } = toRefs(props)
 
     const getListImage = computed(() => {
       return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
@@ -55,7 +51,6 @@ export default {
     }
 
     return {
-      articleTitle,
       getListImage,
       toDetail,
     }
@@ -70,25 +65,19 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 1rem;
-  
+
   h3{
-    @media screen and (min-width: 1201px) and (max-width: 1799px) {
-      font-size: 17.9px;
-    }
+    white-space:nowrap; 
+    overflow:hidden;
+    text-overflow:ellipsis;
 
-    @include respond(tab-land){
-      font-size: 15.7px;
-    }
-
-    @media screen and (min-width: 601px) and (max-width: 692px) {
-      font-size: 13.5px;
-    }
-
-    @include respond(phone){
-      font-size: 17px;
-    }
+    /* 여러 줄 */
+    /* display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word; */
   }
-
+  
   img {
     width: 100%;
     border-radius: 5px;
@@ -96,7 +85,7 @@ export default {
   }
 
   .list-detail {
-    line-height: 1.4;
+    line-height: 1.6;
     
     .badge {
       font-size: 2px;

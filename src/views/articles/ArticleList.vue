@@ -108,16 +108,20 @@ export default {
     &__list {
       list-style: none;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      /* dynamic columns */
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
       gap: 1.6rem;
-
+      
+      /* 4columns */
+      /* grid-template-columns: repeat(4, minmax(6rem, 1fr));
       @include respond(tab-port){
         grid-template-columns: repeat(3, 1fr);
       }
-
       @include respond(phone){
         grid-template-columns: repeat(2, 1fr);
-      }
+      } */
     }
   }
+
+
 </style>
