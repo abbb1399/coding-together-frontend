@@ -1,10 +1,10 @@
 <template>
-  <li class="article-list" @click.once="toDetail">
+  <li class="article-item" @click.once="toDetail">
     <img :src="getListImage" alt="리스트 썸내일" />
-    <div class="list-detail">
-      <h3 :title="title">{{ title }}</h3>
+    <div class="article-item__detail">
+      <h4 class="item-title" :title="title">{{ title }}</h4>
       <base-badge
-        class="badge"
+        class="item-badge"
         v-for="area in areas"
         :key="area"
         :type="area"
@@ -59,36 +59,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article-list {
+.article-item {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 1rem;
 
-  h3{
-    white-space:nowrap; 
-    overflow:hidden;
-    text-overflow:ellipsis;
-
-    /* 여러 줄 */
-    /* display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-wrap: break-word; */
-  }
-  
   img {
     width: 100%;
     border-radius: 5px;
     height: 10.6rem;
   }
 
-  .list-detail {
+  &__detail {
     line-height: 1.6;
-    
-    .badge {
-      font-size: 2px;
+
+    .item-title{
+      white-space:nowrap; 
+      overflow:hidden;
+      text-overflow:ellipsis;
+
+      /* 여러 줄 */
+      /* display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      word-wrap: break-word; */
     }
   }
 }

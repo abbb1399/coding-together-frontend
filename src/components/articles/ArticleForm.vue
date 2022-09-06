@@ -150,7 +150,9 @@ export default {
       this.listId = _id
     }
   },
-
+  unmounted(){
+    this.tuiEditor.destroy()
+  },
   methods: {
     // input이 blur될때마다 에러표시 지워주기
     clearValidity(input) {

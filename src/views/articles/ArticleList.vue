@@ -109,7 +109,7 @@ export default {
       list-style: none;
       display: grid;
       /* dynamic columns */
-      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
       gap: 1.6rem;
       
       /* 4columns */

@@ -131,9 +131,10 @@ export default {
         owner: roomId,
         replyMessage
       }
+      
       await store.dispatch('chat/registerMessage', msgData)
       const msg = store.getters['chat/newMessage']
- 
+   
       // 메세지 보내기 소켓
       socket.emit('sendMessage', msg, (error)=>{
         if(error){

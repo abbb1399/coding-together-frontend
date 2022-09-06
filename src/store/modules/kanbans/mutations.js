@@ -2,9 +2,12 @@ export default {
   addKanban(state, payload){
     state.kanbans.push(payload)
   },
-  subtractKanban(state, boardId){
-    const index = state.kanbans.findIndex((kanban) => kanban._id === boardId)
-    state.kanbans.splice(index, 1)
+  subtractKanban(state, board){
+    const index = state.kanbans.findIndex((kanban) => kanban._id === board._id)
+
+    if(index !== -1){
+      state.kanbans.splice(index, 1)
+    }  
   },
   setKanbans(state, payload){
     state.kanbans = payload
