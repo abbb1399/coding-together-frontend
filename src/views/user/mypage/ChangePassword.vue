@@ -52,6 +52,7 @@
 <script>
 import { ref, reactive, inject } from "vue"
 import { useStore } from "vuex"
+import useUnreadRequests from '../../../hooks/use-unread-requests'
 
 export default {
   setup() {
@@ -63,6 +64,8 @@ export default {
     const confirmPassword = reactive({ val: "", isValid: true })
     const formIsValid = ref(true)
     const errMsg = ref("")
+
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const clearValidity = (input) => {
       if (input === "old-password") {
@@ -144,6 +147,8 @@ export default {
         }
       }
     }
+
+    unreadRequestsCount()
 
     return {
       errMsg,

@@ -44,6 +44,7 @@ import { ref, computed } from "vue"
 import { useStore } from "vuex"
 import RequestItem from "../../components/requests/RequestItem.vue"
 import Pagination from "../../components/ui/Pagination.vue"
+import useUnreadRequests from '../../hooks/use-unread-requests'
 
 export default {
   components: {
@@ -56,6 +57,7 @@ export default {
     const error = ref(null)
     const currentPage = ref(1)
     const perPage = ref(5)
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const receivedRequests = computed(() => {
       return store.getters["requests/requests"]
@@ -77,6 +79,7 @@ export default {
       isLoading.value = true
       // requests 불러오기
       await store.dispatch("requests/fetchRequests", currentPage.value)
+      unreadRequestsCount()
 
       isLoading.value = false
     }

@@ -33,6 +33,8 @@ import ArticleItem from "../../components/articles/ArticleItem.vue"
 import ArticleHeader from "../../components/articles/ArticleHeader.vue"
 import InfiniteLoading from "vue-infinite-loading"
 
+import useUnreadRequests from '../../hooks/use-unread-requests'
+
 export default {
   components: {
     ArticleItem,
@@ -47,6 +49,8 @@ export default {
     const page= ref(0)
     const selectedType = ref('all')
     const infiniteId = ref(new Date().getTime())
+    
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const infiniteHandler = async ($state) =>{
       const payload = {
@@ -79,6 +83,9 @@ export default {
     const handleError = () =>{
       error.value = null
     }
+    
+    // 안읽은 requests 갯수 불러오기
+    unreadRequestsCount()
 
     return{
       error,

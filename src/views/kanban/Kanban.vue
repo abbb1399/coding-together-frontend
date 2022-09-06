@@ -39,6 +39,8 @@ import KanbanSidebar from "../../components/kanban/KanbanSidebar.vue"
 import KanbanAddBtn from "../../components/kanban/KanbanAddBtn.vue"
 import KanbanList from "../../components/kanban/KanbanList.vue"
 
+import useUnreadRequests from '../../hooks/use-unread-requests'
+
 import { ref, computed } from "vue"
 import { useStore } from "vuex"
 
@@ -58,6 +60,8 @@ export default {
     const dueDate = ref("없음")
     const selectedBoardId = ref("")
     const selectedTaskId = ref('')
+
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const boardList = computed(() => {
       return store.getters["kanbans/kanbans"]
@@ -112,7 +116,14 @@ export default {
       store.dispatch("kanbans/moveBoard", data)
     }
 
-    store.dispatch("kanbans/fetchKanbans")
+    const init = async  () =>{
+      // 칸반 불러오기
+      await store.dispatch("kanbans/fetchKanbans")
+      // 안읽은 requests 갯수 불러오기
+      unreadRequestsCount()
+    }
+
+    init()
 
     return {
       selectedBoardId,

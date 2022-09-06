@@ -37,6 +37,8 @@ import { useStore } from "vuex"
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 
+import useUnreadRequests from '../../hooks/use-unread-requests'
+
 export default {
   props: {
     // router로 props(id) 넘김
@@ -60,6 +62,8 @@ export default {
     const thumbnail = ref(null)
     const articleOwner = ref('')
 
+    const { unreadRequestsCount } = useUnreadRequests()
+
     const articeImage = computed(()=>{
       return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
     })
@@ -82,6 +86,9 @@ export default {
           el: document.querySelector("#viewer"),
           initialValue: article.description,
         })
+
+        // 안읽은 requests 갯수 불러오기
+        unreadRequestsCount()
       } catch (error) {
         router.replace("/notfound")
         $swal.fire({

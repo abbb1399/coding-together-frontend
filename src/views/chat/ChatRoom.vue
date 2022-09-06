@@ -35,6 +35,8 @@ import useChatOptions from '../../hooks/use-chat-options'
 import ChatWindow from 'vue-advanced-chat'
 import 'vue-advanced-chat/dist/vue-advanced-chat.css'
 
+import useUnreadRequests from '../../hooks/use-unread-requests'
+
 export default {
   components: {
     ChatWindow
@@ -55,8 +57,9 @@ export default {
 		const	messages = ref([])
 		const	currentUserId = ref('') 
     const currentUserName = ref('')
+    const { unreadRequestsCount } = useUnreadRequests()
 
-    const init = async () => {
+    const chatInit = async () => {
       const { id, name } = store.getters.myInfo
       currentUserId.value = id
       currentUserName.value = name
@@ -182,7 +185,11 @@ export default {
       socket.disconnect()
     })
 
-    init()
+    // 채팅 세팅
+    chatInit()
+
+    // 안읽은 requests 갯수 불러오기
+    unreadRequestsCount()
 
     return {
       textMessages,

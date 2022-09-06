@@ -23,12 +23,14 @@
 <script>
 import { ref, computed } from "vue"
 import { useStore } from "vuex"
+import useUnreadRequests from '../../../hooks/use-unread-requests'
 
 export default {
   setup() {
     const store = useStore()
     const defaultImg = ref(require("../../../assets/avatar.jpg"))
     const avatar = ref(null)
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const getMyInfo = computed(() => {
       return store.getters.myInfo
@@ -57,6 +59,9 @@ export default {
     const getImage = (avatar) => {
       return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`
     }
+
+    // 안읽은 requests 갯수 불러오기
+    unreadRequestsCount()
 
     return {
       avatar,

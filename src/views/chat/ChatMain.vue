@@ -59,6 +59,7 @@ import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import Pagination from "../../components/ui/Pagination.vue"
+import useUnreadRequests from '../../hooks/use-unread-requests'
 
 export default {
   components: { Pagination },
@@ -69,6 +70,8 @@ export default {
     const noImg = ref(require("../../assets/avatar.jpg"))
     const currentPage = ref(1)
     const perPage = ref(5)
+
+    const { unreadRequestsCount } = useUnreadRequests()
 
 
     const roomList = computed(() => {
@@ -96,11 +99,10 @@ export default {
       return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
     }
 
-    const init = async () => {
-      await store.dispatch("chat/fetchChatRoomList", currentPage.value)
-    }
-
-    init()
+    store.dispatch("chat/fetchChatRoomList", currentPage.value)
+    
+    // 안읽은 requests 갯수 불러오기
+    unreadRequestsCount()
 
     return {
       currentPage,

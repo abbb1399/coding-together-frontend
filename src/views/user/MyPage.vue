@@ -28,6 +28,19 @@
   </section>
 </template>
 
+<script>
+import useUnreadRequests from '../../hooks/use-unread-requests'
+
+export default {
+  setup(){
+    const { unreadRequestsCount } = useUnreadRequests()
+    unreadRequestsCount()
+  }
+}
+</script>
+
+
+
 <style lang="scss" scoped>
 .my-page {
   max-width: 62.5rem;

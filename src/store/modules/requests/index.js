@@ -7,7 +7,8 @@ export default {
   state(){
     return{
       requests:[],
-      total:null
+      total:null,
+      unreadRequests: 0
     }
   },
   mutations,

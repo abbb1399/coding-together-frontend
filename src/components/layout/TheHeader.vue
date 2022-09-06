@@ -18,8 +18,8 @@
       <li>
         <router-link to="/articles">공고 목록</router-link>
       </li>
-      <li v-if="isLoggedIn">
-        <router-link to="/requests">받은 요청</router-link>
+      <li v-if="isLoggedIn" :data-badge="unReadRequestsCount">
+        <router-link class="test" to="/requests">받은 요청</router-link>
       </li>
       <li v-else>
         <router-link to="/auth">로그인</router-link>
@@ -42,11 +42,9 @@
 
 <script>
 import DropDown from "../../components/ui/BaseDropdown.vue"
-import { computed } from "vue"
+import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
-
-import { ref } from "vue"
 
 export default {
   components: {
@@ -60,6 +58,10 @@ export default {
 
     const isLoggedIn = computed(() => {
       return store.getters.isAuthenticated
+    })
+
+    const unReadRequestsCount = computed(() => {
+      return store.getters["requests/getUnreadRequests"]
     })
 
     const logout = () => {
@@ -79,10 +81,11 @@ export default {
     const display = () => {
       show.value = !show.value
     }
-
+    
     return {
       show,
       isLoggedIn,
+      unReadRequestsCount,
       logout,
       openMenu,
       toUserInfo,
@@ -137,6 +140,34 @@ export default {
   &__items {
     display: flex;
     align-items: center;
+
+    [data-badge] {
+      position:relative;     
+      &:after {
+        position:absolute;
+        right: .13rem;
+        top: -0.5rem;
+        line-height: .375rem;
+        padding: .25rem;
+
+        background-color:#bf1f1f;
+        border:solid 1px #c93a3a;
+
+        font-size: .625rem;
+        color:#fff;
+        border-radius: 30px;
+        content:attr(data-badge);
+
+        @include respond(big-screen) {
+          line-height: .4;
+          top: -0.4rem;
+        }
+
+        @include respond(tab-port) {
+          right: -.2rem;
+        }
+      }   
+    }  
 
     & > li {
       padding: 0 0.625rem;

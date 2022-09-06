@@ -74,7 +74,7 @@ export default {
     },
   },
   async mounted() {
-    // 글 불러오기 - server
+    // 스케쥴 불러오기 - server
     await this.$store.dispatch("schedules/fetchSchedules")
 
     // 캘린더 인스턴스 생성
@@ -127,8 +127,13 @@ export default {
       // 서버로직 - Delete
       this.$store.dispatch("schedules/deleteSchedule", schedule)
     })
-
+    
     this.calendarInstance = calendar
+
+    // 안읽은 requests 갯수 불러오기
+    if(this.$store.getters.isAuthenticated){
+      this.$store.dispatch("requests/fetchUnreadRequests")
+    } 
   },
   unmounted() {
     this.calendarInstance.destroy()

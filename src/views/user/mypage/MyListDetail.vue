@@ -43,6 +43,8 @@ import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 import ArticleForm from "../../../components/articles/ArticleForm.vue"
 
+import useUnreadRequests from '../../../hooks/use-unread-requests'
+
 export default {
   components: {
     ArticleForm,
@@ -69,6 +71,8 @@ export default {
     const imgSrc = ref(null)
     const editMode = ref(false)
 
+    const { unreadRequestsCount } = useUnreadRequests()
+
     const init = async () => {
       await store.dispatch("articles/fetchMyArticleDetail", route.params.id)
       const myList = store.getters["articles/getMyListDetail"]
@@ -83,6 +87,9 @@ export default {
         el: document.querySelector("#viewer"),
         initialValue: myList.description,
       })
+
+      // 안읽은 requests 갯수 불러오기
+      unreadRequestsCount()
     }
 
     const deleteArticle = async () => {

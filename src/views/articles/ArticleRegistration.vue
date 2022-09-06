@@ -10,6 +10,7 @@ import { inject } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 import ArticleForm from "../../components/articles/ArticleForm.vue"
+import useUnreadRequests from '../../hooks/use-unread-requests'
 
 export default {
   components: {
@@ -19,6 +20,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const $swal = inject("$swal")
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const saveData = async (data) => {
       await store.dispatch("articles/registerArticle", data)
@@ -30,6 +32,9 @@ export default {
         timer: 2000,
       })
     }
+
+    // 안읽은 requests 갯수 불러오기
+    unreadRequestsCount()
 
     return {
       saveData,

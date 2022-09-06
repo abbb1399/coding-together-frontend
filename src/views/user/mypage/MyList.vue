@@ -41,6 +41,7 @@ import { ref, computed } from "vue"
 import { useStore } from "vuex"
 import MyListItem from "../../../components/mypage/MyListItem.vue"
 import Pagination from "../../../components/ui/Pagination.vue"
+import useUnreadRequests from '../../../hooks/use-unread-requests'
 
 export default {
   components: {
@@ -54,6 +55,8 @@ export default {
     const error = ref(null)
     const currentPage = ref(1)
     const perPage = ref(5)
+
+    const { unreadRequestsCount } = useUnreadRequests()
 
     const myList = computed(() => {
       return store.getters["articles/getMyPageList"]
@@ -70,6 +73,7 @@ export default {
     const init = async () => {
       isLoading.value = true
       await store.dispatch("articles/fetchMyArticle", currentPage.value)
+      unreadRequestsCount()
 
       isLoading.value = false
     }

@@ -10,5 +10,8 @@ export default {
   },
   getTotalRequest(state){
     return state.total
+  },
+  getUnreadRequests(state){
+    return state.unreadRequests
   }
 }
