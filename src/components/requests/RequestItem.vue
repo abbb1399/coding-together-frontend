@@ -3,7 +3,7 @@
     <img class="request__img" alt="유저 프로필" :src="img" />
     <div class="request__group">
       <div class="request__content--1">
-        <h2>{{ title }}</h2>
+        <h3>{{ title }}</h3>
         <p>{{ momentCreatedAt }}</p>
       </div>
       <div class="request__content--2">
@@ -66,7 +66,7 @@ export default {
     })
 
     const momentCreatedAt = computed(() => {
-      return $moment(createdAt.value).format("YYYY-MM-DD HH:mm:ss")
+      return $moment(createdAt.value).format("YYYY-MM-DD")
     })
 
     const enterChatRoom = async () => {

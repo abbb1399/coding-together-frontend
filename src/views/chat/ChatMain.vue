@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <div class="chat">
+  <section class="chat">
+    <div>
       <h2 class="chat__caption">채팅 목록</h2>
       <div v-if="roomList.length">
         <li
@@ -9,42 +9,33 @@
           v-for="room in roomList"
           :key="room.roomId"
         >
-          <img
-            class="chat__img"
-            alt="유저 프로필"
-            :src="getImage(room.avatar)"
-          />
+          <img class="chat__img" alt="유저 프로필" :src="getImage(room.avatar)" />
           <div class="chat__group">
-            <div class="content__group--1">
-              <h2>{{ room.roomName }}</h2>
-              <p class="writer">
-                작성자: {{ room.articleOwner.name }}({{
-                  room.articleOwner.email
-                }})
-              </p>
-              <p class="createdat">{{ room.updatedAt }}</p>
+            <div class="content">
+              <h3>{{ room.roomName }}</h3>
+              <p class="writer">작성자: {{ room.articleOwner.name }}</p>
+              <p>{{ room.createdAt }}</p>
             </div>
-            <div class="content__group--2">
-              <p
-                class="content__name"
-                v-for="user in room.users"
-                :key="user._id"
-              >
-                {{ user.username }}
+            <div class="message">
+              <p class="sender" >
+                {{ 
+                  $store.getters.myInfo.id === room.articleOwner._id ?
+                  room.users[0].username :
+                  room.articleOwner.name
+                }}
               </p>
-              <span>님의 채팅방</span>
-              <p v-if="room.users.length < 2" class="content__waiting">
-                &nbsp; - 상대방이 들어오길 기다리고 있습니다.
-              </p>
+              <p class="latest-message">{{room.latestMsg}}</p>
             </div>
           </div>
         </li>
       </div>
-      <h3 v-else>채팅 방 목록이 없습니다.</h3>
+      
+      <h3 v-else class="chat__no-list">채팅 방 목록이 없습니다.</h3>
     </div>
+
     <pagination
+      class="chat__pagination"
       v-if="roomList.length"
-      class="pagination"
       :total-pages="totalPages"
       :total="total"
       :per-page="perPage"
@@ -66,13 +57,12 @@ export default {
   setup() {
     const store = useStore()
     const router = useRouter()
-    
+  
     const noImg = ref(require("../../assets/avatar.jpg"))
     const currentPage = ref(1)
     const perPage = ref(5)
 
     const { unreadRequestsCount } = useUnreadRequests()
-
 
     const roomList = computed(() => {
       return store.getters["chat/roomList"]
@@ -99,11 +89,12 @@ export default {
       return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
     }
 
+    // 나의 채팅방 정보 불러오기
     store.dispatch("chat/fetchChatRoomList", currentPage.value)
-    
+
     // 안읽은 requests 갯수 불러오기
     unreadRequestsCount()
-
+  
     return {
       currentPage,
       perPage,
@@ -122,16 +113,10 @@ export default {
 <style lang="scss" scoped>
 .chat {
   max-width: 62.5rem;
-  margin: 0 auto;
-
-  h3 {
-    margin-top: 1.5rem;
-    text-align: center;
-  }
+  margin: 2rem auto;
 
   &__caption {
     text-align: center;
-    margin-top: 1rem;
   }
 
   &__list {
@@ -143,8 +128,7 @@ export default {
   }
 
   &__img {
-    width: 85px;
-    height: 85px;
+    width: 5.5rem;
     border-radius: 5px;
   }
 
@@ -152,60 +136,46 @@ export default {
     margin-left: 0.9rem;
     width: 100%;
 
-    .content__group--1 {
+    .content {
       display: flex;
       align-items: center;
       margin-bottom: 0.6rem;
-
-      @include respond(phone) {
-        flex-direction: column;
-        align-items: flex-start;
+      
+      h3{
+        white-space:nowrap; 
+        overflow:hidden;
+        text-overflow:ellipsis;
       }
-
+     
       .writer {
         font-size: 0.9rem;
         font-weight: 600;
         color: $color-grey-dark-2;
         margin-left: 10px;
         margin-right: auto;
-
-        @include respond(phone) {
-          margin-top: 4px;
-          margin-left: 0;
-        }
       }
     }
 
-    .content__group--2 {
-      display: inline-flex;
-      margin-bottom: 5px;
+    .message{
+      line-height: 1.7;
 
-      .content__name {
+      .sender{
         font-weight: 600;
-
-        &:not(:first-child) {
-          margin-left: 0.3rem;
-        }
       }
 
-      .content__waiting {
-        color: $secondary-color;
-      }
-
-      .content__email {
-        color: $primary-color;
-        font-weight: bold;
-        margin-left: 0.4rem;
-      }
-
-      span {
-        margin-left: 5px;
+      .latest-message{
+        color:$color-grey-dark-2;
       }
     }
   }
-}
 
-.pagination{
-  margin-top: 2rem;
+  &__pagination{
+    margin-top: 2rem;
+  }
+
+  &__no-list{
+    text-align:center; 
+    margin-top: 1.5rem;
+  }
 }
 </style>

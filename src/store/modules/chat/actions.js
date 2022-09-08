@@ -51,7 +51,7 @@ export default {
         `/roomList/${pageNum}`,
         { headers: { Authorization: `Bearer ${token}` }}
       )
-
+      
       context.commit('setRoomList', data)
     }catch(e){
       console.log(e)

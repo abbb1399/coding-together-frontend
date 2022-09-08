@@ -1,14 +1,15 @@
 <template>
-  <section>
+  <section class="requests">
     <base-dialog :show="!!error" title="에러 발생!" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
 
-    <div class="requests">
-      <header class="requests__header">
+     <header class="requests__header">
         <h2>받은 요청들</h2>
       </header>
-      <base-spinner v-if="isLoading"></base-spinner>
+
+    <div v-if="receivedRequests.length">
+      <base-spinner v-if="isLoading"/>
       <ul class="requests__list" v-else-if="hasRequests && !isLoading">
         <request-item
           v-for="req in receivedRequests"
@@ -21,11 +22,10 @@
           :from-img-src="req.userId.avatar"
           :created-at="req.createdAt"
           :is-read="req.isRead"
-        >
-        </request-item>
+        />
       </ul>
-      <h3 class="requests__no-request" v-else>받은 요청이 없습니다.</h3>
     </div>
+    <h3 v-else class="requests__no-list">받은 요청이 없습니다.</h3>
 
     <pagination
       v-if="receivedRequests.length"
@@ -89,7 +89,7 @@ export default {
     }
 
     const onPageChange = (page) => {
-      // store.dispatch("chat/fetchChatRoomList", page)
+      store.dispatch("requests/fetchRequests", page)
       currentPage.value = page
     }
 
@@ -114,8 +114,8 @@ export default {
 <style lang="scss" scoped>
 .requests {
   max-width: 62.5rem;
-  margin: 0 auto;
-  margin-top: 1rem;
+  margin: 2rem auto;
+  /* margin-top: 1rem; */
 
   &__header {
     text-align: center;
@@ -124,6 +124,11 @@ export default {
   &__no-request {
     margin-top: 1rem;
     text-align: center;
+  }
+
+  &__no-list{
+    text-align:center; 
+    margin-top: 1.5rem;
   }
 }
 

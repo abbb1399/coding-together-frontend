@@ -18,7 +18,8 @@
       <li>
         <router-link to="/articles">공고 목록</router-link>
       </li>
-      <li v-if="isLoggedIn" :data-badge="unReadRequestsCount">
+      <li v-if="isLoggedIn" >
+        <div v-if="unReadRequestsCount > 0" :data-badge="unReadRequestsCount"/>
         <router-link class="test" to="/requests">받은 요청</router-link>
       </li>
       <li v-else>
@@ -145,26 +146,22 @@ export default {
       position:relative;     
       &:after {
         position:absolute;
-        right: .13rem;
+        right: -0.625rem;
         top: -0.5rem;
-        line-height: .375rem;
-        padding: .25rem;
+        line-height: 0.6;
+        padding: 0.25rem;
 
         background-color:#bf1f1f;
         border:solid 1px #c93a3a;
 
-        font-size: .625rem;
+        font-size: 0.625rem;
         color:#fff;
         border-radius: 30px;
         content:attr(data-badge);
 
-        @include respond(big-screen) {
-          line-height: .4;
-          top: -0.4rem;
-        }
-
+     
         @include respond(tab-port) {
-          right: -.2rem;
+          right: -0.9rem;
         }
       }   
     }  

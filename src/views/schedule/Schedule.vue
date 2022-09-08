@@ -111,6 +111,8 @@ export default {
     })
 
     calendar.on("beforeUpdateSchedule", ({ schedule, changes }) => {
+      if(!changes) return
+
       // tui-calendar - Update
       calendar.updateSchedule(
         schedule.id,
