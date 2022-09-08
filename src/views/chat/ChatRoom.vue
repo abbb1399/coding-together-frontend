@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {ref, toRefs, inject, onUnmounted} from 'vue'
+import {ref, toRefs, onUnmounted} from 'vue'
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
@@ -50,7 +50,7 @@ export default {
   setup(props){
     const store = useStore()
     const router = useRouter()
-    const $moment = inject('$moment')
+   
     const { roomId } = toRefs(props)
     const { socket, textMessages, usernameOptions, messagesLoaded, messageActions} = useChatOptions()
     const rooms = ref([]) 
@@ -91,7 +91,7 @@ export default {
             content,
             senderId,
             username,
-            date: $moment(date).format('YYYY-MM-DD'),
+            date,
             timestamp,
             deleted,
             replyMessage
