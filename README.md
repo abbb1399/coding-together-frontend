@@ -7,7 +7,16 @@
 [https://github.com/abbb1399/coding-together-backend ](https://github.com/abbb1399/coding-together-backend )
 
 ## 기술 스택
-
-* 개발 언어: Html, Sass(SCSS), Javascript
+> **프론트엔드**
+* 개발 언어: HTML, Sass(SCSS), JavaScript
 * 프론트엔드 프레임워크: Vue.js
+  * Vue 3
+  * Composition API
 * 배포: AWS - S3, CloudFront
+
+> **백엔드**
+* 개발 언어: JavaScript
+* 백엔드 프레임워크: Express.js for Node.js
+* DB: MongoDB
+* 이메일 서비스: AWS - SES
+* 배포: AWS - EC2
