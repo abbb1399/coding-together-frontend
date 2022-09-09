@@ -13,7 +13,7 @@
   * Vue 3
   * Composition API
 * 배포: AWS - S3, CloudFront  
-* 
+
 > **백엔드**
 * 개발 언어: JavaScript
 * 백엔드 프레임워크: Express.js for Node.js
