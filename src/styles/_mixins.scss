@@ -6,15 +6,23 @@
   margin-bottom: 8px;
 }
 
+@mixin shortenText{
+  white-space:nowrap; 
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 // 미디어쿼리 메니져
 /*
-  0 - 600px:  스마트폰
+  0   - 415px: 스마트폰
+  415 - 600px: 좀 큰 스마트폰
   600 - 900px: 테블릿 세로(portrait)
   900 - 1200px: 테블릿 가로(landscape)
   [1200 - 1800] 
   1800px + : 큰 모니터
 
   $breakpoint 변수 :
+  - small-screen
   - phone
   - tab-port
   - tab-land
@@ -30,6 +38,9 @@
 // rem은 몇몇 브라우저에서 먹히지 않기 때문에 em을 씀
 
 @mixin respond($breakpoint){
+  @if $breakpoint == small-screen{
+    @media screen and (max-width: 25.9em){@content};   //415px
+  }
   @if $breakpoint == phone{
     @media screen and (max-width: 37.5em){@content};   //600px
   }

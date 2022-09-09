@@ -89,7 +89,7 @@ export default {
   border-radius: 5px;
   height: 2.5rem;
   min-width: 18rem;
-  
+
   &__button {
     width: 100%;
     height: 100%;
@@ -97,6 +97,10 @@ export default {
     border: none;
     font-weight: 600;
     cursor: pointer;
+    
+    @include respond(phone) {
+      font-size: 1rem;
+    }
 
     &:hover {
       background: darken(#ebecf0, 3%);
@@ -129,6 +133,10 @@ export default {
 
       width: 3.75rem;
       height: 1.875rem;
+
+      @include respond(tab-port) {
+        font-size: 10px;
+      }
     }
 
     span {

@@ -204,7 +204,7 @@ export default {
 <style lang="scss" scoped>
 .sidebar {
   height: 100%;
-  width: 23vw;
+  width: 22rem;
   position: fixed;
   z-index: 1;
   top: 0;

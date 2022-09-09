@@ -76,10 +76,8 @@ export default {
     line-height: 1.6;
 
     .item-title{
-      white-space:nowrap; 
-      overflow:hidden;
-      text-overflow:ellipsis;
-
+      @include shortenText;
+ 
       /* 여러 줄 */
       /* display: -webkit-box;
       -webkit-line-clamp: 2;

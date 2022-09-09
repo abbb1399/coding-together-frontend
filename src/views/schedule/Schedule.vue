@@ -197,6 +197,10 @@ export default {
   max-width: 62.5rem;
   margin: 0 auto;
 
+  /* @media screen and (max-width: 51.25em){
+    padding: 0 1rem;
+  } */
+
   &__header {
     display: flex;
     padding: .75rem 0;
@@ -228,39 +232,39 @@ export default {
       margin-bottom: 5px;
     }
   }
-}
 
-.btn {
-  border-radius: 25px;
-  background-color: #fff;
-  border: solid 1px #bbb;
-  cursor: pointer;
-
-  &:hover {
-    border: solid 1px grey;
-    // background-color: #fff;
-  }
-
-  &:active {
-    background-color: #f9f9f9;
+  .btn {
+    border-radius: 25px;
+    background-color: #fff;
     border: solid 1px #bbb;
-    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      border: solid 1px grey;
+      // background-color: #fff;
+    }
+
+    &:active {
+      background-color: #f9f9f9;
+      border: solid 1px #bbb;
+      outline: none;
+    }
+
+    &:disabled {
+      background-color: #f9f9f9;
+      border: solid 1px #ddd;
+      color: #bbb;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 
-  &:disabled {
-    background-color: #f9f9f9;
-    border: solid 1px #ddd;
-    color: #bbb;
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.move-day {
-  padding: 0.4rem 0.8rem;
-  line-height: 1.1rem;
+  .move-day {
+    padding: 0.4rem 0.8rem;
+    line-height: 1.1rem;
+  } 
 }
 
 :deep(#tui-full-calendar-schedule-private) {

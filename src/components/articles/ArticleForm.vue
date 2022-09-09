@@ -298,6 +298,10 @@ export default {
 }
 
 .form {
+  @include respond(small-screen) {
+    padding: 0 1rem;
+  }
+  
   &__control {
     margin: 1.6rem 0;
 

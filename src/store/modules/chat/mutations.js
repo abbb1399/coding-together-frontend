@@ -5,7 +5,7 @@ export default {
     const roomInfo = chatRoomInfo.roomlist.map(element => {
       return {
         ...element,
-        createdAt: moment(element.createdAt).format('YYYY-MM-DD') 
+        updatedAt: moment(element.updatedAt).format('YYYY-MM-DD') 
       }
     }); 
     

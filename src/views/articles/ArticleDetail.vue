@@ -195,6 +195,10 @@ export default {
   max-width: 43.5rem;
   margin: 1rem auto;
 
+  @include respond(small-screen) {
+    padding: 0 1rem;
+  }
+
   &__title {
     font-size: 2rem;
     margin: 1rem 0 1rem 0;

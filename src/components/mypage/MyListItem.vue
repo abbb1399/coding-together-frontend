@@ -48,7 +48,7 @@ export default {
     })
 
     const listCreatedAt = computed(()=>{
-      return $moment(createdAt.value).format("YYYY-MM-DD HH:mm:ss")
+      return $moment(createdAt.value).format("YYYY-MM-DD")
     })
 
     // const listCompleted= computed(()=>{
@@ -87,21 +87,18 @@ export default {
     &__group{
       margin-left: .9rem;
       margin-right: auto;
-      width: 50%;
+      width: 58%;
      
       .group__title{
         font-size: 1.1rem;
         margin-bottom: .5rem;
 
-        white-space:nowrap; 
-        overflow:hidden;
-        text-overflow:ellipsis;
+        @include shortenText;
       }
     }
 
     &__completed{
       margin-left: .9rem;
-      /* margin-right: auto; */
 
       font-size: .9rem;
       font-weight: 600;

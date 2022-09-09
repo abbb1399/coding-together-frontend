@@ -2,22 +2,21 @@
   <section>
     <div class="detail" v-if="!editMode">
       <header class="detail__header">
-        <div class="header-title">
-          <h2>{{ articleTitle }}</h2>
-          <span>
+        <h2>{{ articleTitle }}</h2>
+        <div class="description">
+          <div class="group-1">
+            <p class="date">작성일 : {{ createdAt }}</p>
+            <base-badge
+              v-for="area in areas"
+              :key="area"
+              :type="area"
+              :title="area"
+            />
+          </div>
+          <div class="group-2">
             <base-button mode="secondary" @click="editArticle">수정</base-button>
             <base-button mode="primary" @click="deleteArticle">삭제</base-button>
-          </span>
-        </div>
-
-        <div class="header-description">
-          <p class="date">작성일 : {{ createdAt }}</p>
-          <base-badge
-            v-for="area in areas"
-            :key="area"
-            :type="area"
-            :title="area"
-          />
+          </div>
         </div>
       </header>
 
@@ -144,25 +143,37 @@ export default {
 
 .detail {
   &__header {
-    .header-title {
+    .description {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
 
-    .header-description {
-      display: flex;
-      align-items: center;
       color: #555;
-      margin: 0 1rem 1em 0;
+      margin: .5rem 0;
       font-size: 1em;
       font-style: italic;
       border-top: 1px solid rgba(144, 144, 144, 0.25);
       border-bottom: 1px solid rgba(144, 144, 144, 0.25);
       padding: 5px 0;
+      
+      .group-1{
+        display: flex;
+        align-items: center;
+        
+        .date{
+          margin-right:.5rem;
+        }
+      }
 
-      .date {
-        margin-right: 1rem;
+      .group-2{
+        button{
+          padding: .28rem .8rem;
+          border-radius: 5px;
+
+          &:first-child{
+            margin-right: 3px;
+          }
+        }
       }
     }
   }

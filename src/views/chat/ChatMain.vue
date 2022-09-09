@@ -12,7 +12,7 @@
 
         <div class="chat__list-main">
           <div class="content">
-            <h3>{{ room.roomName }}</h3>
+            <h3 class="title">{{ room.roomName }}</h3>
             <p class="writer">작성자: {{ room.articleOwner.name }}</p>
           </div>
           <div class="message">
@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        <p>{{ room.createdAt }}</p>
+        <p class="chat__list-updated">{{ room.updatedAt }}</p>
       </li>
     </div>
     <h3 v-else class="chat__no-list">채팅 방 목록이 없습니다.</h3>
@@ -134,11 +134,23 @@ export default {
     &-main {
       margin-left: 0.9rem;
       flex: 1;
+      
+      @include respond(phone){
+        width: 70%;
+      }
+
+      @include respond(small-screen){
+        width: 60%;
+      }
 
       .content {
         display: flex;
         align-items: center;
         margin-bottom: 0.6rem;
+
+        .title{
+          @include shortenText;
+        }
 
         .writer {
           font-size: 0.9rem;
@@ -146,6 +158,14 @@ export default {
           color: $color-grey-dark-2;
           margin-left: 10px;
           margin-right: auto;
+
+          @include respond(phone){
+            width:50%;
+          }
+
+          @include respond(small-screen){
+            visibility: hidden;
+          }
         }
       }
 
@@ -167,6 +187,9 @@ export default {
           -webkit-box-orient: vertical;         
         }
       }
+    }
+
+    &-updated{
     }
   }
 

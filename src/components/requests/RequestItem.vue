@@ -109,6 +109,10 @@ export default {
     margin-left: 0.9rem;
     width: 100%;
     line-height: 1.6;
+
+    @include respond(small-screen) {
+      width: 81%;
+    }
   }
 
   &__content--1 {
@@ -118,9 +122,11 @@ export default {
 
     h3{
       flex:.9;
-      white-space:nowrap; 
-      overflow:hidden;
-      text-overflow:ellipsis; 
+      @include shortenText;
+    
+      @include respond(small-screen) {
+        flex: 0.6;
+      }
     }
   }
 

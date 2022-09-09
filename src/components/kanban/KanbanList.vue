@@ -281,7 +281,7 @@ export default {
 .list-item {
   width: 18rem;
   background: #ebecf0;
-  padding: 10px;
+  padding: .625rem;
 
   height: calc(100vh - 6rem);
   overflow-y: auto;
@@ -296,7 +296,7 @@ export default {
       word-break: break-all;
       border: 2px solid transparent;
       padding: 4px;
-      font-size: 14px;
+      font-size: 1rem;
       font-weight: 600;
       border-radius: 5px;
       background-color: transparent;
@@ -326,13 +326,11 @@ export default {
       span {
         font-size: .8rem;
         width: 1.5rem;
-        /* margin-right: 5px; */
+
       }
 
       button{
         font-size: .8rem;
-        /* height: 2rem;
-        width: 2rem; */
       }
     }
   }
@@ -346,21 +344,35 @@ export default {
     }
 
     p {
-      font-size: 14px;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: .4rem;
+      font-size: .875rem;
     }
 
     input {
       width: 100%;
-      padding: 3px;
+      padding: .3rem;
       border-radius: 5px;
-      margin-bottom: 5px;
+      margin-bottom: .5rem;
       border: 1px solid;
+
+      @include respond(phone) {
+        font-size: 10px;
+      }
     }
 
     button {
-      width: 3rem;
+      padding: .3rem .7rem;
+      font-weight: 600;
+
+      @include respond(big-screen) {
+        padding: .35rem .9rem;
+      }
+
+      @include respond(phone) {
+        padding: .23rem .6rem;
+        font-weight: 500;
+      }
     }
   }
 
@@ -386,7 +398,7 @@ export default {
       content: attr(data-hover);
       visibility: hidden;
       opacity: 0;
-      width: 62px;
+      width: 3.875rem;
       background-color: black;
       color: #fff;
       text-align: center;
