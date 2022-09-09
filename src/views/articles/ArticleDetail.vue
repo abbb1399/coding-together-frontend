@@ -136,7 +136,7 @@ export default {
 
       if (result.isConfirmed) {
         // 채팅방 생성 혹은 이동
-        await store.dispatch("chat/createOrEnterRoom", {
+        await store.dispatch("chat/checkAndCreateRoom", {
           roomId: articleId,
           roomName: title.value,
           avatar: thumbnail.value,
@@ -149,8 +149,17 @@ export default {
           ],
         })
 
-        // 방이 이미 생성되었을 경우 - 상대방에게 요청도 생성
+        // 방이 생성될 경우        
         if (store.getters["chat/isRoomCreated"]) {
+          // 상대방에게 인사 메세지
+          await store.dispatch('chat/registerMessage', {
+            content:`${owner.name}님 같이 코딩해요!`,
+            senderId: store.getters.myInfo.id,
+            username: store.getters.myInfo.name,
+            owner: articleId,
+          })
+
+          //상대방에게 요청도 생성
           await store.dispatch("requests/sendRequest", {
             userId: store.getters.myInfo.id,
             title: title.value,

@@ -2,8 +2,7 @@ import axios from "../../../plugins/axios"
 
 export default {
   // 채팅방 생성하기
-  async createOrEnterRoom(context, roomInfo){
-    
+  async checkAndCreateRoom(context, roomInfo){
     try{
       const {data} = await axios.get(`/checkroom/${roomInfo.roomId}`)
       

@@ -10,7 +10,7 @@ export default function useChatOptions() {
     // ROOMS_EMPTY: '대화 없음',
     ROOM_EMPTY: '선택된 대화가 없습니다',
     NEW_MESSAGES: '새로운 메세지',
-    MESSAGE_DELETED: '삭제되었습니다.',
+    MESSAGE_DELETED: '삭제 되었습니다.',
     MESSAGES_EMPTY: '메세지 없음',
     CONVERSATION_STARTED: '대화 시작일 :',
     TYPE_MESSAGE: '메세지를 입력하세요.',

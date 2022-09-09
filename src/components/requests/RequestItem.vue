@@ -115,6 +115,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    h3{
+      flex:.9;
+      white-space:nowrap; 
+      overflow:hidden;
+      text-overflow:ellipsis; 
+    }
   }
 
   &__content--2 {

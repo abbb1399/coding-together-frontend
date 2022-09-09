@@ -1,41 +1,40 @@
 <template>
   <section class="chat">
-    <div>
-      <h2 class="chat__caption">채팅 목록</h2>
-      <div v-if="roomList.length">
-        <li
-          class="chat__list"
-          @click="enterChatRoom(room)"
-          v-for="room in roomList"
-          :key="room.roomId"
-        >
-          <img class="chat__img" alt="유저 프로필" :src="getImage(room.avatar)" />
-          <div class="chat__group">
-            <div class="content">
-              <h3>{{ room.roomName }}</h3>
-              <p class="writer">작성자: {{ room.articleOwner.name }}</p>
-              <p>{{ room.createdAt }}</p>
-            </div>
-            <div class="message">
-              <p class="sender" >
-                {{ 
-                  $store.getters.myInfo.id === room.articleOwner._id ?
-                  room.users[0].username :
-                  room.articleOwner.name
-                }}
-              </p>
-              <p class="latest-message">{{room.latestMsg}}</p>
-            </div>
+    <h2 class="chat__caption">채팅 목록</h2>
+    <div v-if="roomList.length">
+      <li
+        class="chat__list"
+        @click="enterChatRoom(room)"
+        v-for="room in roomList"
+        :key="room.roomId"
+      >
+        <img class="chat__list-img" alt="유저 프로필" :src="getImage(room.avatar)"/>
+
+        <div class="chat__list-main">
+          <div class="content">
+            <h3>{{ room.roomName }}</h3>
+            <p class="writer">작성자: {{ room.articleOwner.name }}</p>
           </div>
-        </li>
-      </div>
-      
-      <h3 v-else class="chat__no-list">채팅 방 목록이 없습니다.</h3>
+          <div class="message">
+            <p class="sender">
+              {{
+                $store.getters.myInfo.id === room.articleOwner._id
+                  ? room.users[0].username
+                  : room.articleOwner.name
+              }}
+            </p>
+            <p class="latest-message">{{room.latestMsg}}</p>
+          </div>
+        </div>
+
+        <p>{{ room.createdAt }}</p>
+      </li>
     </div>
+    <h3 v-else class="chat__no-list">채팅 방 목록이 없습니다.</h3>
 
     <pagination
-      class="chat__pagination"
       v-if="roomList.length"
+      class="chat__pagination"
       :total-pages="totalPages"
       :total="total"
       :per-page="perPage"
@@ -50,14 +49,14 @@ import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import Pagination from "../../components/ui/Pagination.vue"
-import useUnreadRequests from '../../hooks/use-unread-requests'
+import useUnreadRequests from "../../hooks/use-unread-requests"
 
 export default {
   components: { Pagination },
   setup() {
     const store = useStore()
     const router = useRouter()
-  
+
     const noImg = ref(require("../../assets/avatar.jpg"))
     const currentPage = ref(1)
     const perPage = ref(5)
@@ -85,7 +84,7 @@ export default {
       currentPage.value = page
     }
 
-    const getImage = (roomAvatar) =>{
+    const getImage = (roomAvatar) => {
       return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
     }
 
@@ -94,7 +93,7 @@ export default {
 
     // 안읽은 requests 갯수 불러오기
     unreadRequestsCount()
-  
+
     return {
       currentPage,
       perPage,
@@ -104,7 +103,7 @@ export default {
       roomList,
       enterChatRoom,
       onPageChange,
-      getImage
+      getImage,
     }
   },
 }
@@ -121,60 +120,62 @@ export default {
 
   &__list {
     display: flex;
+
     border-bottom: 1px solid $color-grey-light;
     border-radius: 5px;
     padding: 0.8rem;
     cursor: pointer;
-  }
 
-  &__img {
-    width: 5.5rem;
-    border-radius: 5px;
-  }
-
-  &__group {
-    margin-left: 0.9rem;
-    width: 100%;
-
-    .content {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.6rem;
-      
-      h3{
-        white-space:nowrap; 
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
-     
-      .writer {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: $color-grey-dark-2;
-        margin-left: 10px;
-        margin-right: auto;
-      }
+    &-img {
+      width: 5.5rem;
+      border-radius: 5px;
     }
 
-    .message{
-      line-height: 1.7;
+    &-main {
+      margin-left: 0.9rem;
+      flex: 1;
 
-      .sender{
-        font-weight: 600;
+      .content {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.6rem;
+
+        .writer {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: $color-grey-dark-2;
+          margin-left: 10px;
+          margin-right: auto;
+        }
       }
 
-      .latest-message{
-        color:$color-grey-dark-2;
+      .message {
+        line-height: 1.7;
+
+        .sender {
+          font-weight: 600;
+        }
+
+        .latest-message {
+          color: $color-grey-dark-2;
+          width:90%;
+
+          word-break: break-all;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;         
+        }
       }
     }
   }
 
-  &__pagination{
+  &__pagination {
     margin-top: 2rem;
   }
 
-  &__no-list{
-    text-align:center; 
+  &__no-list {
+    text-align: center;
     margin-top: 1.5rem;
   }
 }
