@@ -26,10 +26,14 @@ export default {
   },
   setCurrentRoom(state, currentRoomInfo){
     currentRoomInfo.avatar = `${process.env.VUE_APP_API_URL}/images/${currentRoomInfo.avatar}`
+    currentRoomInfo.roomId = currentRoomInfo._id
 
     state.currentRoom = currentRoomInfo
   },
   setIsRoomCreated(state, isCreated){
     state.isRoomCreated = isCreated
+  },
+  setNewChatRoomId(state, newChatRoomId){
+    state.newChatRoomId = newChatRoomId
   }
 }

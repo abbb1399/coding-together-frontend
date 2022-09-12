@@ -67,7 +67,7 @@ export default {
       // 방정보 불러오기
       await store.dispatch('chat/fetchCurrentRoom', roomId.value)
       const enteredRoom = store.getters['chat/currentRoom']
-   
+
       rooms.value = [enteredRoom]
 
       // 소켓 Join
@@ -131,7 +131,7 @@ export default {
         content,
         senderId: currentUserId.value,
         username: currentUserName.value,
-        owner: roomId,
+        roomId,
         replyMessage
       }
       
@@ -214,6 +214,14 @@ export default {
   #chat-room{
     max-width: 900px;
     margin: 0 auto;
+
+    @include respond(phone) {
+      height: 96vh !important;
+    }
+
+    @include respond(small-screen) {
+      height: 94vh !important;
+    }
   }
 
   #back-space{

@@ -48,6 +48,7 @@ export default {
         email: data.user.email,
         avatar: data.user.avatar,
         createdAt: data.user.createdAt,
+        inChatRoom: data.user.inChatRoom
       }
 
       localStorage.setItem("token", data.token)
@@ -110,6 +111,7 @@ export default {
           email: "",
           avatar: "",
           createdAt: null,
+          inChatRoom: []
         },
       })
     } catch (error) {
@@ -180,4 +182,22 @@ export default {
       console.log(e)
     }
   },
+
+  // 내가 입장한 채팅방
+  async enterChatRoom(context, ids){
+    const token = context.rootGetters.token
+    
+    try {
+      const {data} = await axios.patch("/in-chat-room", ids, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      
+      const articleId = data.articleId
+      const chatRoomId = data.chatRoomId
+      
+      context.commit("setInChatRoom", {articleId, chatRoomId})
+    } catch (e) {
+      throw new Error(e.response.data)
+    }
+  }
 }

@@ -11,7 +11,8 @@ export default {
       roomList:[],
       currentRoom:{},
       isRoomCreated: null,
-      total: null
+      total: null,
+      newChatRoomId:null
     }
   },
   mutations,

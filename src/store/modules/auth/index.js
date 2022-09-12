@@ -10,7 +10,8 @@ export default {
         name:'',
         email:'',
         avatar:'',
-        createdAt:null
+        createdAt:null,
+        inChatRoom: []
       },
       token: null,
       didAutoLogout:false,

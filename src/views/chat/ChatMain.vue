@@ -128,6 +128,7 @@ export default {
 
     &-img {
       width: 5.5rem;
+      height: 5.5rem;
       border-radius: 5px;
     }
 

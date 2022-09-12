@@ -16,5 +16,8 @@ export default {
   },
   getTotalChatRoom(state){
     return state.total
+  },
+  getNewChatRoomId(state){
+    return state.newChatRoomId
   }
 }

@@ -1,10 +1,6 @@
 <template>
   <section class="article">
-    <img
-      class="article__thumbnail"
-      :src="articeImage"
-      alt="썸내일"
-    />
+    <img class="article__thumbnail" :src="articeImage" alt="썸내일" />
     <h1 class="article__title">{{ title }}</h1>
     <div class="article__meta">
       <small class="description">
@@ -37,7 +33,7 @@ import { useStore } from "vuex"
 import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
 import "@toast-ui/editor/dist/toastui-editor-viewer.css"
 
-import useUnreadRequests from '../../hooks/use-unread-requests'
+import useUnreadRequests from "../../hooks/use-unread-requests"
 
 export default {
   props: {
@@ -60,11 +56,11 @@ export default {
     const updatedAt = ref("")
     const owner = reactive({ id: "", name: "" })
     const thumbnail = ref(null)
-    const articleOwner = ref('')
+    const articleOwner = ref("")
 
     const { unreadRequestsCount } = useUnreadRequests()
 
-    const articeImage = computed(()=>{
+    const articeImage = computed(() => {
       return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
     })
 
@@ -110,7 +106,7 @@ export default {
           showConfirmButton: false,
           timer: 2000,
         })
-        return 
+        return
       }
 
       if (store.getters.myInfo.id === owner.id) {
@@ -120,7 +116,7 @@ export default {
           showConfirmButton: false,
           timer: 2000,
         })
-        return 
+        return
       }
 
       const result = await $swal.fire({
@@ -135,40 +131,44 @@ export default {
       })
 
       if (result.isConfirmed) {
-        // 채팅방 생성 혹은 이동
-        await store.dispatch("chat/checkAndCreateRoom", {
-          roomId: articleId,
-          roomName: title.value,
-          avatar: thumbnail.value,
-          articleOwner: articleOwner.value,
-          users: [
-            {
-              _id: store.getters.myInfo.id,
-              username: store.getters.myInfo.name,
-            },
-          ],
-        })
+        const inRoom = store.getters.myInfo.inChatRoom.find((room) => room.articleId === articleId)
 
-        // 방이 생성될 경우        
-        if (store.getters["chat/isRoomCreated"]) {
-          // 상대방에게 인사 메세지
-          await store.dispatch('chat/registerMessage', {
-            content:`${owner.name}님 같이 코딩해요!`,
+        if(!inRoom){
+          // 채팅방 생성
+          await store.dispatch("chat/createRoom", {
+            roomName: title.value,
+            avatar: thumbnail.value,
+            articleOwner: articleOwner.value,
+            users: [
+              {
+                _id: store.getters.myInfo.id,
+                username: store.getters.myInfo.name,
+              },
+            ],
+          })
+          const newChatRoomId = store.getters['chat/getNewChatRoomId']
+
+          // 내 아이디에 생성
+          await store.dispatch("enterChatRoom", {articleId, chatRoomId: newChatRoomId } )
+         
+         // 상대방에게 인사 메세지
+          await store.dispatch("chat/registerMessage", {
+            content: `${owner.name}님 같이 코딩해요!`,
             senderId: store.getters.myInfo.id,
             username: store.getters.myInfo.name,
-            owner: articleId,
+            roomId: newChatRoomId,
           })
-
           //상대방에게 요청도 생성
           await store.dispatch("requests/sendRequest", {
             userId: store.getters.myInfo.id,
             title: title.value,
             owner: owner.id,
-            roomId: articleId,
+            roomId: newChatRoomId,
           })
+          router.push({ name: "chatRoom", params: { roomId: newChatRoomId }})
+        }else{
+          router.push({ name: "chatRoom", params: { roomId: inRoom.chatRoomId }})
         }
-
-        router.push({ name: "chatRoom", params: { roomId: articleId } })
       }
     }
 
@@ -209,7 +209,7 @@ export default {
     width: 100%;
     border-radius: 5px;
 
-    @include respond(phone){
+    @include respond(phone) {
       border-radius: 0;
     }
   }
@@ -220,7 +220,7 @@ export default {
     background: #eee;
     padding: 0.5rem;
 
-    .description {   
+    .description {
       margin-right: auto;
     }
 
@@ -229,7 +229,7 @@ export default {
       font-size: 12px;
       width: 4.8rem;
 
-      @include respond(tab-land){
+      @include respond(tab-land) {
         font-size: 10px;
         width: 5.5rem;
       }
