@@ -197,10 +197,6 @@ export default {
   max-width: 62.5rem;
   margin: 0 auto;
 
-  /* @media screen and (max-width: 51.25em){
-    padding: 0 1rem;
-  } */
-
   &__header {
     display: flex;
     padding: .75rem 0;

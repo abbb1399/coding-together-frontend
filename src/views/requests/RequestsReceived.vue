@@ -4,13 +4,12 @@
       <p>{{ error }}</p>
     </base-dialog>
 
-     <header class="requests__header">
-        <h2>받은 요청들</h2>
-      </header>
+    <header class="requests__header">
+      <h2>받은 요청들</h2>
+    </header>
 
     <div v-if="receivedRequests.length">
-      <base-spinner v-if="isLoading"/>
-      <ul class="requests__list" v-else-if="hasRequests && !isLoading">
+      <ul class="requests__list">
         <request-item
           v-for="req in receivedRequests"
           :key="req._id"
@@ -44,7 +43,7 @@ import { ref, computed } from "vue"
 import { useStore } from "vuex"
 import RequestItem from "../../components/requests/RequestItem.vue"
 import Pagination from "../../components/ui/Pagination.vue"
-import useUnreadRequests from '../../hooks/use-unread-requests'
+import useUnreadRequests from "../../hooks/use-unread-requests"
 
 export default {
   components: {
@@ -53,7 +52,6 @@ export default {
   },
   setup() {
     const store = useStore()
-    const isLoading = ref(false)
     const error = ref(null)
     const currentPage = ref(1)
     const perPage = ref(5)
@@ -68,20 +66,15 @@ export default {
     })
 
     const totalPages = computed(() => {
-      return Math.ceil(store.getters["requests/getTotalRequest"] / perPage.value)
+      return Math.ceil(
+        store.getters["requests/getTotalRequest"] / perPage.value
+      )
     })
 
-    const hasRequests = computed(() => {
-      return store.getters["requests/hasRequests"]
-    })
-
-    const loadRequests = async () => {
-      isLoading.value = true
+    const init = async () => {
       // requests 불러오기
-      await store.dispatch("requests/fetchRequests", currentPage.value)
+      store.dispatch("requests/fetchRequests", currentPage.value)
       unreadRequestsCount()
-
-      isLoading.value = false
     }
 
     const handleError = () => {
@@ -93,17 +86,15 @@ export default {
       currentPage.value = page
     }
 
-    loadRequests()
+    init()
 
     return {
       total,
       totalPages,
       currentPage,
       perPage,
-      isLoading,
       error,
       receivedRequests,
-      hasRequests,
       handleError,
       onPageChange,
     }
@@ -126,13 +117,13 @@ export default {
     text-align: center;
   }
 
-  &__no-list{
-    text-align:center; 
+  &__no-list {
+    text-align: center;
     margin-top: 1.5rem;
   }
 }
 
-.pagination{
+.pagination {
   margin-top: 2rem;
 }
 </style>

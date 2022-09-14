@@ -3,8 +3,6 @@ import axios from "../../../plugins/axios"
 export default {
   // 채팅방 생성하기
   async createRoom(context, roomInfo){
-    console.log(roomInfo)
-
     try{
       const {data} = await axios.post('/chatroom', roomInfo)
 

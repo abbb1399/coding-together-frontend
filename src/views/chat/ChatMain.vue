@@ -60,7 +60,7 @@ export default {
     const noImg = ref(require("../../assets/avatar.jpg"))
     const currentPage = ref(1)
     const perPage = ref(5)
-
+   
     const { unreadRequestsCount } = useUnreadRequests()
 
     const roomList = computed(() => {
@@ -88,11 +88,15 @@ export default {
       return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
     }
 
-    // 나의 채팅방 정보 불러오기
-    store.dispatch("chat/fetchChatRoomList", currentPage.value)
+    const init = () =>{
+      // 나의 채팅방 정보 불러오기
+      store.dispatch("chat/fetchChatRoomList", currentPage.value)  
+      
+      // 안읽은 requests 갯수 불러오기
+      unreadRequestsCount()
+    }
 
-    // 안읽은 requests 갯수 불러오기
-    unreadRequestsCount()
+    init()
 
     return {
       currentPage,
@@ -189,9 +193,6 @@ export default {
         }
       }
     }
-
-    &-updated{
-    }
   }
 
   &__pagination {
@@ -201,6 +202,10 @@ export default {
   &__no-list {
     text-align: center;
     margin-top: 1.5rem;
+  }
+
+  &__spinner{
+    margin-top: 5rem;
   }
 }
 </style>

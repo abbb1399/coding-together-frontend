@@ -215,8 +215,16 @@ export default {
     max-width: 900px;
     margin: 0 auto;
 
-    @include respond(phone) {
+    @media screen and (max-width: 900px){
+      height: 96.5vh !important;
+    }
+
+    @media screen and (max-width: 768px){
       height: 96vh !important;
+    }
+
+    @media screen and (max-width: 600px){
+      height: 96.5vh !important;
     }
 
     @include respond(small-screen) {

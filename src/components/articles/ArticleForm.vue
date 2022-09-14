@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm" class="form">
+  <form @submit.prevent="submitForm" @keydown.enter="$event.preventDefault()" class="form">
     <div class="form__control" :class="{ invalid: !name.isValid }">
       <label for="name" class="form__caption">제목</label>
       <input

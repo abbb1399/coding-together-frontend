@@ -26,7 +26,7 @@
         <router-link to="/auth">로그인</router-link>
       </li>
       <!-- 아바타 -->
-      <li v-if="isLoggedIn">
+      <li v-if="isLoggedIn" :class="{ avatar: unReadRequestsCount > 0 }">
         <drop-down id="dropdown-wrapper">
           <template #content></template>
           <template #default>
@@ -163,11 +163,12 @@ export default {
         @include respond(tab-port) {
           right: -0.9rem;
         }
-      }   
+      }
     }  
 
     & > li {
       padding: 0 0.625rem;
+     
 
       @include respond(tab-port) {
         margin-top: 10px;
@@ -196,6 +197,10 @@ export default {
         }
       }
     }
+
+    .avatar{
+      margin-left: .1rem ;
+    }
   }
 
   .hide {
@@ -216,5 +221,7 @@ export default {
       }
     }
   }
+
+
 }
 </style>
