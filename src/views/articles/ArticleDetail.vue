@@ -138,13 +138,14 @@ export default {
           await store.dispatch("chat/createRoom", {
             roomName: title.value,
             avatar: thumbnail.value,
-            articleOwner: articleOwner.value,
             users: [
               {
                 _id: store.getters.myInfo.id,
                 username: store.getters.myInfo.name,
               },
             ],
+            articleOwner: articleOwner.value,
+            
           })
           const newChatRoomId = store.getters['chat/getNewChatRoomId']
 

@@ -188,7 +188,7 @@ export default {
     const token = context.rootGetters.token
     
     try {
-      const {data} = await axios.patch("/in-chat-room", ids, {
+      const {data} = await axios.post("/in-chat-room", ids, {
         headers: { Authorization: `Bearer ${token}` },
       })
       
