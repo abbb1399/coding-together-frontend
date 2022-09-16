@@ -2,14 +2,14 @@
   <div id="app-main">    
     <the-header/>
 
-    <router-view v-slot="slotProps" :class="{'articles-height': $route.path === '/articles' }" >
+    <router-view v-slot="slotProps" :class="{ 'articles-height': $route.path === '/articles' }" >
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"/>
       </transition>
     </router-view>
   </div>
 
-  <the-footer v-if="!$route.meta.hideFooter && $route.path !== '/auth' "/>
+  <the-footer v-if="!$route.meta.hideFooter"/>
 </template>
 
 <script>
