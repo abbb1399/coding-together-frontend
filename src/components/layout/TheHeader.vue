@@ -6,7 +6,7 @@
     </h1>
 
     <ul class="nav__items" :class="{ hide: !show }">
-      <li>
+      <li v-if="!isPhone">
         <router-link to="/kanban">칸반</router-link>
       </li>
       <li>
@@ -57,6 +57,10 @@ export default {
 
     const show = ref(false)
 
+    const isPhone = computed(() => {
+      return /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)
+    })
+
     const isLoggedIn = computed(() => {
       return store.getters.isAuthenticated
     })
@@ -86,6 +90,7 @@ export default {
     return {
       show,
       isLoggedIn,
+      isPhone,
       unReadRequestsCount,
       logout,
       openMenu,
@@ -176,17 +181,8 @@ export default {
 
       a {
         color: $color-grey-dark-3;
-        font-size: 1rem;
         font-weight: 700;
         padding: 0.3rem;
-
-        @include respond(tab-port) {
-          font-size: 1.1rem;
-        }
-
-        @include respond(phone) {
-          font-size: .5rem;
-        }
 
         &:hover {
           border-bottom: 3px solid $medium-color;

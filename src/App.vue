@@ -1,8 +1,8 @@
 <template>
-  <div id="app-main">    
+  <div id="app-main" :class="{ scroll : this.$route.path === '/articles' }">  
     <the-header/>
 
-    <router-view v-slot="slotProps" >
+    <router-view v-slot="slotProps">
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"/>
       </transition>
@@ -51,6 +51,10 @@ export default {
     min-height: 90vh;
   }
   
+  .scroll{
+    overflow:scroll; 
+  }
+
   // Vue Transition css
   .route-enter-from{
     opacity: 0;
