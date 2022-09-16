@@ -1,15 +1,15 @@
 <template>
-  <div id="app-main" :class="{ scroll : this.$route.path === '/articles' }">  
+  <div id="app-main">    
     <the-header/>
 
-    <router-view v-slot="slotProps">
+    <router-view v-slot="slotProps" :class="{'articles-height': $route.path === '/articles' }" >
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"/>
       </transition>
     </router-view>
   </div>
 
-  <the-footer v-if="!$route.meta.hideFooter"/>
+  <the-footer v-if="!$route.meta.hideFooter && $route.path !== '/auth' "/>
 </template>
 
 <script>
@@ -51,8 +51,8 @@ export default {
     min-height: 90vh;
   }
   
-  .scroll{
-    overflow:scroll; 
+  .articles-height{
+    min-height: 100vh;
   }
 
   // Vue Transition css

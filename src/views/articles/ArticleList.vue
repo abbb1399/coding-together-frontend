@@ -100,35 +100,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.articles{
-  max-width: 62.5rem;
-  margin: 0 auto;
+  .articles{
+    max-width: 62.5rem;
+    margin: 0 auto;
 
-  @include respond(big-screen){
-    max-width: $website-width;
-  }
-
-  @media screen and (max-width: 860px) {
-    margin: 0 1rem;
-  }
-
-  &__list {
-    list-style: none;
-    display: grid;
-    /* dynamic columns */
-    grid-template-columns: repeat(auto-fit, minmax(13.4rem, 1fr));
-    gap: 1.6rem;
-    
-    /* 4columns */
-    /* grid-template-columns: repeat(4, minmax(6rem, 1fr));
-    @include respond(tab-port){
-      grid-template-columns: repeat(3, 1fr);
+    @include respond(big-screen){
+      max-width: $website-width;
     }
-    @include respond(phone){
-      grid-template-columns: repeat(2, 1fr);
-    } */
+
+    @media screen and (max-width: 860px) {
+      margin: 0 1rem;
+    }
+
+    &__list {
+      list-style: none;
+      display: grid;
+      /* dynamic columns */
+      grid-template-columns: repeat(auto-fit, minmax(13.4rem, 1fr));
+      gap: 1.6rem;
+      
+      /* 4columns */
+      /* grid-template-columns: repeat(4, minmax(6rem, 1fr));
+      @include respond(tab-port){
+        grid-template-columns: repeat(3, 1fr);
+      }
+      @include respond(phone){
+        grid-template-columns: repeat(2, 1fr);
+      } */
+    }
   }
-}
 
 
 </style>
