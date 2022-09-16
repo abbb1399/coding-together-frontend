@@ -1,8 +1,8 @@
 <template>
-  <div id="app-main" :class="{ 'articles-height': $route.path === '/articles' }">    
+  <div id="app-main">    
     <the-header/>
 
-    <router-view v-slot="slotProps">
+    <router-view v-slot="slotProps" :class="{ 'articles-height': $route.path === '/articles' }">
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"/>
       </transition>
