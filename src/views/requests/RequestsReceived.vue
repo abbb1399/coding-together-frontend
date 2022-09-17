@@ -8,22 +8,21 @@
       <h2>받은 요청들</h2>
     </header>
 
-    <div v-if="receivedRequests.length">
-      <ul class="requests__list">
-        <request-item
-          v-for="req in receivedRequests"
-          :key="req._id"
-          :room-id="req.roomId"
-          :request-id="req._id"
-          :title="req.title"
-          :from-name="req.userId.name"
-          :from-email="req.userId.email"
-          :from-img-src="req.userId.avatar"
-          :created-at="req.createdAt"
-          :is-read="req.isRead"
-        />
-      </ul>
-    </div>
+    <base-spinner v-if="isLoading" class="requests__spinner"/>
+    <ul class="requests__list" v-else-if="receivedRequests.length && !isLoading">
+      <request-item
+        v-for="req in receivedRequests"
+        :key="req._id"
+        :room-id="req.roomId"
+        :request-id="req._id"
+        :title="req.title"
+        :from-name="req.userId.name"
+        :from-email="req.userId.email"
+        :from-img-src="req.userId.avatar"
+        :created-at="req.createdAt"
+        :is-read="req.isRead"
+      />
+    </ul>
     <h3 v-else class="requests__no-list">받은 요청이 없습니다.</h3>
 
     <pagination
@@ -55,6 +54,7 @@ export default {
     const error = ref(null)
     const currentPage = ref(1)
     const perPage = ref(5)
+    const isLoading = ref(true)
     const { unreadRequestsCount } = useUnreadRequests()
 
     const receivedRequests = computed(() => {
@@ -73,7 +73,9 @@ export default {
 
     const init = async () => {
       // requests 불러오기
-      store.dispatch("requests/fetchRequests", currentPage.value)
+      await store.dispatch("requests/fetchRequests", currentPage.value)
+      isLoading.value = false
+      
       unreadRequestsCount()
     }
 
@@ -93,6 +95,7 @@ export default {
       totalPages,
       currentPage,
       perPage,
+      isLoading,
       error,
       receivedRequests,
       handleError,
@@ -120,6 +123,10 @@ export default {
   &__no-list {
     text-align: center;
     margin-top: 1.5rem;
+  }
+
+  &__spinner{
+    margin-top: 3rem;
   }
 }
 

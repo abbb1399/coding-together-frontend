@@ -103,6 +103,7 @@ export default {
   .articles{
     max-width: 62.5rem;
     margin: 0 auto;
+    min-height: calc(100vh - 2.5rem);
 
     @include respond(big-screen){
       max-width: $website-width;

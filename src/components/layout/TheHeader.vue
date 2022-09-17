@@ -43,7 +43,7 @@
 
 <script>
 import DropDown from "../../components/ui/BaseDropdown.vue"
-import { ref, computed } from "vue"
+import { ref, computed, inject } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 
@@ -54,12 +54,8 @@ export default {
   setup() {
     const router = useRouter()
     const store = useStore()
-
+    const isPhone = inject('$is-phone')
     const show = ref(false)
-
-    const isPhone = computed(() => {
-      return /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)
-    })
 
     const isLoggedIn = computed(() => {
       return store.getters.isAuthenticated

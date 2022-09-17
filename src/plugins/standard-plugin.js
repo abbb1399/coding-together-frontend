@@ -9,6 +9,9 @@ export default {
     // sweetalert2
     app.provide("$swal", swal)
 
+    // 스마트폰 체크
+    app.provide('$is-phone', /iPhone|Android/i.test(window.navigator.userAgent))
+
     // input,textarea focus() 명령어
     app.directive("focus", {
       mounted(el) {
@@ -23,7 +26,7 @@ export default {
       },
     })
 
-    // ClickOutside 
+    // ClickOutside (지정한 element의 바깥요소 클릭시 작동)
     const clickOutside = {
       beforeMount: (el, binding) => {
         el.clickOutsideEvent = (event) => {

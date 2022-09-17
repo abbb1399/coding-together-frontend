@@ -1,8 +1,8 @@
 <template>
-  <div id="app-main">    
+  <div id="app-main" :class="{'phone-auth': $route.path === '/auth' && isPhone}">    
     <the-header/>
 
-    <router-view v-slot="slotProps" :class="{ 'articles-height': $route.path === '/articles' }">
+    <router-view v-slot="slotProps" >
       <transition name="route" mode="out-in">
         <component :is="slotProps.Component"/>
       </transition>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { computed, watch} from 'vue'
+import { computed, watch, inject} from 'vue'
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
@@ -28,7 +28,8 @@ export default {
   setup(){
     const store = useStore()
     const router = useRouter()
-    
+    const isPhone = inject('$is-phone')
+
     // auto login
     store.dispatch('tryLogin')
  
@@ -42,6 +43,10 @@ export default {
         router.replace('/articles')
       }
     })
+
+    return{
+      isPhone
+    }
   }
 }
 </script>
@@ -51,8 +56,8 @@ export default {
     min-height: 90vh;
   }
   
-  .articles-height{
-    min-height: 100vh;
+  .phone-auth{
+    min-height: 0 !important;
   }
 
   // Vue Transition css

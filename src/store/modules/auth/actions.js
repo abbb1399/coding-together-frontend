@@ -92,7 +92,7 @@ export default {
 
     try {
       await axios.post(
-        "/users/logoutAll",
+        "/users/logout",
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )

@@ -1,7 +1,9 @@
 <template>
   <section class="chat">
     <h2 class="chat__caption">채팅 목록</h2>
-    <div v-if="roomList.length">
+    
+    <base-spinner v-if="isLoading" class="chat__spinner"/>
+    <ul v-else-if="roomList.length && !isLoading">
       <li
         class="chat__list"
         @click="enterChatRoom(room)"
@@ -29,7 +31,7 @@
 
         <p class="chat__list-updated">{{ room.updatedAt }}</p>
       </li>
-    </div>
+    </ul> 
     <h3 v-else class="chat__no-list">채팅 방 목록이 없습니다.</h3>
 
     <pagination
@@ -60,6 +62,7 @@ export default {
     const noImg = ref(require("../../assets/avatar.jpg"))
     const currentPage = ref(1)
     const perPage = ref(5)
+    const isLoading = ref(true)
    
     const { unreadRequestsCount } = useUnreadRequests()
 
@@ -88,10 +91,11 @@ export default {
       return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
     }
 
-    const init = () =>{
+    const init = async () =>{
       // 나의 채팅방 정보 불러오기
-      store.dispatch("chat/fetchChatRoomList", currentPage.value)  
-      
+      await store.dispatch("chat/fetchChatRoomList", currentPage.value)  
+      isLoading.value = false
+
       // 안읽은 requests 갯수 불러오기
       unreadRequestsCount()
     }
@@ -101,6 +105,7 @@ export default {
     return {
       currentPage,
       perPage,
+      isLoading,
       noImg,
       total,
       totalPages,
@@ -205,7 +210,7 @@ export default {
   }
 
   &__spinner{
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
 }
 </style>

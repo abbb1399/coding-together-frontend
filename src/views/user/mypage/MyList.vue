@@ -8,7 +8,7 @@
       <header class="my-list__header">
         <h2>내가 쓴 공고</h2>
       </header>
-      <base-spinner v-if="isLoading"></base-spinner>
+      <base-spinner v-if="isLoading" class="my-list__spinner"/>
       <ul class="my-list__list" v-else-if="total > 0 && !isLoading">
         <my-list-item
           v-for="list in myList"
@@ -24,6 +24,7 @@
       </ul>
       <h3 class="my-list__no-request" v-else>내가 쓴 글이 없습니다.</h3>
     </div>
+
     <pagination
       v-if="myList.length"
       class="pagination"
@@ -51,7 +52,7 @@ export default {
   setup() {
     const store = useStore()
 
-    const isLoading = ref(false)
+    const isLoading = ref(true)
     const error = ref(null)
     const currentPage = ref(1)
     const perPage = ref(5)
@@ -71,11 +72,10 @@ export default {
     })
 
     const init = async () => {
-      isLoading.value = true
       await store.dispatch("articles/fetchMyArticle", currentPage.value)
-      unreadRequestsCount()
-
       isLoading.value = false
+      
+      unreadRequestsCount()
     }
 
     const handleError = () => {
@@ -121,6 +121,10 @@ section {
     &__no-request {
       margin-top: 1rem;
       text-align: center;
+    }
+
+    &__spinner{
+      margin-top: 3rem;
     }
   }
 

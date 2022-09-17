@@ -223,6 +223,10 @@ export default {
     margin-top: 3rem;
   }
 
+  @include respond(small-screen) {
+    height: 100%;
+  }
+
   &__form {
     width: 50%;
     display: flex;
