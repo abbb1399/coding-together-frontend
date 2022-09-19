@@ -61,13 +61,15 @@ export default {
   },
 
   // kanban 삭제
-  async deleteKanban(context, boardId){
+  async deleteBoard(context, boardInfo){
     const token = context.rootGetters.token
-
+  
     try {
-      const {data} = await axios.delete(`/kanban/${boardId}`,
-        { headers: { Authorization: `Bearer ${token}` }}
+      const {data} = await axios.delete(
+        '/kanban',
+        { headers: { Authorization: `Bearer ${token}` }, data: boardInfo}
       )
+   
       context.commit("subtractKanban", data)
     } catch (e) {
       console.log(e)

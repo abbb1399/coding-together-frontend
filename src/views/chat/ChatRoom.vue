@@ -215,20 +215,8 @@ export default {
     max-width: 900px;
     margin: 0 auto;
 
-    @media screen and (max-width: 900px){
-      height: 96.5vh !important;
-    }
-
-    @media screen and (max-width: 768px){
-      height: 96vh !important;
-    }
-
-    @media screen and (max-width: 600px){
-      height: 96.5vh !important;
-    }
-
-    @include respond(small-screen) {
-      height: 94vh !important;
+    @include respond(tab-port) {
+      height: calc(100vh - 4rem) !important;
     }
   }
 

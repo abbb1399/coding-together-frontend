@@ -22,6 +22,9 @@ export default {
   setMyAvatar(state, payload){
     state.myInfo.avatar = payload
   },
+  setUnAuthenticated(state){
+    state.token = null
+  },
   setInChatRoom(state,{articleId, chatRoomId}){
     const inUse = state.myInfo.inChatRoom.find(info => info.articleId === articleId)
     

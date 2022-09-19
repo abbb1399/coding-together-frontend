@@ -13,6 +13,7 @@
             :index="index"
             :selected-task-id="selectedTaskId"
             @open-sidebar="openSidebar"
+            @delete-board="deleteBoard"
           />
         </template>
       </draggable>
@@ -28,7 +29,6 @@
       :due-date="dueDate"
       @close-sidebar="closeSideBar"
       @update-task="updateTask"
-      @delete-task="deleteTask"
     />
   </section>
 </template>
@@ -41,7 +41,7 @@ import KanbanList from "../../components/kanban/KanbanList.vue"
 
 import useUnreadRequests from '../../hooks/use-unread-requests'
 
-import { ref, computed } from "vue"
+import { ref, computed, inject } from "vue"
 import { useStore } from "vuex"
 
 export default {
@@ -53,6 +53,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const $swal = inject('$swal')
 
     const taskId = ref(null)
     const taskName = ref("")
@@ -102,10 +103,6 @@ export default {
       }
     }
 
-    const deleteTask = () => {
-      console.log("ddd")
-    }
-
     const moveBoard = async ({moved}) => {
       const data ={
         boardId: moved.element._id,
@@ -114,6 +111,19 @@ export default {
       }
     
       store.dispatch("kanbans/moveBoard", data)
+    }
+
+    const deleteBoard = async (boardId) =>{
+      await store.dispatch("kanbans/deleteBoard", {
+        boardId, 
+        maxLength: store.getters["kanbans/kanbans"].length-1 
+      })
+      $swal.fire({
+        icon: "success",
+        title: `삭제에 성공 하였습니다.`,
+        showConfirmButton: false,
+        timer: 2000,
+      })
     }
 
     const init = async  () =>{
@@ -135,9 +145,9 @@ export default {
       dueDate,
       closeSideBar,
       updateTask,
-      deleteTask,
       openSidebar,
-      moveBoard
+      moveBoard,
+      deleteBoard
     }
   },
 }

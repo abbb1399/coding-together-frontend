@@ -74,7 +74,7 @@ import { ref, inject} from "vue"
 import { useStore } from "vuex"
 
 export default {
-  emits:['open-sidebar'],
+  emits:['open-sidebar', 'delete-board'],
   props: {
     itemList:{
       type: Object,
@@ -212,13 +212,7 @@ export default {
       })
 
       if (result.isConfirmed) {
-        await store.dispatch("kanbans/deleteKanban", boardId)
-        $swal.fire({
-          icon: "success",
-          title: `삭제에 성공 하였습니다.`,
-          showConfirmButton: false,
-          timer: 2000,
-        })
+        context.emit('delete-board', boardId)
       }
     }
 

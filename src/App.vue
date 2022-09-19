@@ -38,6 +38,7 @@ export default {
     })
 
     watch(didAutoLogout, (curValue, oldValue) => {
+      // 로그인 시간이 만료되면, 로그아웃되면서 articles 페이지로 이동
       // curval이 true고(autologout 한거고) 값이 변한거면
       if(curValue && curValue !== oldValue){
         router.replace('/articles')

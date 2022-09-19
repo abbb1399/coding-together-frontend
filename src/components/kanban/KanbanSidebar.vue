@@ -55,7 +55,7 @@ import { ref, toRefs, computed, watch, nextTick, inject } from "vue"
 import { useStore } from "vuex"
 
 export default {
-  emit: ["close-sidebar", "update-name", "delete-task", "update-date"],
+  emit: ["close-sidebar", "update-task"],
   props: {
     sidebar: {
       type: Boolean,
