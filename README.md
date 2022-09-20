@@ -8,17 +8,17 @@
 
 
 ## 사이트 기능
-*공고등록 <br>
-<img width="80%" src="https://user-images.githubusercontent.com/65113179/191178497-895e2523-873a-4d36-91a4-8827be1c99e2.mp4"/>
+*공고등록
+![공고등록 (2)](https://user-images.githubusercontent.com/65113179/191182889-f562d22e-3c8b-41ec-8587-2b40ab6ba5d4.gif)
 
-*같이 코딩하기(채팅) <br>
-<img width="80%" src="https://user-images.githubusercontent.com/65113179/191178542-bc38914a-f5a5-4543-9c33-8ba554e0bc9d.mp4"/>
+*같이 코딩하기(채팅)
+![채팅](https://user-images.githubusercontent.com/65113179/191182912-acbb35ee-727e-47f5-bd04-e32191b3473c.gif)
 
-*칸반 <br>
-<img width="80%" src="https://user-images.githubusercontent.com/65113179/191178568-06b1ed96-31a6-4a9a-b627-6141917f3ff3.mp4"/>
+*칸반
+![칸반](https://user-images.githubusercontent.com/65113179/191182925-611e0238-4e69-4e23-8938-733e64dfe2ca.gif)
 
-*나의 일정 <br>
-<img width="80%" src="https://user-images.githubusercontent.com/65113179/191178587-c6c2b74c-2672-4405-ae2b-793bc194c493.mp4"/>
+*나의 일정
+![나의일정](https://user-images.githubusercontent.com/65113179/191182963-023e5479-b2ca-4fb6-9f41-2d3855965cb8.gif)
 
 *내정보 <br>
 <img width="80%" src="https://user-images.githubusercontent.com/65113179/191178619-26856516-06d1-4d7c-87ec-bed8e8da1dad.mp4"/>
