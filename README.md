@@ -22,19 +22,20 @@
 
 > **칸반**
 
-https://user-images.githubusercontent.com/65113179/191184354-ba1d1ee1-2a0e-4c3c-b29b-dca392516d17.mp4
+![칸반 (1)](https://user-images.githubusercontent.com/65113179/191225897-14016e4b-bdc2-44ac-b7a2-86f70daec884.gif)
 <br>
 <br>
 
 > **나의일정**
 
-https://user-images.githubusercontent.com/65113179/191184437-36607ff2-8c5c-4c97-a6e0-42f5a2291981.mp4
+![나의일정 (1)](https://user-images.githubusercontent.com/65113179/191225930-cbfa1a46-767e-42a0-b92e-90c6c861193d.gif)
 <br>
 <br>
 
 > **내정보**
 
-<img width="80%" src="https://user-images.githubusercontent.com/65113179/191178619-26856516-06d1-4d7c-87ec-bed8e8da1dad.mp4"/>
+![내정보](https://user-images.githubusercontent.com/65113179/191225973-80fe542b-2085-425d-a2e0-61de63c02859.gif)
+
 
 ## 기술 스택
 > **프론트엔드**
