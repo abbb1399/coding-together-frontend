@@ -1,7 +1,7 @@
 # Coding Together !
 
 함께 코딩할 동료를 찾는 사이트 입니다. <br>
-쓰고 싶은 기술을 사용하여 만들어본 포트폴리오 사이트이며, 별도의 CSS 프레임워크 없이 제작 하였습니다.
+쓰고 싶은 기술을 사용하여 만들어본 포트폴리오 사이트이며, 별도의 CSS 프레임워크 없이 제작 하였습니다. <br>
 [https://coding-together.com](https://coding-together.com)
 
 이 Repo는 Frontend용 이며, Backend 관련 코드는 아래 링크에서 확인 가능합니다.<br>
