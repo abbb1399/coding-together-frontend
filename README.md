@@ -8,8 +8,7 @@
 
 
 ## 사이트 기능
-* 공고등록
-<br>
+* 공고등록 <br>
 ![공고등록 (2)](https://user-images.githubusercontent.com/65113179/191182889-f562d22e-3c8b-41ec-8587-2b40ab6ba5d4.gif)
 
 * 같이 코딩하기(채팅)
