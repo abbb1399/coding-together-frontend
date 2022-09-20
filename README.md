@@ -22,13 +22,13 @@
 
 > **칸반**
 
-![칸반](https://user-images.githubusercontent.com/65113179/191182925-611e0238-4e69-4e23-8938-733e64dfe2ca.gif)
+https://user-images.githubusercontent.com/65113179/191184354-ba1d1ee1-2a0e-4c3c-b29b-dca392516d17.mp4
 <br>
 <br>
 
 > **나의일정**
 
-![나의일정](https://user-images.githubusercontent.com/65113179/191182963-023e5479-b2ca-4fb6-9f41-2d3855965cb8.gif)
+https://user-images.githubusercontent.com/65113179/191184437-36607ff2-8c5c-4c97-a6e0-42f5a2291981.mp4
 <br>
 <br>
 
