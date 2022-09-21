@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {ref, toRefs, onUnmounted} from 'vue'
+import {ref, toRefs, onUnmounted, inject } from 'vue'
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
@@ -50,6 +50,7 @@ export default {
   setup(props){
     const store = useStore()
     const router = useRouter()
+    const $swal = inject('$swal')
    
     const { roomId } = toRefs(props)
     const { socket, textMessages, usernameOptions, messagesLoaded, messageActions} = useChatOptions()
@@ -78,7 +79,15 @@ export default {
         roomId:enteredRoom.roomId
       },(error)=>{
         if(error){
-          alert(error)
+          $swal.fire({
+            title: "이미 채팅에 접속 중입니다.",
+            text: error,
+            icon: "error",
+            showConfirmButton: true,
+            confirmButtonColor: "#34c38f",
+            confirmButtonText: "확인",
+          })
+          router.replace({name:'chatMain'})
         }
       })
 
