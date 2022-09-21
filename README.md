@@ -1,6 +1,7 @@
 # Coding Together !
 
-함께 코딩할 동료를 찾는 사이트 입니다. (크롬브라우저 기준으로 개발하였습니다)<br>
+함께 코딩할 동료를 찾는 사이트 입니다.<br>
+(크롬브라우저 기준으로 개발하였기 때문에, 크롬사용을 권장 드립니다.)<br>
 [https://coding-together.com](https://coding-together.com)
 
 이 Repo는 Frontend용 이며, Backend 관련 코드는 아래 링크에서 확인 가능합니다.<br>
