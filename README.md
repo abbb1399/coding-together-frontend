@@ -51,4 +51,5 @@
 
 > **내정보**
 
-![내정보1](https://user-images.githubusercontent.com/65113179/193567559-b211a591-b6d1-4700-ac63-4385da766439.gif)
+![내정보](https://user-images.githubusercontent.com/65113179/193569862-a8c69c2f-28c5-46fb-a876-d5ead8dc00c1.gif)
+
