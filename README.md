@@ -31,7 +31,7 @@
 <br>
 <br>
 
-> **같이 코딩하기(채팅)**
+> **같이 코딩하기(채팅 - socket.io)**
 
 ![채팅](https://user-images.githubusercontent.com/65113179/191182912-acbb35ee-727e-47f5-bd04-e32191b3473c.gif)
 <br>
