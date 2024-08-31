@@ -1,14 +1,25 @@
 <template>
   <draggable
-    class="list-item" :list="itemList.list" item-key="_id" group="list" 
-    :animation="90" :forceFallback="true" :fallbackTolerance="3"
-    ghostClass="ghost" chosenClass="chosen" dragClass="drag"
-    @change="moveTask($event, itemList._id)" @start="dragStart" @end="dragEnd"
+    class="list-item"
+    :list="itemList.list"
+    item-key="_id"
+    group="list"
+    :animation="90"
+    :forceFallback="true"
+    :fallbackTolerance="3"
+    ghostClass="ghost"
+    chosenClass="chosen"
+    dragClass="drag"
+    @change="moveTask($event, itemList._id)"
+    @start="dragStart"
+    @end="dragEnd"
   >
     <template #header>
       <div class="list-item__header handle">
         <input
-          class="header-input" :value="itemList.title" maxlength="15"         
+          class="header-input"
+          :value="itemList.title"
+          maxlength="15"
           @blur="changeTitle($event, itemList)"
           @keydown.enter="$event.target.blur()"
           @mouseup="mouseUp($event)"
@@ -19,7 +30,7 @@
             <font-awesome-icon icon="tag" />&nbsp;{{ itemList.list.length }}
           </span>
           <button class="kanban__btn" @click="deleteBoard(itemList._id)">
-            <font-awesome-icon icon="trash"/>
+            <font-awesome-icon icon="trash" />
           </button>
           <button class="kanban__btn" @click="toggleAddInput">
             <font-awesome-icon icon="plus" />
@@ -28,7 +39,7 @@
       </div>
 
       <div class="list-item__input" v-if="inputStatus">
-        <base-spinner2 v-if="spinnerStatus"/>
+        <base-spinner2 v-if="spinnerStatus" />
         <div v-else>
           <p>제목</p>
           <input
@@ -44,9 +55,7 @@
             >
               생성
             </button>
-            <button class="kanban__btn" @click="toggleAddInput">
-              취소
-            </button>
+            <button class="kanban__btn" @click="toggleAddInput">취소</button>
           </div>
         </div>
       </div>
@@ -55,13 +64,15 @@
     <template #item="{ element }" tag="div">
       <div
         class="list-item__card"
-        :class="{'selected-task': element.id === selectedTaskId }"
+        :class="{ 'selected-task': element.id === selectedTaskId }"
         @click="clickTaskOpenSideBar(element, itemList._id)"
       >
-        <p>{{ element.name }}</p> 
+        <p>{{ element.name }}</p>
         <div v-if="element.dueDate">
-          <font-awesome-icon icon="calendar"/>&nbsp;
-          <span class="hovertext" data-hover="만료일">{{ element.dueDate }}</span> 
+          <font-awesome-icon icon="calendar" />&nbsp;
+          <span class="hovertext" data-hover="만료일">{{
+            element.dueDate
+          }}</span>
         </div>
       </div>
     </template>
@@ -69,32 +80,32 @@
 </template>
 
 <script>
-import draggable from "vuedraggable"
-import { ref, inject} from "vue"
-import { useStore } from "vuex"
+import draggable from "vuedraggable";
+import { ref, inject } from "vue";
+import { useStore } from "vuex";
 
 export default {
-  emits:['open-sidebar', 'delete-board'],
+  emits: ["open-sidebar", "delete-board"],
   props: {
-    itemList:{
+    itemList: {
       type: Object,
-      required: true
+      required: true,
     },
-    selectedTaskId:{
-      type: String
-    }
+    selectedTaskId: {
+      type: String,
+    },
   },
   components: {
     draggable,
   },
   setup(_, context) {
-    const store = useStore()
-    const $swal = inject("$swal")
+    const store = useStore();
+    const $swal = inject("$swal");
 
-    const spinnerStatus = ref(false)
-    const inputValue = ref("")
-    const inputStatus = ref(false)
-  
+    const spinnerStatus = ref(false);
+    const inputValue = ref("");
+    const inputStatus = ref(false);
+
     const moveTask = ({ added, removed, moved }, boardId) => {
       if (added) {
         store.dispatch("kanbans/moveTask", {
@@ -102,104 +113,102 @@ export default {
           boardId: boardId,
           task: added.element,
           newIndex: added.newIndex,
-        })
+        });
       } else if (removed) {
         store.dispatch("kanbans/moveTask", {
           status: "removed",
           boardId: boardId,
           task: removed.element,
-        })
+        });
       } else if (moved) {
         store.dispatch("kanbans/changeTaskOrder", {
           ...moved,
           boardId: boardId,
-        })
+        });
       }
-    }
+    };
 
     const dragStart = () => {
-      setDragCursor(true)
-    }
+      setDragCursor(true);
+    };
 
     const dragEnd = () => {
-      setDragCursor(false)
-    }
+      setDragCursor(false);
+    };
 
     const setDragCursor = (value) => {
-      const html = document.getElementsByTagName("html").item(0)
-      html.classList.toggle("grabbing", value)
-    }
+      const html = document.getElementsByTagName("html").item(0);
+      html.classList.toggle("grabbing", value);
+    };
 
     const toggleAddInput = () => {
-      inputStatus.value = !inputStatus.value
-      inputValue.value = ""
-    }
+      inputStatus.value = !inputStatus.value;
+      inputValue.value = "";
+    };
 
     const addTask = (board) => {
-      if (inputValue.value.length === 0) return
-      spinnerStatus.value = true
+      if (inputValue.value.length === 0) return;
+      spinnerStatus.value = true;
 
       setTimeout(() => {
         const data = {
           id:
             "TA" +
             Date.now().toString(36) +
-            Math.random()
-              .toString(36)
-              .substr(2),
+            Math.random().toString(36).substr(2),
           name: inputValue.value,
-        }
+        };
 
-        board.list.push(data)
+        board.list.push(data);
         store.dispatch("kanbans/registerTask", {
           ...data,
           boardId: board._id,
-        })
+        });
 
         // 초기화
-        inputValue.value = ""
-        spinnerStatus.value = false
-      }, 500)
-    }
+        inputValue.value = "";
+        spinnerStatus.value = false;
+      }, 500);
+    };
 
     const changeTitle = (e, board) => {
-      const inputValue = e.target.value.trim()
+      const inputValue = e.target.value.trim();
 
       if (inputValue === "") {
-        e.target.value = board.title
-        return
+        e.target.value = board.title;
+        return;
       }
 
       if (board.title === inputValue) {
-        return
+        return;
       }
 
-      board.title = inputValue
+      board.title = inputValue;
 
       store.dispatch("kanbans/updateBoardName", {
         title: inputValue,
         boardId: board._id,
-      })
-    }
+      });
+    };
 
     const clickTaskOpenSideBar = (element, boardId) => {
-      context.emit("open-sidebar", {element, boardId})
-    }
+      context.emit("open-sidebar", { element, boardId });
+    };
 
     const mouseUp = (e) => {
-      if(e.target.attributes.readonly){
-        e.target.removeAttribute('readonly')
-        e.target.select()
+      if (e.target.attributes.readonly) {
+        e.target.removeAttribute("readonly");
+        e.target.select();
       }
-    }
- 
-    const focusIn = (e) =>{
-      if(!e.target.attributes.readonly){
-        e.target.setAttribute('readonly', true) 
-      }
-    }
+    };
 
-    const deleteBoard = async (boardId) =>{
+    const focusIn = (e) => {
+      if (!e.target.attributes.readonly) {
+        e.target.setAttribute("readonly", true);
+      }
+    };
+
+    const deleteBoard = async (boardId) => {
       const result = await $swal.fire({
         title: "삭제 하시겠습니까?",
         text: "관련 업무들도 모두 삭제 됩니다.",
@@ -209,12 +218,12 @@ export default {
         cancelButtonColor: "#f46a6a",
         confirmButtonText: "네",
         cancelButtonText: "아니오",
-      })
+      });
 
       if (result.isConfirmed) {
-        context.emit('delete-board', boardId)
+        context.emit("delete-board", boardId);
       }
-    }
+    };
 
     return {
       spinnerStatus,
@@ -229,10 +238,10 @@ export default {
       changeTitle,
       mouseUp,
       focusIn,
-      deleteBoard
-    }
+      deleteBoard,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -275,7 +284,7 @@ export default {
 .list-item {
   width: 18rem;
   background: #ebecf0;
-  padding: .625rem;
+  padding: 0.625rem;
 
   height: calc(100vh - 6rem);
   overflow-y: auto;
@@ -305,7 +314,7 @@ export default {
         height: 100%;
       }
 
-      &:read-only{
+      &:read-only {
         background-color: inherit;
         border: 2px solid #ebecf0;
       }
@@ -314,17 +323,16 @@ export default {
     .header-control {
       display: flex;
       align-items: center;
-      gap:3px;
+      gap: 3px;
       /* flex: 0 0 50%; */
 
       span {
-        font-size: .8rem;
+        font-size: 0.8rem;
         width: 1.5rem;
-
       }
 
-      button{
-        font-size: .8rem;
+      button {
+        font-size: 0.8rem;
       }
     }
   }
@@ -339,15 +347,15 @@ export default {
 
     p {
       font-weight: 600;
-      margin-bottom: .4rem;
-      font-size: .875rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.875rem;
     }
 
     input {
       width: 100%;
-      padding: .3rem;
+      padding: 0.3rem;
       border-radius: 5px;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
       border: 1px solid;
 
       @include respond(phone) {
@@ -356,15 +364,15 @@ export default {
     }
 
     button {
-      padding: .3rem .7rem;
+      padding: 0.3rem 0.7rem;
       font-weight: 600;
 
       @include respond(big-screen) {
-        padding: .35rem .9rem;
+        padding: 0.35rem 0.9rem;
       }
 
       @include respond(phone) {
-        padding: .23rem .6rem;
+        padding: 0.23rem 0.6rem;
         font-weight: 500;
       }
     }
@@ -373,10 +381,10 @@ export default {
   &__card {
     @include card;
     cursor: grab;
- 
-    div{
+
+    div {
       margin-top: 7px;
-      font-size: .9rem;
+      font-size: 0.9rem;
       color: #dd2b02;
     }
   }

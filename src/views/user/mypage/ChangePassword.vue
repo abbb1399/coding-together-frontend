@@ -3,7 +3,10 @@
     <h2 class="change-password__title">비밀번호 변경</h2>
 
     <form @submit.prevent="changePassword">
-      <div class="change-password__form-control" :class="{ invalid: !oldPassword.isValid }">
+      <div
+        class="change-password__form-control"
+        :class="{ invalid: !oldPassword.isValid }"
+      >
         <label for="old-password">현재 비밀번호</label>
         <input
           type="password"
@@ -16,7 +19,10 @@
         />
       </div>
 
-      <div class="change-password__form-control" :class="{ invalid: !newPassword.isValid }">
+      <div
+        class="change-password__form-control"
+        :class="{ invalid: !newPassword.isValid }"
+      >
         <label for="new-password">새 비밀번호</label>
         <input
           type="password"
@@ -29,7 +35,10 @@
         />
       </div>
 
-      <div class="change-password__form-control" :class="{ invalid: !confirmPassword.isValid }">
+      <div
+        class="change-password__form-control"
+        :class="{ invalid: !confirmPassword.isValid }"
+      >
         <label for="confirm-password">새 비밀번호 확인</label>
         <input
           type="password"
@@ -50,63 +59,63 @@
 </template>
 
 <script>
-import { ref, reactive, inject } from "vue"
-import { useStore } from "vuex"
-import useUnreadRequests from '../../../hooks/use-unread-requests'
+import { ref, reactive, inject } from "vue";
+import { useStore } from "vuex";
+import useUnreadRequests from "../../../hooks/use-unread-requests";
 
 export default {
   setup() {
-    const store = useStore()
-    const $swal = inject("$swal")
+    const store = useStore();
+    const $swal = inject("$swal");
 
-    const oldPassword = reactive({ val: "", isValid: true })
-    const newPassword = reactive({ val: "", isValid: true })
-    const confirmPassword = reactive({ val: "", isValid: true })
-    const formIsValid = ref(true)
-    const errMsg = ref("")
+    const oldPassword = reactive({ val: "", isValid: true });
+    const newPassword = reactive({ val: "", isValid: true });
+    const confirmPassword = reactive({ val: "", isValid: true });
+    const formIsValid = ref(true);
+    const errMsg = ref("");
 
-    const { unreadRequestsCount } = useUnreadRequests()
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const clearValidity = (input) => {
       if (input === "old-password") {
-        oldPassword.isValid = true
+        oldPassword.isValid = true;
       } else if (input === "new-password") {
-        newPassword.isValid = true
+        newPassword.isValid = true;
       } else if (input === "confirm-password") {
-        confirmPassword.isValid = true
+        confirmPassword.isValid = true;
       }
-    }
+    };
 
     const validateForm = () => {
-      formIsValid.value = true
+      formIsValid.value = true;
 
       if (oldPassword.val.length < 6) {
-        oldPassword.isValid = false
-        formIsValid.value = false
-        errMsg.value = "비밀번호는 최소 6자 입니다."
+        oldPassword.isValid = false;
+        formIsValid.value = false;
+        errMsg.value = "비밀번호는 최소 6자 입니다.";
       }
       if (newPassword.val.length < 6) {
-        newPassword.isValid = false
-        formIsValid.value = false
-        errMsg.value = "비밀번호는 최소 6자 입니다."
+        newPassword.isValid = false;
+        formIsValid.value = false;
+        errMsg.value = "비밀번호는 최소 6자 입니다.";
       }
       if (confirmPassword.val.length < 6) {
-        confirmPassword.isValid = false
-        formIsValid.value = false
-        errMsg.value = "비밀번호는 최소 6자 입니다."
+        confirmPassword.isValid = false;
+        formIsValid.value = false;
+        errMsg.value = "비밀번호는 최소 6자 입니다.";
       }
       if (newPassword.val !== confirmPassword.val) {
-        confirmPassword.isValid = false
-        formIsValid.value = false
-        errMsg.value = "새 비밀번호를 다시 확인 해주세요."
+        confirmPassword.isValid = false;
+        formIsValid.value = false;
+        errMsg.value = "새 비밀번호를 다시 확인 해주세요.";
       }
-    }
+    };
 
     const changePassword = async () => {
-      validateForm()
+      validateForm();
 
       if (!formIsValid.value) {
-        return
+        return;
       }
 
       const result = await $swal.fire({
@@ -118,37 +127,37 @@ export default {
         cancelButtonColor: "#f46a6a",
         confirmButtonText: "네",
         cancelButtonText: "아니오",
-      })
+      });
 
       if (result.isConfirmed) {
         try {
           await store.dispatch("changePassword", {
             oldPassword: oldPassword.val,
             newPassword: newPassword.val,
-          })
+          });
 
-          oldPassword.val = ""
-          newPassword.val = ""
-          confirmPassword.val = ""
+          oldPassword.val = "";
+          newPassword.val = "";
+          confirmPassword.val = "";
 
           $swal.fire({
             icon: "success",
             title: "비밀번호를 변경하였습니다.",
             showConfirmButton: false,
             timer: 2000,
-          })
+          });
         } catch (e) {
           $swal.fire({
             icon: "error",
             title: e.message,
             showConfirmButton: false,
             timer: 2000,
-          })
+          });
         }
       }
-    }
+    };
 
-    unreadRequestsCount()
+    unreadRequestsCount();
 
     return {
       errMsg,
@@ -158,9 +167,9 @@ export default {
       confirmPassword,
       changePassword,
       clearValidity,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

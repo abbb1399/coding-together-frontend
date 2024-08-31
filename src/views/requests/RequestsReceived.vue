@@ -8,8 +8,11 @@
       <h2>받은 요청들</h2>
     </header>
 
-    <base-spinner v-if="isLoading" class="requests__spinner"/>
-    <ul class="requests__list" v-else-if="receivedRequests.length && !isLoading">
+    <base-spinner v-if="isLoading" class="requests__spinner" />
+    <ul
+      class="requests__list"
+      v-else-if="receivedRequests.length && !isLoading"
+    >
       <request-item
         v-for="req in receivedRequests"
         :key="req._id"
@@ -38,11 +41,11 @@
 </template>
 
 <script>
-import { ref, computed } from "vue"
-import { useStore } from "vuex"
-import RequestItem from "../../components/requests/RequestItem.vue"
-import Pagination from "../../components/ui/Pagination.vue"
-import useUnreadRequests from "../../hooks/use-unread-requests"
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import RequestItem from "../../components/requests/RequestItem.vue";
+import Pagination from "../../components/ui/Pagination.vue";
+import useUnreadRequests from "../../hooks/use-unread-requests";
 
 export default {
   components: {
@@ -50,45 +53,45 @@ export default {
     Pagination,
   },
   setup() {
-    const store = useStore()
-    const error = ref(null)
-    const currentPage = ref(1)
-    const perPage = ref(5)
-    const isLoading = ref(true)
-    const { unreadRequestsCount } = useUnreadRequests()
+    const store = useStore();
+    const error = ref(null);
+    const currentPage = ref(1);
+    const perPage = ref(5);
+    const isLoading = ref(true);
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const receivedRequests = computed(() => {
-      return store.getters["requests/requests"]
-    })
+      return store.getters["requests/requests"];
+    });
 
     const total = computed(() => {
-      return store.getters["requests/getTotalRequest"]
-    })
+      return store.getters["requests/getTotalRequest"];
+    });
 
     const totalPages = computed(() => {
       return Math.ceil(
-        store.getters["requests/getTotalRequest"] / perPage.value
-      )
-    })
+        store.getters["requests/getTotalRequest"] / perPage.value,
+      );
+    });
 
     const init = async () => {
       // requests 불러오기
-      await store.dispatch("requests/fetchRequests", currentPage.value)
-      isLoading.value = false
-      
-      unreadRequestsCount()
-    }
+      await store.dispatch("requests/fetchRequests", currentPage.value);
+      isLoading.value = false;
+
+      unreadRequestsCount();
+    };
 
     const handleError = () => {
-      error.value = null
-    }
+      error.value = null;
+    };
 
     const onPageChange = (page) => {
-      store.dispatch("requests/fetchRequests", page)
-      currentPage.value = page
-    }
+      store.dispatch("requests/fetchRequests", page);
+      currentPage.value = page;
+    };
 
-    init()
+    init();
 
     return {
       total,
@@ -100,9 +103,9 @@ export default {
       receivedRequests,
       handleError,
       onPageChange,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -125,7 +128,7 @@ export default {
     margin-top: 1.5rem;
   }
 
-  &__spinner{
+  &__spinner {
     margin-top: 3rem;
   }
 }

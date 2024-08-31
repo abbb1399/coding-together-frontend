@@ -8,7 +8,9 @@
             <router-link to="/mypage/profile">내 정보</router-link>
           </li>
           <li>
-            <router-link to="/mypage/change-password">비밀번호 변경</router-link>
+            <router-link to="/mypage/change-password"
+              >비밀번호 변경</router-link
+            >
           </li>
           <li>
             <router-link to="/mypage/list">내가 쓴 공고</router-link>
@@ -23,23 +25,20 @@
           </transition>
         </router-view>
       </article>
-
     </div>
   </section>
 </template>
 
 <script>
-import useUnreadRequests from '../../hooks/use-unread-requests'
+import useUnreadRequests from "../../hooks/use-unread-requests";
 
 export default {
-  setup(){
-    const { unreadRequestsCount } = useUnreadRequests()
-    unreadRequestsCount()
-  }
-}
+  setup() {
+    const { unreadRequestsCount } = useUnreadRequests();
+    unreadRequestsCount();
+  },
+};
 </script>
-
-
 
 <style lang="scss" scoped>
 .my-page {
@@ -74,7 +73,6 @@ export default {
       width: 90%;
       list-style: inside;
 
-      
       @include respond(tab-port) {
         width: 100%;
       }

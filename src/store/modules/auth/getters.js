@@ -1,14 +1,14 @@
 export default {
-  myInfo(state){
-    return state.myInfo
+  myInfo(state) {
+    return state.myInfo;
   },
-  token(state){
-    return state.token
+  token(state) {
+    return state.token;
   },
-  isAuthenticated(state){
-    return !!state.token
+  isAuthenticated(state) {
+    return !!state.token;
   },
-  didAutoLogout(state){
-    return state.didAutoLogout
-  }
-}
+  didAutoLogout(state) {
+    return state.didAutoLogout;
+  },
+};

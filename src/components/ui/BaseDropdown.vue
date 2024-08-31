@@ -3,7 +3,7 @@
     <slot name="content">
       <img
         :src="avatar ? getImage(avatar) : defaultImg"
-        style="border-radius:20px;"
+        style="border-radius: 20px"
         ref="menu"
         @click="openClose"
       />
@@ -16,47 +16,47 @@
 </template>
 
 <script>
-import { ref,computed } from "vue"
-import { useStore } from "vuex"
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 
 export default {
   setup() {
-    const store = useStore()
-    const isOpen = ref(false)
-    const defaultImg = ref(require("../../assets/avatar.jpg"))
-    const menu = ref()
+    const store = useStore();
+    const isOpen = ref(false);
+    const defaultImg = ref(require("../../assets/avatar.jpg"));
+    const menu = ref();
 
     const avatar = computed(() => {
-      return store.getters.myInfo.avatar
-    })
+      return store.getters.myInfo.avatar;
+    });
 
     const openClose = () => {
       const closeListerner = (e) => {
-        if (catchOutsideClick(e, menu.value)){
-          window.removeEventListener("click", closeListerner)
-          isOpen.value = false
+        if (catchOutsideClick(e, menu.value)) {
+          window.removeEventListener("click", closeListerner);
+          isOpen.value = false;
         }
-      }
-      window.addEventListener("click", closeListerner)
+      };
+      window.addEventListener("click", closeListerner);
 
-      isOpen.value = !isOpen.value
-    }
+      isOpen.value = !isOpen.value;
+    };
 
     const catchOutsideClick = (event, dropdown) => {
       // 메뉴를 클릭할시는 아무일도 안생기게
       if (dropdown === event.target) {
-        return false
+        return false;
       }
 
       // 메뉴 바깥을 눌렀을때 메뉴가 닫히게
       if (isOpen.value && dropdown !== event.target) {
-        return true
+        return true;
       }
-    }
+    };
 
-    const getImage =(avatar) =>{
-      return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`
-    } 
+    const getImage = (avatar) => {
+      return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`;
+    };
 
     return {
       isOpen,
@@ -65,10 +65,10 @@ export default {
       avatar,
       openClose,
       catchOutsideClick,
-      getImage
-    }
-  }
-}
+      getImage,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -100,7 +100,9 @@ export default {
     background: white;
     z-index: 999;
     outline: none;
-    box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+    box-shadow:
+      0 1px 5px rgb(0 0 0 / 20%),
+      0 2px 2px rgb(0 0 0 / 14%),
       0 3px 1px -2px rgb(0 0 0 / 12%);
     border-radius: 4px;
     cursor: pointer;
@@ -111,8 +113,7 @@ export default {
       font-size: 10px;
     }
 
-    
-    @include respond(phone){
+    @include respond(phone) {
       transform: translateX(-3.5rem);
     }
   }

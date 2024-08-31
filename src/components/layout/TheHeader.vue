@@ -18,8 +18,8 @@
       <li>
         <router-link to="/articles">공고 목록</router-link>
       </li>
-      <li v-if="isLoggedIn" >
-        <div v-if="unReadRequestsCount > 0" :data-badge="unReadRequestsCount"/>
+      <li v-if="isLoggedIn">
+        <div v-if="unReadRequestsCount > 0" :data-badge="unReadRequestsCount" />
         <router-link class="test" to="/requests">받은 요청</router-link>
       </li>
       <li v-else>
@@ -42,47 +42,47 @@
 </template>
 
 <script>
-import DropDown from "../../components/ui/BaseDropdown.vue"
-import { ref, computed, inject } from "vue"
-import { useRouter } from "vue-router"
-import { useStore } from "vuex"
+import DropDown from "../../components/ui/BaseDropdown.vue";
+import { ref, computed, inject } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   components: {
     DropDown,
   },
   setup() {
-    const router = useRouter()
-    const store = useStore()
-    const isPhone = inject('$is-phone')
-    const show = ref(false)
+    const router = useRouter();
+    const store = useStore();
+    const isPhone = inject("$is-phone");
+    const show = ref(false);
 
     const isLoggedIn = computed(() => {
-      return store.getters.isAuthenticated
-    })
+      return store.getters.isAuthenticated;
+    });
 
     const unReadRequestsCount = computed(() => {
-      return store.getters["requests/getUnreadRequests"]
-    })
+      return store.getters["requests/getUnreadRequests"];
+    });
 
     const logout = () => {
-      store.dispatch("logout")
-      router.replace("/articles")
-    }
+      store.dispatch("logout");
+      router.replace("/articles");
+    };
 
     const openMenu = () => {
-      const menu = document.querySelector("ul")
-      menu.classList.toggle("active")
-    }
+      const menu = document.querySelector("ul");
+      menu.classList.toggle("active");
+    };
 
     const toUserInfo = () => {
-      router.push({ name: "myProfile" })
-    }
+      router.push({ name: "myProfile" });
+    };
 
     const display = () => {
-      show.value = !show.value
-    }
-    
+      show.value = !show.value;
+    };
+
     return {
       show,
       isLoggedIn,
@@ -92,9 +92,9 @@ export default {
       openMenu,
       toUserInfo,
       display,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -144,32 +144,30 @@ export default {
     align-items: center;
 
     [data-badge] {
-      position:relative;     
+      position: relative;
       &:after {
-        position:absolute;
+        position: absolute;
         right: -0.625rem;
         top: -0.5rem;
         line-height: 0.6;
         padding: 0.25rem;
 
-        background-color:#bf1f1f;
-        border:solid 1px #c93a3a;
+        background-color: #bf1f1f;
+        border: solid 1px #c93a3a;
 
         font-size: 0.625rem;
-        color:#fff;
+        color: #fff;
         border-radius: 30px;
-        content:attr(data-badge);
+        content: attr(data-badge);
 
-     
         @include respond(tab-port) {
           right: -0.9rem;
         }
       }
-    }  
+    }
 
     & > li {
       padding: 0 0.625rem;
-     
 
       @include respond(tab-port) {
         margin-top: 10px;
@@ -190,8 +188,8 @@ export default {
       }
     }
 
-    .avatar{
-      margin-left: .1rem ;
+    .avatar {
+      margin-left: 0.1rem;
     }
   }
 
@@ -213,7 +211,5 @@ export default {
       }
     }
   }
-
-
 }
 </style>

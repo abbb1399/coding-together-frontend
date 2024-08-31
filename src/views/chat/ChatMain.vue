@@ -1,8 +1,8 @@
 <template>
   <section class="chat">
     <h2 class="chat__caption">채팅 목록</h2>
-    
-    <base-spinner v-if="isLoading" class="chat__spinner"/>
+
+    <base-spinner v-if="isLoading" class="chat__spinner" />
     <ul v-else-if="roomList.length && !isLoading">
       <li
         class="chat__list"
@@ -10,7 +10,11 @@
         v-for="room in roomList"
         :key="room.roomId"
       >
-        <img class="chat__list-img" alt="유저 프로필" :src="getImage(room.avatar)"/>
+        <img
+          class="chat__list-img"
+          alt="유저 프로필"
+          :src="getImage(room.avatar)"
+        />
 
         <div class="chat__list-main">
           <div class="content">
@@ -25,13 +29,13 @@
                   : room.articleOwner.name
               }}
             </p>
-            <p class="latest-message">{{room.latestMsg}}</p>
+            <p class="latest-message">{{ room.latestMsg }}</p>
           </div>
         </div>
 
         <p class="chat__list-updated">{{ room.updatedAt }}</p>
       </li>
-    </ul> 
+    </ul>
     <h3 v-else class="chat__no-list">채팅 방 목록이 없습니다.</h3>
 
     <pagination
@@ -47,60 +51,60 @@
 </template>
 
 <script>
-import { ref, computed } from "vue"
-import { useRouter } from "vue-router"
-import { useStore } from "vuex"
-import Pagination from "../../components/ui/Pagination.vue"
-import useUnreadRequests from "../../hooks/use-unread-requests"
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import Pagination from "../../components/ui/Pagination.vue";
+import useUnreadRequests from "../../hooks/use-unread-requests";
 
 export default {
   components: { Pagination },
   setup() {
-    const store = useStore()
-    const router = useRouter()
+    const store = useStore();
+    const router = useRouter();
 
-    const noImg = ref(require("../../assets/avatar.jpg"))
-    const currentPage = ref(1)
-    const perPage = ref(5)
-    const isLoading = ref(true)
-   
-    const { unreadRequestsCount } = useUnreadRequests()
+    const noImg = ref(require("../../assets/avatar.jpg"));
+    const currentPage = ref(1);
+    const perPage = ref(5);
+    const isLoading = ref(true);
+
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const roomList = computed(() => {
-      return store.getters["chat/roomList"]
-    })
+      return store.getters["chat/roomList"];
+    });
 
     const total = computed(() => {
-      return store.getters["chat/getTotalChatRoom"]
-    })
+      return store.getters["chat/getTotalChatRoom"];
+    });
 
     const totalPages = computed(() => {
-      return Math.ceil(store.getters["chat/getTotalChatRoom"] / perPage.value)
-    })
+      return Math.ceil(store.getters["chat/getTotalChatRoom"] / perPage.value);
+    });
 
     const enterChatRoom = (roomInfo) => {
-      router.push({ name: "chatRoom", params: { roomId: roomInfo.roomId } })
-    }
+      router.push({ name: "chatRoom", params: { roomId: roomInfo.roomId } });
+    };
 
     const onPageChange = (page) => {
-      store.dispatch("chat/fetchChatRoomList", page)
-      currentPage.value = page
-    }
+      store.dispatch("chat/fetchChatRoomList", page);
+      currentPage.value = page;
+    };
 
     const getImage = (roomAvatar) => {
-      return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`
-    }
+      return `${process.env.VUE_APP_API_URL}/images/${roomAvatar}`;
+    };
 
-    const init = async () =>{
+    const init = async () => {
       // 나의 채팅방 정보 불러오기
-      await store.dispatch("chat/fetchChatRoomList", currentPage.value)  
-      isLoading.value = false
+      await store.dispatch("chat/fetchChatRoomList", currentPage.value);
+      isLoading.value = false;
 
       // 안읽은 requests 갯수 불러오기
-      unreadRequestsCount()
-    }
+      unreadRequestsCount();
+    };
 
-    init()
+    init();
 
     return {
       currentPage,
@@ -113,9 +117,9 @@ export default {
       enterChatRoom,
       onPageChange,
       getImage,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -144,12 +148,12 @@ export default {
     &-main {
       margin-left: 0.9rem;
       flex: 1;
-      
-      @include respond(phone){
+
+      @include respond(phone) {
         width: 70%;
       }
 
-      @include respond(small-screen){
+      @include respond(small-screen) {
         width: 60%;
       }
 
@@ -158,7 +162,7 @@ export default {
         align-items: center;
         margin-bottom: 0.6rem;
 
-        .title{
+        .title {
           @include shortenText;
         }
 
@@ -169,11 +173,11 @@ export default {
           margin-left: 10px;
           margin-right: auto;
 
-          @include respond(phone){
-            width:50%;
+          @include respond(phone) {
+            width: 50%;
           }
 
-          @include respond(small-screen){
+          @include respond(small-screen) {
             visibility: hidden;
           }
         }
@@ -188,13 +192,13 @@ export default {
 
         .latest-message {
           color: $color-grey-dark-2;
-          width:90%;
+          width: 90%;
 
           word-break: break-all;
           overflow: hidden;
           display: -webkit-box;
           -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;         
+          -webkit-box-orient: vertical;
         }
       }
     }
@@ -209,7 +213,7 @@ export default {
     margin-top: 1.5rem;
   }
 
-  &__spinner{
+  &__spinner {
     margin-top: 3rem;
   }
 }

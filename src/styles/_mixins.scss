@@ -1,15 +1,15 @@
-@mixin card{
+@mixin card {
   background: #fff;
-  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   border-radius: 3px;
-  padding: .625rem;    
+  padding: 0.625rem;
   margin-bottom: 8px;
 }
 
-@mixin shortenText{
-  white-space:nowrap; 
-  overflow:hidden;
-  text-overflow:ellipsis;
+@mixin shortenText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // 미디어쿼리 메니져
@@ -37,20 +37,30 @@
 // 우리가 _base에서 폰트사이즈를 설정하더라도 먹지 않음.
 // rem은 몇몇 브라우저에서 먹히지 않기 때문에 em을 씀
 
-@mixin respond($breakpoint){
-  @if $breakpoint == small-screen{
-    @media screen and (max-width: 25.9em){@content};   //415px
+@mixin respond($breakpoint) {
+  @if $breakpoint == small-screen {
+    @media screen and (max-width: 25.9em) {
+      @content;
+    } //415px
   }
-  @if $breakpoint == phone{
-    @media screen and (max-width: 37.5em){@content};   //600px
+  @if $breakpoint == phone {
+    @media screen and (max-width: 37.5em) {
+      @content;
+    } //600px
   }
-  @if $breakpoint == tab-port{
-    @media screen and (max-width: 56.25em){@content};  //900px
+  @if $breakpoint == tab-port {
+    @media screen and (max-width: 56.25em) {
+      @content;
+    } //900px
   }
-  @if $breakpoint == tab-land{
-    @media screen and (max-width: 75em){@content};     //1200px
+  @if $breakpoint == tab-land {
+    @media screen and (max-width: 75em) {
+      @content;
+    } //1200px
   }
-  @if $breakpoint == big-screen{
-    @media screen and (min-width: 112.5em){@content};  //1800px
+  @if $breakpoint == big-screen {
+    @media screen and (min-width: 112.5em) {
+      @content;
+    } //1800px
   }
 }

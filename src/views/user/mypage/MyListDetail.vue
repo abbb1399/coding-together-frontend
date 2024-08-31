@@ -14,8 +14,12 @@
             />
           </div>
           <div class="group-2">
-            <base-button mode="secondary" @click="editArticle">수정</base-button>
-            <base-button mode="primary" @click="deleteArticle">삭제</base-button>
+            <base-button mode="secondary" @click="editArticle"
+              >수정</base-button
+            >
+            <base-button mode="primary" @click="deleteArticle"
+              >삭제</base-button
+            >
           </div>
         </div>
       </header>
@@ -28,21 +32,21 @@
       <header class="edit__header">
         <h2>공고 수정</h2>
       </header>
-      <article-form class="edit__form"/>
+      <article-form class="edit__form" />
     </div>
   </section>
 </template>
 
 <script>
-import { ref, inject, toRefs } from "vue"
-import { useRoute, useRouter } from "vue-router"
-import { useStore } from "vuex"
+import { ref, inject, toRefs } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
-import "@toast-ui/editor/dist/toastui-editor-viewer.css"
-import ArticleForm from "../../../components/articles/ArticleForm.vue"
+import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import ArticleForm from "../../../components/articles/ArticleForm.vue";
 
-import useUnreadRequests from '../../../hooks/use-unread-requests'
+import useUnreadRequests from "../../../hooks/use-unread-requests";
 
 export default {
   components: {
@@ -56,40 +60,40 @@ export default {
     },
   },
   setup(props) {
-    const $moment = inject("$moment")
-    const $swal = inject("$swal")
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
+    const $moment = inject("$moment");
+    const $swal = inject("$swal");
+    const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
 
-    const { id } = toRefs(props)
-    const articleTitle = ref("")
-    const createdAt = ref("")
-    const description = ref("")
-    const areas = ref([])
-    const imgSrc = ref(null)
-    const editMode = ref(false)
+    const { id } = toRefs(props);
+    const articleTitle = ref("");
+    const createdAt = ref("");
+    const description = ref("");
+    const areas = ref([]);
+    const imgSrc = ref(null);
+    const editMode = ref(false);
 
-    const { unreadRequestsCount } = useUnreadRequests()
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const init = async () => {
-      await store.dispatch("articles/fetchMyArticleDetail", route.params.id)
-      const myList = store.getters["articles/getMyListDetail"]
+      await store.dispatch("articles/fetchMyArticleDetail", route.params.id);
+      const myList = store.getters["articles/getMyListDetail"];
 
-      articleTitle.value = myList.name
-      createdAt.value = $moment(myList.createdAt).format("YYYY-MM-DD")
+      articleTitle.value = myList.name;
+      createdAt.value = $moment(myList.createdAt).format("YYYY-MM-DD");
       // this.description = myList.description
-      areas.value = myList.areas
-      imgSrc.value = `${process.env.VUE_APP_API_URL}/images/${myList.thumbnail}`
+      areas.value = myList.areas;
+      imgSrc.value = `${process.env.VUE_APP_API_URL}/images/${myList.thumbnail}`;
 
       new Viewer({
         el: document.querySelector("#viewer"),
         initialValue: myList.description,
-      })
+      });
 
       // 안읽은 requests 갯수 불러오기
-      unreadRequestsCount()
-    }
+      unreadRequestsCount();
+    };
 
     const deleteArticle = async () => {
       const result = await $swal.fire({
@@ -101,26 +105,26 @@ export default {
         cancelButtonColor: "#f46a6a",
         confirmButtonText: "네",
         cancelButtonText: "아니오",
-      })
+      });
 
       if (result.isConfirmed) {
-        await store.dispatch("articles/deleteMyArticle", id.value)
-        router.replace({ name: "myList" })
+        await store.dispatch("articles/deleteMyArticle", id.value);
+        router.replace({ name: "myList" });
         $swal.fire({
           icon: "success",
           title: `글 삭제에 성공 하였습니다.`,
           showConfirmButton: false,
           timer: 2000,
-        })
+        });
       }
-    }
+    };
 
     const editArticle = () => {
-      editMode.value = true
+      editMode.value = true;
       // vuex로 article form에 데이터 전달
-    }
+    };
 
-    init()
+    init();
 
     return {
       articleTitle,
@@ -131,9 +135,9 @@ export default {
       editMode,
       deleteArticle,
       editArticle,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -149,28 +153,28 @@ export default {
       align-items: center;
 
       color: #555;
-      margin: .5rem 0;
+      margin: 0.5rem 0;
       font-size: 1em;
       font-style: italic;
       border-top: 1px solid rgba(144, 144, 144, 0.25);
       border-bottom: 1px solid rgba(144, 144, 144, 0.25);
       padding: 5px 0;
-      
-      .group-1{
+
+      .group-1 {
         display: flex;
         align-items: center;
-        
-        .date{
-          margin-right:.5rem;
+
+        .date {
+          margin-right: 0.5rem;
         }
       }
 
-      .group-2{
-        button{
-          padding: .28rem .8rem;
+      .group-2 {
+        button {
+          padding: 0.28rem 0.8rem;
           border-radius: 5px;
 
-          &:first-child{
+          &:first-child {
             margin-right: 3px;
           }
         }
@@ -184,8 +188,8 @@ export default {
   }
 }
 
-.edit{
-  &__header{
+.edit {
+  &__header {
     text-align: center;
   }
 }

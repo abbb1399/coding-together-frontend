@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import { library } from "@fortawesome/fontawesome-svg-core"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faRotateRight,
   faArrowLeftLong,
@@ -11,7 +11,7 @@ import {
   faCalendar,
   faUser,
   faCamera,
-} from "@fortawesome/free-solid-svg-icons"
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(
   faRotateRight,
@@ -23,7 +23,7 @@ library.add(
   faTrash,
   faCalendar,
   faUser,
-  faCamera
-)
+  faCamera,
+);
 
-export default FontAwesomeIcon
+export default FontAwesomeIcon;

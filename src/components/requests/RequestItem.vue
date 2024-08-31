@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import { toRefs, computed, inject } from "vue"
-import { useStore } from "vuex"
-import { useRouter } from "vue-router"
+import { toRefs, computed, inject } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
   props: {
@@ -52,41 +52,41 @@ export default {
     },
   },
   setup(props) {
-    const store = useStore()
-    const router = useRouter()
-    const { fromImgSrc, roomId, createdAt, requestId } = toRefs(props)
-    const $moment = inject("$moment")
+    const store = useStore();
+    const router = useRouter();
+    const { fromImgSrc, roomId, createdAt, requestId } = toRefs(props);
+    const $moment = inject("$moment");
 
     const img = computed(() => {
       if (fromImgSrc.value) {
-        return `${process.env.VUE_APP_API_URL}/avatars/${fromImgSrc.value}`
+        return `${process.env.VUE_APP_API_URL}/avatars/${fromImgSrc.value}`;
       } else {
-        return require("../../assets/avatar.jpg")
+        return require("../../assets/avatar.jpg");
       }
-    })
+    });
 
     const momentCreatedAt = computed(() => {
-      return $moment(createdAt.value).format("YYYY-MM-DD")
-    })
+      return $moment(createdAt.value).format("YYYY-MM-DD");
+    });
 
     const enterChatRoom = async () => {
       // 채팅룸 입장
-      await store.dispatch("chat/enterRoom", roomId.value)
+      await store.dispatch("chat/enterRoom", roomId.value);
       // 요청 읽음 표시
       if (requestId.value) {
-        await store.dispatch("requests/haveRequestRead", requestId.value)
+        await store.dispatch("requests/haveRequestRead", requestId.value);
       }
 
-      router.push({ name: "chatRoom", params: { roomId: roomId.value } })
-    }
+      router.push({ name: "chatRoom", params: { roomId: roomId.value } });
+    };
 
     return {
       img,
       momentCreatedAt,
       enterChatRoom,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -120,10 +120,10 @@ export default {
     align-items: center;
     justify-content: space-between;
 
-    h3{
-      flex:.9;
+    h3 {
+      flex: 0.9;
       @include shortenText;
-    
+
       @include respond(small-screen) {
         flex: 0.6;
       }
@@ -134,7 +134,7 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
-   
+
     &-name {
       font-weight: 600;
     }

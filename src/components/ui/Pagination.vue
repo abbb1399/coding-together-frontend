@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { computed, toRefs } from "vue"
+import { computed, toRefs } from "vue";
 
 export default {
   emits: ["pagechanged"],
@@ -85,78 +85,78 @@ export default {
     },
   },
   setup(props, context) {
-    const { maxVisibleButtons, totalPages, currentPage } = toRefs(props)
+    const { maxVisibleButtons, totalPages, currentPage } = toRefs(props);
 
     const startPage = computed(() => {
       if (currentPage.value === 1) {
-        return 1
+        return 1;
       }
 
       // 마지막 페이지일때
       if (currentPage.value === totalPages.value) {
-        const start = totalPages.value - (maxVisibleButtons.value - 1)
+        const start = totalPages.value - (maxVisibleButtons.value - 1);
 
         if (start === 0) {
-          return 1
+          return 1;
         } else {
-          return start
+          return start;
         }
       }
 
       // 중간 페이지 일때
-      return currentPage.value - 1
-    })
+      return currentPage.value - 1;
+    });
 
     const pages = computed(() => {
-      const range = []
+      const range = [];
       for (
         let i = startPage.value;
         i <=
         Math.min(
           startPage.value + maxVisibleButtons.value - 1,
-          totalPages.value
+          totalPages.value,
         );
         i++
       ) {
         range.push({
           name: i,
           isDisabled: i === currentPage.value,
-        })
+        });
       }
-      return range
-    })
+      return range;
+    });
 
     const isInFirstPage = computed(() => {
-      return currentPage.value === 1
-    })
+      return currentPage.value === 1;
+    });
 
     const isInLastPage = computed(() => {
-      return currentPage.value === totalPages.value
-    })
+      return currentPage.value === totalPages.value;
+    });
 
     const onClickFirstPage = () => {
-      context.emit("pagechanged", 1)
-    }
+      context.emit("pagechanged", 1);
+    };
 
     const onClickPreviousPage = () => {
-      context.emit("pagechanged", currentPage.value - 1)
-    }
+      context.emit("pagechanged", currentPage.value - 1);
+    };
 
     const onClickPage = (page) => {
-      context.emit("pagechanged", page)
-    }
+      context.emit("pagechanged", page);
+    };
 
     const onClickNextPage = () => {
-      context.emit("pagechanged", currentPage.value + 1)
-    }
+      context.emit("pagechanged", currentPage.value + 1);
+    };
 
     const onClickLastPage = () => {
-      context.emit("pagechanged", totalPages.value)
-    }
+      context.emit("pagechanged", totalPages.value);
+    };
 
     const isPageActive = (page) => {
-      return currentPage.value === page
-    }
+      return currentPage.value === page;
+    };
 
     return {
       startPage,
@@ -169,9 +169,9 @@ export default {
       onClickNextPage,
       onClickLastPage,
       isPageActive,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

@@ -32,7 +32,9 @@
           <button class="kanban-btn" @click="editDate">수정</button>
         </div>
         <div class="sidebar__input">
-          <p v-if="!dateEditStatus" class="date-paragraph">{{ dueDateValue }}</p>
+          <p v-if="!dateEditStatus" class="date-paragraph">
+            {{ dueDateValue }}
+          </p>
           <input
             v-else
             @change="changeDate"
@@ -51,8 +53,8 @@
 </template>
 
 <script>
-import { ref, toRefs, computed, watch, nextTick, inject } from "vue"
-import { useStore } from "vuex"
+import { ref, toRefs, computed, watch, nextTick, inject } from "vue";
+import { useStore } from "vuex";
 
 export default {
   emit: ["close-sidebar", "update-task"],
@@ -77,49 +79,49 @@ export default {
     },
   },
   setup(props, context) {
-    const store = useStore()
-    const $swal = inject('$swal')
+    const store = useStore();
+    const $swal = inject("$swal");
 
-    const nameEditStatus = ref(false)
-    const nameInputValue = ref("")
-    const spinner = ref(false)
-    const dateEditStatus = ref(false)
-    const editInput = ref()
+    const nameEditStatus = ref(false);
+    const nameInputValue = ref("");
+    const spinner = ref(false);
+    const dateEditStatus = ref(false);
+    const editInput = ref();
 
-    const { taskName, boardId, taskId, dueDate } = toRefs(props)
+    const { taskName, boardId, taskId, dueDate } = toRefs(props);
 
     watch(taskName, () => {
-      nameEditStatus.value = false
-    })
+      nameEditStatus.value = false;
+    });
 
     const loadingStatus = computed(() => {
-      return spinner.value
-    })
+      return spinner.value;
+    });
 
     const dueDateValue = computed(() => {
-      return dueDate.value
-    })
+      return dueDate.value;
+    });
 
     const close = () => {
-      context.emit("close-sidebar")
-    }
+      context.emit("close-sidebar");
+    };
 
     const editName = () => {
-      nameInputValue.value = taskName.value
-      nameEditStatus.value = true
+      nameInputValue.value = taskName.value;
+      nameEditStatus.value = true;
 
       nextTick(() => {
-        editInput.value.focus()
-      })
-    }
+        editInput.value.focus();
+      });
+    };
 
     const confrimEditName = () => {
       // 같은이름 수정일시
       if (taskName.value === nameInputValue.value) {
-        return (nameEditStatus.value = false)
+        return (nameEditStatus.value = false);
       }
 
-      spinner.value = true
+      spinner.value = true;
 
       setTimeout(async () => {
         const nameData = {
@@ -127,22 +129,22 @@ export default {
           boardId: boardId.value,
           taskId: taskId.value,
           taskName: nameInputValue.value,
-        }
-        context.emit("update-task", nameData)
-        await store.dispatch("kanbans/updateTask", nameData)
+        };
+        context.emit("update-task", nameData);
+        await store.dispatch("kanbans/updateTask", nameData);
 
-        spinner.value = false
-        nameEditStatus.value = false
-      }, 500)
-    }
+        spinner.value = false;
+        nameEditStatus.value = false;
+      }, 500);
+    };
 
     const cancleEditName = () => {
-      nameEditStatus.value = false
-    }
+      nameEditStatus.value = false;
+    };
 
     const editDate = () => {
-      dateEditStatus.value = !dateEditStatus.value
-    }
+      dateEditStatus.value = !dateEditStatus.value;
+    };
 
     const changeDate = async (e) => {
       const dateData = {
@@ -150,12 +152,12 @@ export default {
         boardId: boardId.value,
         taskId: taskId.value,
         dueDate: e.target.value,
-      }
-      context.emit("update-task", dateData)
-      await store.dispatch("kanbans/updateTask", dateData)
+      };
+      context.emit("update-task", dateData);
+      await store.dispatch("kanbans/updateTask", dateData);
 
-      dateEditStatus.value = false
-    }
+      dateEditStatus.value = false;
+    };
 
     const deleteTask = async () => {
       const result = await $swal.fire({
@@ -167,19 +169,22 @@ export default {
         cancelButtonColor: "#f46a6a",
         confirmButtonText: "네",
         cancelButtonText: "아니오",
-      })
+      });
 
       if (result.isConfirmed) {
-        await store.dispatch("kanbans/deleteTask", {boardId: boardId.value, taskId: taskId.value})
+        await store.dispatch("kanbans/deleteTask", {
+          boardId: boardId.value,
+          taskId: taskId.value,
+        });
         $swal.fire({
           icon: "success",
           title: `삭제에 성공 하였습니다.`,
           showConfirmButton: false,
           timer: 2000,
-        })
-        context.emit("close-sidebar")
+        });
+        context.emit("close-sidebar");
       }
-    }
+    };
 
     return {
       nameEditStatus,
@@ -196,9 +201,9 @@ export default {
       editDate,
       changeDate,
       deleteTask,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -267,7 +272,7 @@ export default {
     background: #fff;
     border-radius: 5px;
     border: 1px solid gray;
-    font-size: .7rem;
+    font-size: 0.7rem;
     padding: 5px;
     cursor: pointer;
     width: 3.5rem;
@@ -278,13 +283,12 @@ export default {
     }
   }
 
-  .delete-task{
-    button{
+  .delete-task {
+    button {
       width: 5rem;
     }
   }
 }
-
 
 // Vue Transition css
 .side-leave-to {

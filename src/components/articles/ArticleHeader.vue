@@ -31,38 +31,38 @@
 </template>
 
 <script>
-import { reactive, ref, computed } from "vue"
-import { useStore } from "vuex"
+import { reactive, ref, computed } from "vue";
+import { useStore } from "vuex";
 
 export default {
   emits: ["change-type"],
   setup(_, context) {
-    const store = useStore()
+    const store = useStore();
 
-    const selectType = ref("all")
+    const selectType = ref("all");
     const selectArray = reactive([
       { label: "전체", value: "all" },
       { label: "프론트엔드", value: "frontend" },
       { label: "백엔드", value: "backend" },
       { label: "퍼블리셔", value: "publisher" },
-    ])
+    ]);
 
     const isLoggedIn = computed(() => {
-      return store.getters.isAuthenticated
-    })
+      return store.getters.isAuthenticated;
+    });
 
     const changeType = () => {
-      context.emit("change-type", selectType.value)
-    }
+      context.emit("change-type", selectType.value);
+    };
 
     return {
       selectArray,
       selectType,
       isLoggedIn,
       changeType,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -8,7 +8,7 @@
       <header class="my-list__header">
         <h2>내가 쓴 공고</h2>
       </header>
-      <base-spinner v-if="isLoading" class="my-list__spinner"/>
+      <base-spinner v-if="isLoading" class="my-list__spinner" />
       <ul class="my-list__list" v-else-if="total > 0 && !isLoading">
         <my-list-item
           v-for="list in myList"
@@ -38,56 +38,58 @@
 </template>
 
 <script>
-import { ref, computed } from "vue"
-import { useStore } from "vuex"
-import MyListItem from "../../../components/mypage/MyListItem.vue"
-import Pagination from "../../../components/ui/Pagination.vue"
-import useUnreadRequests from '../../../hooks/use-unread-requests'
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import MyListItem from "../../../components/mypage/MyListItem.vue";
+import Pagination from "../../../components/ui/Pagination.vue";
+import useUnreadRequests from "../../../hooks/use-unread-requests";
 
 export default {
   components: {
     MyListItem,
-    Pagination
+    Pagination,
   },
   setup() {
-    const store = useStore()
+    const store = useStore();
 
-    const isLoading = ref(true)
-    const error = ref(null)
-    const currentPage = ref(1)
-    const perPage = ref(5)
+    const isLoading = ref(true);
+    const error = ref(null);
+    const currentPage = ref(1);
+    const perPage = ref(5);
 
-    const { unreadRequestsCount } = useUnreadRequests()
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const myList = computed(() => {
-      return store.getters["articles/getMyPageList"]
-    })
+      return store.getters["articles/getMyPageList"];
+    });
 
     const total = computed(() => {
-      return store.getters["articles/getTotalMyListCount"]
-    })
+      return store.getters["articles/getTotalMyListCount"];
+    });
 
     const totalPages = computed(() => {
-      return Math.ceil(store.getters["articles/getTotalMyListCount"] / perPage.value)
-    })
+      return Math.ceil(
+        store.getters["articles/getTotalMyListCount"] / perPage.value,
+      );
+    });
 
     const init = async () => {
-      await store.dispatch("articles/fetchMyArticle", currentPage.value)
-      isLoading.value = false
-      
-      unreadRequestsCount()
-    }
+      await store.dispatch("articles/fetchMyArticle", currentPage.value);
+      isLoading.value = false;
+
+      unreadRequestsCount();
+    };
 
     const handleError = () => {
-      error.value = null
-    }
+      error.value = null;
+    };
 
     const onPageChange = (page) => {
-      store.dispatch("articles/fetchMyArticle", page)
-      currentPage.value = page
-    }
+      store.dispatch("articles/fetchMyArticle", page);
+      currentPage.value = page;
+    };
 
-    init()
+    init();
 
     return {
       perPage,
@@ -99,9 +101,9 @@ export default {
       myList,
       handleError,
       onPageChange,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -123,12 +125,12 @@ section {
       text-align: center;
     }
 
-    &__spinner{
+    &__spinner {
       margin-top: 3rem;
     }
   }
 
-  .pagination{
+  .pagination {
     margin-top: 2rem;
   }
 }

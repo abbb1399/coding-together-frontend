@@ -1,11 +1,11 @@
-@import './mixins';
+@import "./mixins";
 
 // Loboto, Lobster 폰트
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap');
-  
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700;900&display=swap");
+
 *,
 *::after,
-*::before{
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: inherit;
@@ -16,28 +16,32 @@ body {
   box-sizing: border-box;
 }
 
-html{
-  @include respond(big-screen){  // width > 1800px
-    font-size: 120%;            //  19px 
-  }
-  
-  @include respond(tab-land){   // width < 1200px
-    font-size: 90%;             // 14.5px
+html {
+  @include respond(big-screen) {
+    // width > 1800px
+    font-size: 120%; //  19px
   }
 
-  @include respond(tab-port){   // width < 900px
-    font-size: 80%;             //  13px
+  @include respond(tab-land) {
+    // width < 1200px
+    font-size: 90%; // 14.5px
   }
 
-  @include respond(phone){   // width < 600px
+  @include respond(tab-port) {
+    // width < 900px
+    font-size: 80%; //  13px
+  }
+
+  @include respond(phone) {
+    // width < 600px
     font-size: 70%;
   }
 }
 
-ul{
+ul {
   list-style: none;
 }
 
-a{
+a {
   text-decoration: none;
 }

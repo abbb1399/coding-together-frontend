@@ -1,8 +1,8 @@
 export default {
-  addSchedule(state, payload){
-    state.schedules.push(payload)
+  addSchedule(state, payload) {
+    state.schedules.push(payload);
   },
-  setSchedules(state, payload){
-    state.schedules = payload
-  }
-}
+  setSchedules(state, payload) {
+    state.schedules = payload;
+  },
+};

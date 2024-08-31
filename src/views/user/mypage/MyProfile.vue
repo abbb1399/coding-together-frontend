@@ -7,7 +7,9 @@
         alt="내 아바타"
       />
       <div class="avatar__overlay">
-        <span><font-awesome-icon icon="camera" class="avatar__overlay-icon"/></span>
+        <span
+          ><font-awesome-icon icon="camera" class="avatar__overlay-icon"
+        /></span>
         <span class="avatar__overlay-text">아바타 변경</span>
       </div>
     </div>
@@ -21,57 +23,57 @@
 </template>
 
 <script>
-import { ref, computed } from "vue"
-import { useStore } from "vuex"
-import useUnreadRequests from '../../../hooks/use-unread-requests'
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import useUnreadRequests from "../../../hooks/use-unread-requests";
 
 export default {
   setup() {
-    const store = useStore()
-    const defaultImg = ref(require("../../../assets/avatar.jpg"))
-    const avatar = ref(null)
-    const { unreadRequestsCount } = useUnreadRequests()
+    const store = useStore();
+    const defaultImg = ref(require("../../../assets/avatar.jpg"));
+    const avatar = ref(null);
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const getMyInfo = computed(() => {
-      return store.getters.myInfo
-    })
+      return store.getters.myInfo;
+    });
 
     const imageUpload = () => {
-      const upload = document.createElement("input")
-      upload.type = "file"
-      upload.accept = "image/png, image/jpeg"
+      const upload = document.createElement("input");
+      upload.type = "file";
+      upload.accept = "image/png, image/jpeg";
 
       upload.onchange = async (e) => {
-        if (!upload.files) return
+        if (!upload.files) return;
 
-        const data = new FormData()
-        const files = e.target.files
-        const fileToUpload = files[0]
-        data.append("avatar", fileToUpload)
+        const data = new FormData();
+        const files = e.target.files;
+        const fileToUpload = files[0];
+        data.append("avatar", fileToUpload);
 
         // 서버 로직
-        await store.dispatch("uploadAvatar", data)
-        avatar.value.blur()
-      }
-      upload.click()     
-    }
+        await store.dispatch("uploadAvatar", data);
+        avatar.value.blur();
+      };
+      upload.click();
+    };
 
     const getImage = (avatar) => {
-      return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`
-    }
+      return `${process.env.VUE_APP_API_URL}/avatars/${avatar}`;
+    };
 
     // 안읽은 requests 갯수 불러오기
-    unreadRequestsCount()
+    unreadRequestsCount();
 
     return {
       avatar,
       defaultImg,
       getMyInfo,
       imageUpload,
-      getImage
-    }
+      getImage,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,7 +106,7 @@ p:not(:last-child) {
 
     &-text {
       color: rgb(250, 250, 250);
-      font-size: .8rem;
+      font-size: 0.8rem;
       font-weight: 600;
     }
 

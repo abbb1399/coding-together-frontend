@@ -1,52 +1,52 @@
 export default {
   taskView: false,
-  defaultView: 'month',
+  defaultView: "month",
   week: {
-    daynames: ['일', '월', '화', '수', '목', '금', '토'],
+    daynames: ["일", "월", "화", "수", "목", "금", "토"],
     hourStart: 7,
     hourEnd: 18,
   },
-  month:{
-    daynames: ['일', '월', '화', '수', '목', '금', '토'],
+  month: {
+    daynames: ["일", "월", "화", "수", "목", "금", "토"],
   },
-  useCreationPopup : true,
+  useCreationPopup: true,
   useDetailPopup: true,
-  template:{
+  template: {
     popupSave() {
-      return '저장';
+      return "저장";
     },
     popupDelete() {
-      return '삭제';
+      return "삭제";
     },
     popupEdit() {
-      return '수정';
+      return "수정";
     },
-    popupUpdate () {
-      return '수정 완료';
+    popupUpdate() {
+      return "수정 완료";
     },
     titlePlaceholder() {
-      return '제목';
+      return "제목";
     },
     locationPlaceholder() {
-      return '장소';
+      return "장소";
     },
     popupIsAllDay() {
-      return '온 종일';
+      return "온 종일";
     },
-    popupStateFree () {
-      return '한가함'
+    popupStateFree() {
+      return "한가함";
     },
-    popupStateBusy () {
-      return '바쁨'
+    popupStateBusy() {
+      return "바쁨";
     },
-    startDatePlaceholder(){
-      return '시작일'
+    startDatePlaceholder() {
+      return "시작일";
     },
-    endDatePlaceholder(){
-      return '종료일'
+    endDatePlaceholder() {
+      return "종료일";
     },
     popupDetailState(schedule) {
-      return '상태 : ' + schedule.state || '바쁨';
+      return "상태 : " + schedule.state || "바쁨";
     },
-  }
-}
+  },
+};

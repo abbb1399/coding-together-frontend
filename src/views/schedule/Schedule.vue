@@ -28,21 +28,21 @@
     </div>
 
     <!-- 캘린더 컨테이너 요소 작성 -->
-    <div ref="tuiCalendar"/>
+    <div ref="tuiCalendar" />
   </section>
 </template>
 
 <script>
-import Calendar from "tui-calendar"
-import "tui-calendar/dist/tui-calendar.css"
-import "tui-date-picker/dist/tui-date-picker.css"
-import "tui-time-picker/dist/tui-time-picker.css"
+import Calendar from "tui-calendar";
+import "tui-calendar/dist/tui-calendar.css";
+import "tui-date-picker/dist/tui-date-picker.css";
+import "tui-time-picker/dist/tui-time-picker.css";
 
 // 유틸 요소 길어서 따로 빼놓음 - src/utilities/tui-calendar
-import calendarOption from "../../utilities/tui-calendar/calendar-option"
-import scheduleType from "../../utilities/tui-calendar/schedule-type"
+import calendarOption from "../../utilities/tui-calendar/calendar-option";
+import scheduleType from "../../utilities/tui-calendar/schedule-type";
 
-// 이 페이지(TuiCalendar 사용)는 Options Api를 사용 
+// 이 페이지(TuiCalendar 사용)는 Options Api를 사용
 // - Composition Api 사용시 TuiCalendar메소드 사용 문제가 있음
 export default {
   inject: ["$moment"],
@@ -64,32 +64,30 @@ export default {
         },
       ],
       selectedView: "month",
-    }
+    };
   },
   watch: {
     // 좌측상단의 select가 변경시 watch('일간', '주간', '월간')
     selectedView(newValue) {
-      this.calendarInstance.changeView(newValue, true)
-      this.setRenderRangeText()
+      this.calendarInstance.changeView(newValue, true);
+      this.setRenderRangeText();
     },
   },
   async mounted() {
     // 스케쥴 불러오기 - server
-    await this.$store.dispatch("schedules/fetchSchedules")
+    await this.$store.dispatch("schedules/fetchSchedules");
 
     // 캘린더 인스턴스 생성
-    const calendar = new Calendar(this.$refs.tuiCalendar, calendarOption)
+    const calendar = new Calendar(this.$refs.tuiCalendar, calendarOption);
 
     // 오늘 날짜설정
-    calendar.setDate(this.$moment().format("YYYY-MM-DD"))
+    calendar.setDate(this.$moment().format("YYYY-MM-DD"));
 
     // 스케줄 Type
-    calendar.setCalendars(scheduleType)
+    calendar.setCalendars(scheduleType);
 
     // 스케쥴 생성
-    calendar.createSchedules(
-      this.$store.getters["schedules/schedules"]
-    )
+    calendar.createSchedules(this.$store.getters["schedules/schedules"]);
 
     calendar.on("beforeCreateSchedule", (scheduleData) => {
       const schedule = {
@@ -102,94 +100,90 @@ export default {
         category: scheduleData.isAllDay ? "allday" : "time",
         location: scheduleData.location,
         state: scheduleData.state,
-      }
+      };
 
       // tui-calendar - Create
-      calendar.createSchedules([schedule])
+      calendar.createSchedules([schedule]);
       // 서버로직 - Create
-      this.$store.dispatch("schedules/resigerSchedule", schedule)
-    })
+      this.$store.dispatch("schedules/resigerSchedule", schedule);
+    });
 
     calendar.on("beforeUpdateSchedule", ({ schedule, changes }) => {
-      if(!changes) return
+      if (!changes) return;
 
       // tui-calendar - Update
-      calendar.updateSchedule(
-        schedule.id,
-        schedule.calendarId,
-        changes
-      )
+      calendar.updateSchedule(schedule.id, schedule.calendarId, changes);
       // 서버로직 - Update
-      this.$store.dispatch("schedules/updateSchedule", [schedule.id, changes])
-    })
+      this.$store.dispatch("schedules/updateSchedule", [schedule.id, changes]);
+    });
 
     calendar.on("beforeDeleteSchedule", ({ schedule }) => {
       // tui-calendar - Delete
-      calendar.deleteSchedule(schedule.id, schedule.calendarId)
+      calendar.deleteSchedule(schedule.id, schedule.calendarId);
       // 서버로직 - Delete
-      this.$store.dispatch("schedules/deleteSchedule", schedule)
-    })
-    
-    this.calendarInstance = calendar
+      this.$store.dispatch("schedules/deleteSchedule", schedule);
+    });
+
+    this.calendarInstance = calendar;
 
     // 안읽은 requests 갯수 불러오기
-    if(this.$store.getters.isAuthenticated){
-      this.$store.dispatch("requests/fetchUnreadRequests")
-    } 
+    if (this.$store.getters.isAuthenticated) {
+      this.$store.dispatch("requests/fetchUnreadRequests");
+    }
   },
   unmounted() {
-    this.calendarInstance.destroy()
+    this.calendarInstance.destroy();
   },
   methods: {
     onClickNavi(event) {
       if (event.target.tagName === "BUTTON") {
-        const { target } = event
+        const { target } = event;
         let action = target.dataset
           ? target.dataset.action
-          : target.getAttribute("data-action")
-        action = action.replace("move-", "")
+          : target.getAttribute("data-action");
+        action = action.replace("move-", "");
         if (action === "today") {
-          this.calendarInstance.today()
+          this.calendarInstance.today();
         } else if (action === "prev") {
-          this.calendarInstance.prev()
+          this.calendarInstance.prev();
         } else if (action === "next") {
-          this.calendarInstance.next()
+          this.calendarInstance.next();
         }
-        this.setRenderRangeText()
+        this.setRenderRangeText();
       }
     },
     // 날짜를 세팅 해주는 method ex)2021년 5월(monthly)
     setRenderRangeText() {
-      const view = this.calendarInstance.getViewName()
-      const calDate = this.calendarInstance.getDate()
-      const rangeStart = this.calendarInstance.getDateRangeStart()
-      const rangeEnd = this.calendarInstance.getDateRangeEnd()
-      let year = calDate.getFullYear()
-      let month = calDate.getMonth() + 1
-      let date = calDate.getDate()
-      let dateRangeText = ""
-      let endMonth, endDate, start, end
+      const view = this.calendarInstance.getViewName();
+      const calDate = this.calendarInstance.getDate();
+      const rangeStart = this.calendarInstance.getDateRangeStart();
+      const rangeEnd = this.calendarInstance.getDateRangeEnd();
+      let year = calDate.getFullYear();
+      let month = calDate.getMonth() + 1;
+      let date = calDate.getDate();
+      let dateRangeText = "";
+      let endMonth, endDate, start, end;
       switch (view) {
         case "month":
-          dateRangeText = `${year}년 ${month}월`
-          break
+          dateRangeText = `${year}년 ${month}월`;
+          break;
         case "week":
-          year = rangeStart.getFullYear()
-          month = rangeStart.getMonth() + 1
-          date = rangeStart.getDate()
-          endMonth = rangeEnd.getMonth() + 1
-          endDate = rangeEnd.getDate()
-          start = `${year}-${month}-${date}`
-          end = `${endMonth}-${endDate}`
-          dateRangeText = `${start} ~ ${end}`
-          break
+          year = rangeStart.getFullYear();
+          month = rangeStart.getMonth() + 1;
+          date = rangeStart.getDate();
+          endMonth = rangeEnd.getMonth() + 1;
+          endDate = rangeEnd.getDate();
+          start = `${year}-${month}-${date}`;
+          end = `${endMonth}-${endDate}`;
+          dateRangeText = `${start} ~ ${end}`;
+          break;
         default:
-          dateRangeText = `${year}-${month}-${date}`
+          dateRangeText = `${year}-${month}-${date}`;
       }
-      this.dateRange = dateRangeText
+      this.dateRange = dateRangeText;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -199,7 +193,7 @@ export default {
 
   &__header {
     display: flex;
-    padding: .75rem 0;
+    padding: 0.75rem 0;
     align-items: center;
 
     @include respond(phone) {
@@ -260,7 +254,7 @@ export default {
   .move-day {
     padding: 0.4rem 0.8rem;
     line-height: 1.1rem;
-  } 
+  }
 }
 
 :deep(#tui-full-calendar-schedule-private) {
@@ -275,7 +269,9 @@ export default {
   width: 96.3%;
 }
 
-:deep(.tui-full-calendar-section-calendar .tui-full-calendar-popup-section-item) {
+:deep(
+    .tui-full-calendar-section-calendar .tui-full-calendar-popup-section-item
+  ) {
   width: 176.2px;
 }
 
@@ -286,7 +282,7 @@ export default {
 :deep(.tui-full-calendar-section-start-date) {
   width: 176.2px;
 
-  & .tui-full-calendar-content{
+  & .tui-full-calendar-content {
     height: 29.8px;
   }
 }
@@ -294,7 +290,7 @@ export default {
 :deep(.tui-full-calendar-section-end-date) {
   width: 176.2px;
 
-  & .tui-full-calendar-content{
+  & .tui-full-calendar-content {
     height: 29.8px;
   }
 }

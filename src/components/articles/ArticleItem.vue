@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { toRefs, computed } from "vue"
-import { useRoute, useRouter } from "vue-router"
+import { toRefs, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   props: {
@@ -26,7 +26,7 @@ export default {
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     areas: {
       type: Array,
@@ -37,25 +37,25 @@ export default {
     },
   },
   setup(props) {
-    const route = useRoute()
-    const router = useRouter()
+    const route = useRoute();
+    const router = useRouter();
 
-    const { id, thumbnail } = toRefs(props)
+    const { id, thumbnail } = toRefs(props);
 
     const getListImage = computed(() => {
-      return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
-    })
+      return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`;
+    });
 
     const toDetail = () => {
-      router.push(route.path + "/" + id.value)
-    }
+      router.push(route.path + "/" + id.value);
+    };
 
     return {
       getListImage,
       toDetail,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -75,9 +75,9 @@ export default {
   &__detail {
     line-height: 1.6;
 
-    .item-title{
+    .item-title {
       @include shortenText;
- 
+
       /* 여러 줄 */
       /* display: -webkit-box;
       -webkit-line-clamp: 2;

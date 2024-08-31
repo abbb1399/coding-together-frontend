@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import { ref, reactive, inject, computed } from "vue"
-import { useRoute, useRouter } from "vue-router"
-import { useStore } from "vuex"
+import { ref, reactive, inject, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer"
-import "@toast-ui/editor/dist/toastui-editor-viewer.css"
+import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 
-import useUnreadRequests from "../../hooks/use-unread-requests"
+import useUnreadRequests from "../../hooks/use-unread-requests";
 
 export default {
   props: {
@@ -44,69 +44,69 @@ export default {
     },
   },
   setup() {
-    const store = useStore()
-    const $moment = inject("$moment")
-    const $swal = inject("$swal")
-    const route = useRoute()
-    const router = useRouter()
+    const store = useStore();
+    const $moment = inject("$moment");
+    const $swal = inject("$swal");
+    const route = useRoute();
+    const router = useRouter();
 
-    const articleId = route.params.id
-    const title = ref("")
-    const areas = ref([])
-    const updatedAt = ref("")
-    const owner = reactive({ id: "", name: "" })
-    const thumbnail = ref(null)
-    const articleOwner = ref("")
+    const articleId = route.params.id;
+    const title = ref("");
+    const areas = ref([]);
+    const updatedAt = ref("");
+    const owner = reactive({ id: "", name: "" });
+    const thumbnail = ref(null);
+    const articleOwner = ref("");
 
-    const { unreadRequestsCount } = useUnreadRequests()
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const articeImage = computed(() => {
-      return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`
-    })
+      return `${process.env.VUE_APP_API_URL}/images/${thumbnail.value}`;
+    });
 
     const init = async () => {
       try {
-        await store.dispatch("articles/loadArticleDetail", articleId)
+        await store.dispatch("articles/loadArticleDetail", articleId);
 
-        const article = store.getters["articles/article"]
+        const article = store.getters["articles/article"];
 
-        articleOwner.value = article.owner._id
-        title.value = article.name
-        areas.value = article.areas
-        updatedAt.value = $moment(article.updatedAt).format("YYYY-MM-DD")
-        owner.name = article.owner.name
-        owner.id = article.owner._id
-        thumbnail.value = article.thumbnail
+        articleOwner.value = article.owner._id;
+        title.value = article.name;
+        areas.value = article.areas;
+        updatedAt.value = $moment(article.updatedAt).format("YYYY-MM-DD");
+        owner.name = article.owner.name;
+        owner.id = article.owner._id;
+        thumbnail.value = article.thumbnail;
 
         new Viewer({
           el: document.querySelector("#viewer"),
           initialValue: article.description,
-        })
+        });
 
         // 안읽은 requests 갯수 불러오기
-        unreadRequestsCount()
+        unreadRequestsCount();
       } catch (error) {
-        router.replace("/notfound")
+        router.replace("/notfound");
         $swal.fire({
           icon: "error",
           title: error.message,
           showConfirmButton: false,
           timer: 2000,
-        })
+        });
       }
-    }
+    };
 
     const sendRequest = async () => {
       if (!store.getters.isAuthenticated) {
-        router.push("/auth")
+        router.push("/auth");
 
         $swal.fire({
           icon: "info",
           title: `같이 코딩하기 위하여 로그인을 먼저하여 주세요.`,
           showConfirmButton: false,
           timer: 2000,
-        })
-        return
+        });
+        return;
       }
 
       if (store.getters.myInfo.id === owner.id) {
@@ -115,8 +115,8 @@ export default {
           title: `내가 작성한 공고 입니다.`,
           showConfirmButton: false,
           timer: 2000,
-        })
-        return
+        });
+        return;
       }
 
       const result = await $swal.fire({
@@ -128,12 +128,14 @@ export default {
         cancelButtonColor: "#f46a6a",
         confirmButtonText: "네",
         cancelButtonText: "아니오",
-      })
+      });
 
       if (result.isConfirmed) {
-        const inRoom = store.getters.myInfo.inChatRoom.find((room) => room.articleId === articleId)
+        const inRoom = store.getters.myInfo.inChatRoom.find(
+          (room) => room.articleId === articleId,
+        );
 
-        if(!inRoom){
+        if (!inRoom) {
           // 채팅방 생성
           await store.dispatch("chat/createRoom", {
             roomName: title.value,
@@ -145,35 +147,40 @@ export default {
               },
             ],
             articleOwner: articleOwner.value,
-            
-          })
-          const newChatRoomId = store.getters['chat/getNewChatRoomId']
+          });
+          const newChatRoomId = store.getters["chat/getNewChatRoomId"];
 
           // 내 아이디에 생성
-          await store.dispatch("enterChatRoom", {articleId, chatRoomId: newChatRoomId } )
-         
-         // 상대방에게 인사 메세지
+          await store.dispatch("enterChatRoom", {
+            articleId,
+            chatRoomId: newChatRoomId,
+          });
+
+          // 상대방에게 인사 메세지
           await store.dispatch("chat/registerMessage", {
             content: `${owner.name}님 같이 코딩해요!`,
             senderId: store.getters.myInfo.id,
             username: store.getters.myInfo.name,
             roomId: newChatRoomId,
-          })
+          });
           //상대방에게 요청도 생성
           await store.dispatch("requests/sendRequest", {
             userId: store.getters.myInfo.id,
             title: title.value,
             owner: owner.id,
             roomId: newChatRoomId,
-          })
-          router.push({ name: "chatRoom", params: { roomId: newChatRoomId }})
-        }else{
-          router.push({ name: "chatRoom", params: { roomId: inRoom.chatRoomId }})
+          });
+          router.push({ name: "chatRoom", params: { roomId: newChatRoomId } });
+        } else {
+          router.push({
+            name: "chatRoom",
+            params: { roomId: inRoom.chatRoomId },
+          });
         }
       }
-    }
+    };
 
-    init()
+    init();
 
     return {
       title,
@@ -182,9 +189,9 @@ export default {
       articeImage,
       owner,
       sendRequest,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 export default {
-  schedules(state){
-    return state.schedules
-  }
-}
+  schedules(state) {
+    return state.schedules;
+  },
+};

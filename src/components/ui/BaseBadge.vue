@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { computed, toRefs } from "vue"
+import { computed, toRefs } from "vue";
 
 export default {
   props: {
@@ -19,24 +19,24 @@ export default {
     },
   },
   setup(props) {
-    const {title} = toRefs(props)
+    const { title } = toRefs(props);
 
     const badgeText = computed(() => {
       if (title.value === "frontend") {
-        return "프론트엔드"
+        return "프론트엔드";
       } else if (title.value === "backend") {
-        return "백엔드"
+        return "백엔드";
       } else if (title.value === "publisher") {
-        return "퍼블리셔"
+        return "퍼블리셔";
       } else {
-        return "모름"
+        return "모름";
       }
-    })
+    });
     return {
-      badgeText
-    }
+      badgeText,
+    };
   },
-}
+};
 </script>
 
 <style scoped>
@@ -49,17 +49,17 @@ export default {
 }
 
 .frontend {
-  background-color: #00B8A9;
+  background-color: #00b8a9;
   color: white;
 }
 
 .backend {
-  background-color: #F6416C;
+  background-color: #f6416c;
   color: white;
 }
 
 .publisher {
-  background-color: #FEB139;
+  background-color: #feb139;
   color: white;
 }
 </style>

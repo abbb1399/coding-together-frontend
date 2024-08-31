@@ -1,20 +1,20 @@
-import mutations from './mutations.js'
-import actions from './actions.js'
-import getters from './getters.js'
+import mutations from "./mutations.js";
+import actions from "./actions.js";
+import getters from "./getters.js";
 
 export default {
-  namespaced:true,
-  state(){
-    return{
+  namespaced: true,
+  state() {
+    return {
       articles: [],
-      fileName:'',
+      fileName: "",
       myList: [],
-      myListDeatil:{},
-      total:null,
-      article:null,
-    }
+      myListDeatil: {},
+      total: null,
+      article: null,
+    };
   },
   mutations,
   actions,
-  getters
-}
+  getters,
+};

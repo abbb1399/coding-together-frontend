@@ -1,15 +1,23 @@
 <template>
   <section>
     <div class="kanban">
-      <draggable 
-        :list="boardList" itemKey="_id" class="kanban__board" group="board"
-        :animation="90" :forceFallback="true" :fallbackTolerance="3"
-        ghostClass="ghost" chosenClass="chosen" dragClass="drag" handle=".handle"
+      <draggable
+        :list="boardList"
+        itemKey="_id"
+        class="kanban__board"
+        group="board"
+        :animation="90"
+        :forceFallback="true"
+        :fallbackTolerance="3"
+        ghostClass="ghost"
+        chosenClass="chosen"
+        dragClass="drag"
+        handle=".handle"
         @change="moveBoard($event)"
       >
-        <template #item="{element, index}">
-          <kanban-list 
-            :item-list="element" 
+        <template #item="{ element, index }">
+          <kanban-list
+            :item-list="element"
             :index="index"
             :selected-task-id="selectedTaskId"
             @open-sidebar="openSidebar"
@@ -34,15 +42,15 @@
 </template>
 
 <script>
-import draggable from "vuedraggable"
-import KanbanSidebar from "../../components/kanban/KanbanSidebar.vue"
-import KanbanAddBtn from "../../components/kanban/KanbanAddBtn.vue"
-import KanbanList from "../../components/kanban/KanbanList.vue"
+import draggable from "vuedraggable";
+import KanbanSidebar from "../../components/kanban/KanbanSidebar.vue";
+import KanbanAddBtn from "../../components/kanban/KanbanAddBtn.vue";
+import KanbanList from "../../components/kanban/KanbanList.vue";
 
-import useUnreadRequests from '../../hooks/use-unread-requests'
+import useUnreadRequests from "../../hooks/use-unread-requests";
 
-import { ref, computed, inject } from "vue"
-import { useStore } from "vuex"
+import { ref, computed, inject } from "vue";
+import { useStore } from "vuex";
 
 export default {
   components: {
@@ -52,88 +60,88 @@ export default {
     KanbanList,
   },
   setup() {
-    const store = useStore()
-    const $swal = inject('$swal')
+    const store = useStore();
+    const $swal = inject("$swal");
 
-    const taskId = ref(null)
-    const taskName = ref("")
-    const sidebar = ref(false)
-    const dueDate = ref("없음")
-    const selectedBoardId = ref("")
-    const selectedTaskId = ref('')
+    const taskId = ref(null);
+    const taskName = ref("");
+    const sidebar = ref(false);
+    const dueDate = ref("없음");
+    const selectedBoardId = ref("");
+    const selectedTaskId = ref("");
 
-    const { unreadRequestsCount } = useUnreadRequests()
+    const { unreadRequestsCount } = useUnreadRequests();
 
     const boardList = computed(() => {
-      return store.getters["kanbans/kanbans"]
-    })
+      return store.getters["kanbans/kanbans"];
+    });
 
     const closeSideBar = () => {
-      sidebar.value = false
-    }
+      sidebar.value = false;
+    };
 
     const updateTask = (taskData) => {
       const selectedBoard = boardList.value.find(
-        (board) => board._id === taskData.boardId
-      )
+        (board) => board._id === taskData.boardId,
+      );
       const selectedTask = selectedBoard.list.find(
-        (data) => data.id === taskData.taskId
-      )
+        (data) => data.id === taskData.taskId,
+      );
 
       if (taskData.status === "NAME") {
-        selectedTask.name = taskData.taskName
-        taskName.value = taskData.taskName
+        selectedTask.name = taskData.taskName;
+        taskName.value = taskData.taskName;
       } else if (taskData.status === "DATE") {
-        selectedTask.dueDate = taskData.dueDate
-        dueDate.value = taskData.dueDate
+        selectedTask.dueDate = taskData.dueDate;
+        dueDate.value = taskData.dueDate;
       }
-    }
+    };
 
-    const openSidebar = ({element, boardId}) => {
-      dueDate.value = "없음"
+    const openSidebar = ({ element, boardId }) => {
+      dueDate.value = "없음";
 
-      selectedTaskId.value = element.id
-      sidebar.value = true
-      selectedBoardId.value = boardId
-      taskName.value = element.name
-      taskId.value = element.id
+      selectedTaskId.value = element.id;
+      sidebar.value = true;
+      selectedBoardId.value = boardId;
+      taskName.value = element.name;
+      taskId.value = element.id;
 
       if (element.dueDate) {
-        dueDate.value = element.dueDate
+        dueDate.value = element.dueDate;
       }
-    }
+    };
 
-    const moveBoard = async ({moved}) => {
-      const data ={
+    const moveBoard = async ({ moved }) => {
+      const data = {
         boardId: moved.element._id,
         newIndex: moved.newIndex,
-        oldIndex: moved.oldIndex
-      }
-    
-      store.dispatch("kanbans/moveBoard", data)
-    }
+        oldIndex: moved.oldIndex,
+      };
 
-    const deleteBoard = async (boardId) =>{
+      store.dispatch("kanbans/moveBoard", data);
+    };
+
+    const deleteBoard = async (boardId) => {
       await store.dispatch("kanbans/deleteBoard", {
-        boardId, 
-        maxLength: store.getters["kanbans/kanbans"].length-1 
-      })
+        boardId,
+        maxLength: store.getters["kanbans/kanbans"].length - 1,
+      });
       $swal.fire({
         icon: "success",
         title: `삭제에 성공 하였습니다.`,
         showConfirmButton: false,
         timer: 2000,
-      })
-    }
+      });
+    };
 
-    const init = async  () =>{
+    const init = async () => {
       // 칸반 불러오기
-      await store.dispatch("kanbans/fetchKanbans")
+      await store.dispatch("kanbans/fetchKanbans");
       // 안읽은 requests 갯수 불러오기
-      unreadRequestsCount()
-    }
+      unreadRequestsCount();
+    };
 
-    init()
+    init();
 
     return {
       selectedBoardId,
@@ -147,10 +155,10 @@ export default {
       updateTask,
       openSidebar,
       moveBoard,
-      deleteBoard
-    }
+      deleteBoard,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -172,5 +180,4 @@ export default {
     gap: 1rem;
   }
 }
-
 </style>

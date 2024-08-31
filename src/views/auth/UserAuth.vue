@@ -77,93 +77,93 @@
 </template>
 
 <script>
-import { ref, computed, inject } from "vue"
-import { useRouter, useRoute } from "vue-router"
-import { useStore } from "vuex"
+import { ref, computed, inject } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   setup() {
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
-    const $swal = inject("$swal")
+    const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
+    const $swal = inject("$swal");
 
-    const name = ref("")
-    const email = ref("")
-    const password = ref("")
-    const formIsValid = ref(true)
-    const mode = ref("login")
-    const isLoading = ref(false)
-    const error = ref(null)
+    const name = ref("");
+    const email = ref("");
+    const password = ref("");
+    const formIsValid = ref(true);
+    const mode = ref("login");
+    const isLoading = ref(false);
+    const error = ref(null);
 
     const loginSignupMessage = computed(() => {
       if (mode.value === "login") {
-        return "회원가입하고 서비스를 이용해주세요."
+        return "회원가입하고 서비스를 이용해주세요.";
       } else {
-        return "로그인 화면으로 돌아가시겠습니까?"
+        return "로그인 화면으로 돌아가시겠습니까?";
       }
-    })
+    });
 
     const submitForm = async () => {
-      formIsValid.value = true
+      formIsValid.value = true;
       if (
         email.value === "" ||
         !email.value.includes("@") ||
         password.value.length < 6
       ) {
-        formIsValid.value = false
-        return
+        formIsValid.value = false;
+        return;
       }
 
-      isLoading.value = true
+      isLoading.value = true;
 
       const userInfo = {
         name: name.value,
         email: email.value,
         password: password.value,
-      }
+      };
 
       try {
         if (mode.value === "login") {
           // 로그인
-          await store.dispatch("login", userInfo)
+          await store.dispatch("login", userInfo);
         } else {
           // 회원가입
-          await store.dispatch("signup", userInfo)
+          await store.dispatch("signup", userInfo);
           // Kanban 게시판 3개 생성
           for (let index = 0; index <= 2; index++) {
             await store.dispatch("kanbans/registerKanban", {
               title: `Board ${index + 1}`,
               order: index,
-            })
+            });
           }
         }
 
-        const redirectUrl = "/" + (route.query.redirect || "articles")
-        router.replace(redirectUrl)
+        const redirectUrl = "/" + (route.query.redirect || "articles");
+        router.replace(redirectUrl);
       } catch (err) {
-        error.value = err.message
+        error.value = err.message;
       }
 
-      isLoading.value = false
-    }
+      isLoading.value = false;
+    };
 
     const switchAuthMode = () => {
-      email.value = ""
-      password.value = ""
-      formIsValid.value = true
+      email.value = "";
+      password.value = "";
+      formIsValid.value = true;
 
       if (mode.value === "login") {
-        mode.value = "signup"
-        name.value = ""
+        mode.value = "signup";
+        name.value = "";
       } else {
-        mode.value = "login"
+        mode.value = "login";
       }
-    }
+    };
 
     const handleError = () => {
-      error.value = null
-    }
+      error.value = null;
+    };
 
     const forgotPassword = async () => {
       const { value: email } = await $swal.fire({
@@ -175,18 +175,18 @@ export default {
         confirmButtonColor: "#34c38f",
         confirmButtonText: "제출",
         validationMessage: "유효하지 않은 이메일 입니다.",
-      })
+      });
 
       if (email) {
-        await store.dispatch("findPassword", { email })
+        await store.dispatch("findPassword", { email });
         $swal.fire({
           icon: "success",
           title: `${email}로 새로운 비밀번호가 발송 되었습니다.`,
           showConfirmButton: false,
           timer: 2000,
-        })
+        });
       }
-    }
+    };
 
     return {
       error,
@@ -201,9 +201,9 @@ export default {
       handleError,
       submitForm,
       forgotPassword,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

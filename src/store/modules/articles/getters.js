@@ -1,32 +1,32 @@
 export default {
-  articles(state){
-    return state.articles
+  articles(state) {
+    return state.articles;
   },
-  article(state){
-    return state.article
+  article(state) {
+    return state.article;
   },
-  hasArticles(state){
-    return state.articles && state.articles.length > 0
+  hasArticles(state) {
+    return state.articles && state.articles.length > 0;
   },
   // state,getters,rootState,rootGetters
-  isArticle(_,getters,_2,rootGetters){
-    const articles = getters.articles
-    const userId = rootGetters.userId
+  isArticle(_, getters, _2, rootGetters) {
+    const articles = getters.articles;
+    const userId = rootGetters.userId;
 
     // console.log(articles)
     // console.log(userId)
-    return articles.some(article => article.owner === userId)
+    return articles.some((article) => article.owner === userId);
   },
-  getUploadFileName(state){
-    return state.fileName
+  getUploadFileName(state) {
+    return state.fileName;
   },
-  getMyPageList(state){
-    return state.myList
+  getMyPageList(state) {
+    return state.myList;
   },
-  getMyListDetail(state){
-    return state.myListDetail
+  getMyListDetail(state) {
+    return state.myListDetail;
   },
-  getTotalMyListCount(state){
-    return state.total
-  }
-}
+  getTotalMyListCount(state) {
+    return state.total;
+  },
+};

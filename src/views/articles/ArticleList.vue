@@ -6,7 +6,7 @@
     </base-dialog>
 
     <article-header @change-type="changeType" />
-    
+
     <ul class="articles__list">
       <article-item
         v-for="article in articleList"
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import {ref} from 'vue'
-import {useStore} from 'vuex'
+import { ref } from "vue";
+import { useStore } from "vuex";
 
-import ArticleItem from "../../components/articles/ArticleItem.vue"
-import ArticleHeader from "../../components/articles/ArticleHeader.vue"
-import InfiniteLoading from "vue-infinite-loading"
+import ArticleItem from "../../components/articles/ArticleItem.vue";
+import ArticleHeader from "../../components/articles/ArticleHeader.vue";
+import InfiniteLoading from "vue-infinite-loading";
 
-import useUnreadRequests from '../../hooks/use-unread-requests'
+import useUnreadRequests from "../../hooks/use-unread-requests";
 
 export default {
   components: {
@@ -41,95 +41,93 @@ export default {
     ArticleHeader,
     InfiniteLoading,
   },
-  setup(){
-    const store = useStore()
+  setup() {
+    const store = useStore();
 
-    const error = ref(null)
-    const articleList = ref([])
-    const page= ref(0)
-    const selectedType = ref('all')
-    const infiniteId = ref(new Date().getTime())
-    
-    const { unreadRequestsCount } = useUnreadRequests()
+    const error = ref(null);
+    const articleList = ref([]);
+    const page = ref(0);
+    const selectedType = ref("all");
+    const infiniteId = ref(new Date().getTime());
 
-    const infiniteHandler = async ($state) =>{
+    const { unreadRequestsCount } = useUnreadRequests();
+
+    const infiniteHandler = async ($state) => {
       const payload = {
         pageNum: page.value,
         filter: selectedType.value,
-      }
-      try{
-        await store.dispatch("articles/loadArticles", payload)
-        const listArray = store.getters["articles/articles"]
+      };
+      try {
+        await store.dispatch("articles/loadArticles", payload);
+        const listArray = store.getters["articles/articles"];
 
         if (listArray.length) {
-          $state.loaded()
-          page.value += 4
-          articleList.value = [...articleList.value, ...listArray]
-        }else{
-          $state.complete()
-        } 
-      }catch(e){
-        error.value = e.message
+          $state.loaded();
+          page.value += 4;
+          articleList.value = [...articleList.value, ...listArray];
+        } else {
+          $state.complete();
+        }
+      } catch (e) {
+        error.value = e.message;
       }
-    }
+    };
 
     const changeType = (selectType) => {
-      selectedType.value = selectType
-      page.value = 0
-      articleList.value = []
-      infiniteId.value += 1
-    }
+      selectedType.value = selectType;
+      page.value = 0;
+      articleList.value = [];
+      infiniteId.value += 1;
+    };
 
-    const handleError = () =>{
-      error.value = null
-    }
-    
+    const handleError = () => {
+      error.value = null;
+    };
+
     // 안읽은 requests 갯수 불러오기
-    unreadRequestsCount()
+    unreadRequestsCount();
 
-    return{
+    return {
       error,
       articleList,
       infiniteId,
       handleError,
       infiniteHandler,
-      changeType
-    }
-  }
-}
+      changeType,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .articles{
-    max-width: 62.5rem;
-    margin: 0 auto;
-    min-height: calc(100vh - 2.5rem);
+.articles {
+  max-width: 62.5rem;
+  margin: 0 auto;
+  min-height: calc(100vh - 2.5rem);
 
-    @include respond(big-screen){
-      max-width: $website-width;
-    }
+  @include respond(big-screen) {
+    max-width: $website-width;
+  }
 
-    @media screen and (max-width: 860px) {
-      margin: 0 1rem;
-    }
+  @media screen and (max-width: 860px) {
+    margin: 0 1rem;
+  }
 
-    &__list {
-      list-style: none;
-      display: grid;
-      /* dynamic columns */
-      grid-template-columns: repeat(auto-fit, minmax(13.4rem, 1fr));
-      gap: 1.6rem;
-      
-      /* 4columns */
-      /* grid-template-columns: repeat(4, minmax(6rem, 1fr));
+  &__list {
+    list-style: none;
+    display: grid;
+    /* dynamic columns */
+    grid-template-columns: repeat(auto-fit, minmax(13.4rem, 1fr));
+    gap: 1.6rem;
+
+    /* 4columns */
+    /* grid-template-columns: repeat(4, minmax(6rem, 1fr));
       @include respond(tab-port){
         grid-template-columns: repeat(3, 1fr);
       }
       @include respond(phone){
         grid-template-columns: repeat(2, 1fr);
       } */
-    }
   }
-
-
+}
 </style>

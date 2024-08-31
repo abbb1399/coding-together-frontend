@@ -9,7 +9,11 @@
       >
         + 리스트 추가
       </button>
-      <div class="add-btn__input-container" v-else v-click-outside="clickOutside">
+      <div
+        class="add-btn__input-container"
+        v-else
+        v-click-outside="clickOutside"
+      >
         <input
           type="text"
           v-focus
@@ -18,7 +22,11 @@
         />
         <span>
           <button @click="submitNewBoard">추가</button>
-          <font-awesome-icon class="x-icon" icon="x" @click="openInputContainer" />
+          <font-awesome-icon
+            class="x-icon"
+            icon="x"
+            @click="openInputContainer"
+          />
         </span>
       </div>
     </transition>
@@ -26,61 +34,64 @@
 </template>
 
 <script>
-import { ref,inject } from "vue"
-import { useStore } from "vuex"
+import { ref, inject } from "vue";
+import { useStore } from "vuex";
 
 export default {
   setup() {
-    const store = useStore()
-    const $swal = inject("$swal")
+    const store = useStore();
+    const $swal = inject("$swal");
 
-    const addBtnStatus = ref(true)
-    const inputValue = ref("")
+    const addBtnStatus = ref(true);
+    const inputValue = ref("");
 
     const openInputContainer = () => {
-      addBtnStatus.value = !addBtnStatus.value
+      addBtnStatus.value = !addBtnStatus.value;
 
       // 인풋값 초기화
-      inputValue.value = ""
-    }
+      inputValue.value = "";
+    };
 
-     const clickOutside = () => {
-      addBtnStatus.value = true
-    }
+    const clickOutside = () => {
+      addBtnStatus.value = true;
+    };
 
     const submitNewBoard = () => {
-      const kanbanCount = store.getters["kanbans/kanbans"].length
+      const kanbanCount = store.getters["kanbans/kanbans"].length;
 
-      if(kanbanCount> 11){
+      if (kanbanCount > 11) {
         $swal.fire({
           icon: "info",
-          title: '최대 10개까지만 생성 가능합니다.',
+          title: "최대 10개까지만 생성 가능합니다.",
           showConfirmButton: false,
           timer: 2000,
-        })
-        return 
+        });
+        return;
       }
 
-      const inputTitle = inputValue.value.trim()
+      const inputTitle = inputValue.value.trim();
 
       if (inputTitle.length === 0) {
-        return
+        return;
       }
 
-      store.dispatch("kanbans/registerKanban", { title: inputTitle, order: kanbanCount})
-      inputValue.value = ''
-      addBtnStatus.value = true
-    }
+      store.dispatch("kanbans/registerKanban", {
+        title: inputTitle,
+        order: kanbanCount,
+      });
+      inputValue.value = "";
+      addBtnStatus.value = true;
+    };
 
     return {
       addBtnStatus,
       inputValue,
       openInputContainer,
       clickOutside,
-      submitNewBoard
-    }
+      submitNewBoard,
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -97,7 +108,7 @@ export default {
     border: none;
     font-weight: 600;
     cursor: pointer;
-    
+
     @include respond(phone) {
       font-size: 1rem;
     }
